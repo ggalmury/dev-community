@@ -12,9 +12,11 @@ class _ProjectContainerState extends State<ProjectContainer> {
   Widget build(BuildContext context) {
     return Container(
       height: 250,
-      margin: const EdgeInsets.symmetric(vertical: 10),
-      color: Colors.red,
-      child: const Text("alac"),
+      margin: const EdgeInsets.only(top: 20),
+      color: Colors.white,
+      child: const Center(
+        child: Text("article"),
+      ),
     );
   }
 }

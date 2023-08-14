@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-
 import '../atoms/buttons/button_option.dart';
 
 class SearchOptionRow extends StatelessWidget {

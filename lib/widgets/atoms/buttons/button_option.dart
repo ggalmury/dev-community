@@ -8,6 +8,12 @@ class ButtonOption extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return OutlinedButton(onPressed: onPressed, child: Text(title));
+    return SizedBox(
+      width: 100,
+      child: OutlinedButton(
+        onPressed: onPressed,
+        child: Text(title),
+      ),
+    );
   }
 }

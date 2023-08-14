@@ -2,6 +2,15 @@ import 'package:dev_community/screens/index.dart';
 import 'package:dev_community/utils/customs/custom_style.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:logger/logger.dart';
+
+var logger = Logger(
+  printer: PrettyPrinter(lineLength: 60, colors: true),
+);
+
+var loggerNoStack = Logger(
+  printer: PrettyPrinter(lineLength: 60, methodCount: 0),
+);
 
 void main() {
   runApp(const MyApp());
@@ -27,7 +36,7 @@ class MyApp extends StatelessWidget {
           appBarTheme: const AppBarTheme(
             systemOverlayStyle: SystemUiOverlayStyle.dark,
             elevation: 0,
-            backgroundColor: Colors.transparent,
+            backgroundColor: Colors.white,
             foregroundColor: Colors.black,
           )),
       home: const Index(),
