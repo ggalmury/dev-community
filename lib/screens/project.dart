@@ -1,13 +1,15 @@
-import 'package:dev_community/bloc/screen/project/project_search_option_bloc.dart';
 import 'package:dev_community/main.dart';
 import 'package:dev_community/utils/customs/custom_color.dart';
 import 'package:dev_community/utils/helpers/screen_helper.dart';
 import 'package:dev_community/widgets/atoms/inputs/input_search.dart';
-import 'package:dev_community/widgets/components/search_option_row.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import '../bloc/screen/project/project_search_filter_bloc.dart';
+import '../utils/enum.dart';
 import '../widgets/components/project_container.dart';
 import 'package:dev_community/utils/constant.dart' as constants;
+import '../widgets/components/search_filter_body.dart';
+import '../widgets/components/search_filter_row.dart';
 
 class Project extends StatefulWidget {
   const Project({super.key});
@@ -18,56 +20,32 @@ class Project extends StatefulWidget {
 
 class _ProjectState extends State<Project> {
   final TextEditingController _searchOptionController = TextEditingController();
-  bool searchOptionToggle = false;
+  bool searchFilterToggle = false;
 
-  void _setSearchOptionToggle() {
+  void _setSearchFilterToggle() {
     setState(() {
-      searchOptionToggle = !searchOptionToggle;
+      searchFilterToggle = !searchFilterToggle;
     });
   }
 
-  void _onOptionSelect(List<String> list, String title) {
-    ScreenHelper()
-        .modalBottomSheetHandler(context, _bottomSheetBody(list, title), 450);
+  void _dispatchProjectSearchFilterEvent(
+      SearchFilterCategory category, String data) {
+    context
+        .read<ProjectSearchFilterBloc>()
+        .add(SetProjectSearchFilterEvent(category: category, data: data));
   }
 
-  Widget _bottomSheetBody(List<String> list, String title) {
-    return Column(
-      children: [
-        SizedBox(
-            height: 30,
-            child: Text(
-              title,
-              style: const TextStyle(
-                fontSize: 18,
-                fontWeight: FontWeight.bold,
-              ),
-            )),
-        const Divider(
-          height: 10,
-          thickness: 0.5,
-          color: Colors.grey,
+  void _activateBottomSheet(
+      SearchFilterCategory category, String label, List<String> list) {
+    ScreenHelper().modalBottomSheetHandler(
+        context,
+        SearchFilterBody<ProjectSearchFilterBloc>(
+          category: category,
+          list: list,
+          label: label,
+          onChipPressed: _dispatchProjectSearchFilterEvent,
         ),
-        const SizedBox(
-          height: 20,
-        ),
-        Expanded(
-          child: SingleChildScrollView(
-            child: Wrap(
-                spacing: 10,
-                runSpacing: 10,
-                children: List.generate(list.length, (index) {
-                  return Container(
-                    color: CustomColor.whiteGrey,
-                    padding: const EdgeInsets.all(10),
-                    child: Text(list[index]),
-                  );
-                })),
-          ),
-        ),
-        const SizedBox(height: 100, child: Text("버튼 자리")),
-      ],
-    );
+        450);
   }
 
   @override
@@ -87,7 +65,7 @@ class _ProjectState extends State<Project> {
             SizedBox(width: 50, child: Icon(Icons.menu)),
           ],
         ),
-        backgroundColor: CustomColor.whiteGrey,
+        backgroundColor: CustomColor.whiteGrey1,
         body: RefreshIndicator(
           onRefresh: () async {
             await Future.delayed(const Duration(seconds: 1));
@@ -105,7 +83,7 @@ class _ProjectState extends State<Project> {
                       children: [
                         Container(
                           height: 200,
-                          color: CustomColor.whiteGrey,
+                          color: CustomColor.whiteGrey1,
                           child: const Center(
                             child: Text("banner"),
                           ),
@@ -121,61 +99,65 @@ class _ProjectState extends State<Project> {
                                     hintText: "검색할 제목을 입력해 주세요."),
                                 IntrinsicWidth(
                                   child: TextButton(
-                                      onPressed: _setSearchOptionToggle,
+                                      onPressed: _setSearchFilterToggle,
                                       child: Row(
                                         children: [
                                           const Text("상세검색"),
-                                          Icon(searchOptionToggle
+                                          Icon(searchFilterToggle
                                               ? Icons.keyboard_arrow_up
                                               : Icons.keyboard_arrow_down)
                                         ],
                                       )),
                                 ),
-                                if (searchOptionToggle)
+                                if (searchFilterToggle)
                                   Column(children: [
-                                    SearchOptionRow(
-                                      title: "기술스택",
+                                    SearchFilterRow<ProjectSearchFilterBloc,
+                                        DefaultProjectSearchFilterState>(
+                                      label: "기술스택",
+                                      category: SearchFilterCategory.techSkill,
                                       onPressed: () {
-                                        _onOptionSelect(
-                                            constants.techSkill, "기술스택");
+                                        _activateBottomSheet(
+                                          SearchFilterCategory.techSkill,
+                                          "기술스택",
+                                          constants.techSkill,
+                                        );
                                       },
-                                      optionList: context
-                                          .read<ProjectSearchOptionBloc>()
-                                          .state
-                                          .techSkill,
                                     ),
-                                    SearchOptionRow(
-                                      title: "포지션",
+                                    SearchFilterRow<ProjectSearchFilterBloc,
+                                        DefaultProjectSearchFilterState>(
+                                      label: "포지션",
+                                      category: SearchFilterCategory.position,
                                       onPressed: () {
-                                        _onOptionSelect(
-                                            constants.position, "포지션");
+                                        _activateBottomSheet(
+                                          SearchFilterCategory.position,
+                                          "포지션",
+                                          constants.position,
+                                        );
                                       },
-                                      optionList: context
-                                          .read<ProjectSearchOptionBloc>()
-                                          .state
-                                          .position,
                                     ),
-                                    SearchOptionRow(
-                                      title: "진행방식",
+                                    SearchFilterRow<ProjectSearchFilterBloc,
+                                        DefaultProjectSearchFilterState>(
+                                      label: "진행방식",
+                                      category: SearchFilterCategory.process,
                                       onPressed: () {
-                                        _onOptionSelect(
-                                            constants.process, "진행방식");
+                                        _activateBottomSheet(
+                                          SearchFilterCategory.process,
+                                          "진행방식",
+                                          constants.process,
+                                        );
                                       },
-                                      optionList: context
-                                          .read<ProjectSearchOptionBloc>()
-                                          .state
-                                          .process,
                                     ),
-                                    SearchOptionRow(
-                                      title: "모집기한",
+                                    SearchFilterRow<ProjectSearchFilterBloc,
+                                        DefaultProjectSearchFilterState>(
+                                      label: "모집기한",
+                                      category: SearchFilterCategory.techSkill,
                                       onPressed: () {
-                                        _onOptionSelect(
-                                            constants.techSkill, "모집기한");
+                                        _activateBottomSheet(
+                                          SearchFilterCategory.techSkill,
+                                          "모집기한(임시)",
+                                          constants.techSkill,
+                                        );
                                       },
-                                      optionList: context
-                                          .read<ProjectSearchOptionBloc>()
-                                          .state
-                                          .deadline,
                                     ),
                                   ]),
                               ]),

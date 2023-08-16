@@ -16,7 +16,7 @@ class InputSearch extends StatelessWidget {
       decoration: InputDecoration(
           hintText: hintText,
           filled: true,
-          fillColor: CustomColor.whiteGrey,
+          fillColor: CustomColor.whiteGrey1,
           contentPadding: const EdgeInsets.symmetric(horizontal: 10),
           prefixIcon: const Icon(
             Icons.search,

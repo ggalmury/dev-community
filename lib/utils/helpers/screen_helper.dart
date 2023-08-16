@@ -6,6 +6,7 @@ class ScreenHelper {
     showModalBottomSheet(
       context: context,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+      backgroundColor: Colors.white,
       isScrollControlled: true,
       showDragHandle: true,
       builder: (BuildContext ctx) {
