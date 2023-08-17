@@ -1,7 +1,9 @@
+import 'package:dev_community/bloc/screen/project/project_search_filter_bloc.dart';
 import 'package:dev_community/screens/index.dart';
 import 'package:dev_community/utils/customs/custom_style.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:logger/logger.dart';
 
 var logger = Logger(
@@ -21,25 +23,33 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      theme: ThemeData(
-          scaffoldBackgroundColor: Colors.white,
-          inputDecorationTheme: const InputDecorationTheme(
-            border: InputBorder.none,
-          ),
-          textButtonTheme: TextButtonThemeData(
-            style: CustomStyle.defaultButtonStyle,
-          ),
-          outlinedButtonTheme: OutlinedButtonThemeData(
-            style: CustomStyle.defaultButtonStyle,
-          ),
-          appBarTheme: const AppBarTheme(
-            systemOverlayStyle: SystemUiOverlayStyle.dark,
-            elevation: 0,
-            backgroundColor: Colors.white,
-            foregroundColor: Colors.black,
-          )),
-      home: const Index(),
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider(
+          create: (context) => ProjectSearchFilterBloc(),
+          lazy: false,
+        )
+      ],
+      child: MaterialApp(
+        theme: ThemeData(
+            scaffoldBackgroundColor: Colors.white,
+            inputDecorationTheme: const InputDecorationTheme(
+              border: InputBorder.none,
+            ),
+            textButtonTheme: TextButtonThemeData(
+              style: CustomStyle.defaultButtonStyle,
+            ),
+            outlinedButtonTheme: OutlinedButtonThemeData(
+              style: CustomStyle.defaultButtonStyle,
+            ),
+            appBarTheme: const AppBarTheme(
+              systemOverlayStyle: SystemUiOverlayStyle.dark,
+              elevation: 0,
+              backgroundColor: Colors.white,
+              foregroundColor: Colors.black,
+            )),
+        home: const Index(),
+      ),
     );
   }
 }

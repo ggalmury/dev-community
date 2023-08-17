@@ -10,7 +10,7 @@ class ButtonCategory extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      width: 100,
+      width: 120,
       child: OutlinedButton(
         onPressed: onPressed,
         child: Text(title),

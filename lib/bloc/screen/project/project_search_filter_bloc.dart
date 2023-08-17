@@ -12,6 +12,8 @@ class ProjectSearchFilterBloc extends Bloc<DefaultProjectSearchFilterEvent,
         _initProjectSearchFilterEventHandler(event, emit);
       } else if (event is SetProjectSearchFilterEvent) {
         _setProjectSearchFilterEventHandler(event, emit);
+      } else if (event is ResetProjectSearchFilterEvent) {
+        _resetProjectSearchFilterEventHandler(event, emit);
       }
     });
   }
@@ -32,7 +34,18 @@ class ProjectSearchFilterBloc extends Bloc<DefaultProjectSearchFilterEvent,
     newFilterMap[event.category] = copiedList;
 
     emit(CurrentProjectSearchFilterState(filterMap: newFilterMap));
-    loggerNoStack.i(state.filterMap);
+    loggerNoStack.i("SetProjectSearchFilterEvent: ${state.filterMap}");
+  }
+
+  void _resetProjectSearchFilterEventHandler(
+      ResetProjectSearchFilterEvent event, emit) {
+    final newFilterMap =
+        Map<SearchFilterCategory, List<String>>.from(state.filterMap);
+
+    newFilterMap[event.category] = [];
+
+    emit(CurrentProjectSearchFilterState(filterMap: newFilterMap));
+    loggerNoStack.i("ResetProjectSearchFilterEvent: ${state.filterMap}");
   }
 }
 
@@ -53,7 +66,16 @@ class SetProjectSearchFilterEvent extends DefaultProjectSearchFilterEvent {
   SetProjectSearchFilterEvent({required this.category, required this.data});
 
   @override
-  List<Object?> get props => [data];
+  List<Object?> get props => [category, data];
+}
+
+class ResetProjectSearchFilterEvent extends DefaultProjectSearchFilterEvent {
+  final SearchFilterCategory category;
+
+  ResetProjectSearchFilterEvent({required this.category});
+
+  @override
+  List<Object?> get props => [category];
 }
 
 // state

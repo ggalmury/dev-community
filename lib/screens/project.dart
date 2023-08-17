@@ -1,14 +1,11 @@
 import 'package:dev_community/main.dart';
 import 'package:dev_community/utils/customs/custom_color.dart';
-import 'package:dev_community/utils/helpers/screen_helper.dart';
 import 'package:dev_community/widgets/atoms/inputs/input_search.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import '../bloc/screen/project/project_search_filter_bloc.dart';
 import '../utils/enum.dart';
 import '../widgets/components/project_container.dart';
 import 'package:dev_community/utils/constant.dart' as constants;
-import '../widgets/components/search_filter_body.dart';
 import '../widgets/components/search_filter_row.dart';
 
 class Project extends StatefulWidget {
@@ -26,26 +23,6 @@ class _ProjectState extends State<Project> {
     setState(() {
       searchFilterToggle = !searchFilterToggle;
     });
-  }
-
-  void _dispatchProjectSearchFilterEvent(
-      SearchFilterCategory category, String data) {
-    context
-        .read<ProjectSearchFilterBloc>()
-        .add(SetProjectSearchFilterEvent(category: category, data: data));
-  }
-
-  void _activateBottomSheet(
-      SearchFilterCategory category, String label, List<String> list) {
-    ScreenHelper().modalBottomSheetHandler(
-        context,
-        SearchFilterBody<ProjectSearchFilterBloc>(
-          category: category,
-          list: list,
-          label: label,
-          onChipPressed: _dispatchProjectSearchFilterEvent,
-        ),
-        450);
   }
 
   @override
@@ -110,54 +87,30 @@ class _ProjectState extends State<Project> {
                                       )),
                                 ),
                                 if (searchFilterToggle)
-                                  Column(children: [
+                                  const Column(children: [
                                     SearchFilterRow<ProjectSearchFilterBloc,
                                         DefaultProjectSearchFilterState>(
                                       label: "기술스택",
                                       category: SearchFilterCategory.techSkill,
-                                      onPressed: () {
-                                        _activateBottomSheet(
-                                          SearchFilterCategory.techSkill,
-                                          "기술스택",
-                                          constants.techSkill,
-                                        );
-                                      },
+                                      elements: constants.techSkill,
                                     ),
                                     SearchFilterRow<ProjectSearchFilterBloc,
                                         DefaultProjectSearchFilterState>(
                                       label: "포지션",
                                       category: SearchFilterCategory.position,
-                                      onPressed: () {
-                                        _activateBottomSheet(
-                                          SearchFilterCategory.position,
-                                          "포지션",
-                                          constants.position,
-                                        );
-                                      },
+                                      elements: constants.position,
                                     ),
                                     SearchFilterRow<ProjectSearchFilterBloc,
                                         DefaultProjectSearchFilterState>(
                                       label: "진행방식",
                                       category: SearchFilterCategory.process,
-                                      onPressed: () {
-                                        _activateBottomSheet(
-                                          SearchFilterCategory.process,
-                                          "진행방식",
-                                          constants.process,
-                                        );
-                                      },
+                                      elements: constants.process,
                                     ),
                                     SearchFilterRow<ProjectSearchFilterBloc,
                                         DefaultProjectSearchFilterState>(
-                                      label: "모집기한",
+                                      label: "모집기한(임시)",
                                       category: SearchFilterCategory.techSkill,
-                                      onPressed: () {
-                                        _activateBottomSheet(
-                                          SearchFilterCategory.techSkill,
-                                          "모집기한(임시)",
-                                          constants.techSkill,
-                                        );
-                                      },
+                                      elements: constants.techSkill,
                                     ),
                                   ]),
                               ]),

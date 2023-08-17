@@ -4,8 +4,6 @@ import 'package:dev_community/screens/qna.dart';
 import 'package:dev_community/screens/study.dart';
 import 'package:dev_community/utils/customs/custom_color.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import '../bloc/screen/project/project_search_filter_bloc.dart';
 
 class Index extends StatefulWidget {
   const Index({super.key});
@@ -18,11 +16,7 @@ class _IndexState extends State<Index> {
   int _currentIndex = 0;
 
   final List<Widget> _screens = [
-    BlocProvider(
-      create: (context) => ProjectSearchFilterBloc(),
-      lazy: false,
-      child: const Project(),
-    ),
+    const Project(),
     const Study(),
     const QnA(),
     const Profile(),
