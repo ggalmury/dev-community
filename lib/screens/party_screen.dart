@@ -1,21 +1,22 @@
+import 'package:dev_community/bloc/screen/project/party_article_bloc.dart';
 import 'package:dev_community/main.dart';
 import 'package:dev_community/utils/customs/custom_color.dart';
 import 'package:dev_community/widgets/atoms/inputs/input_search.dart';
 import 'package:flutter/material.dart';
-import '../bloc/screen/project/project_search_filter_bloc.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import '../utils/enum.dart';
-import '../widgets/components/project_container.dart';
+import '../widgets/components/party_article.dart';
 import 'package:dev_community/utils/constant.dart' as constants;
 import '../widgets/components/search_filter_row.dart';
 
-class Project extends StatefulWidget {
-  const Project({super.key});
+class PartyScreen extends StatefulWidget {
+  const PartyScreen({super.key});
 
   @override
-  State<Project> createState() => _ProjectState();
+  State<PartyScreen> createState() => _PartyScreenState();
 }
 
-class _ProjectState extends State<Project> {
+class _PartyScreenState extends State<PartyScreen> {
   final TextEditingController _searchOptionController = TextEditingController();
   bool searchFilterToggle = false;
 
@@ -80,37 +81,40 @@ class _ProjectState extends State<Project> {
                                       child: Row(
                                         children: [
                                           const Text("상세검색"),
-                                          Icon(searchFilterToggle
-                                              ? Icons.keyboard_arrow_up
-                                              : Icons.keyboard_arrow_down)
+                                          Icon(
+                                            searchFilterToggle
+                                                ? Icons.keyboard_arrow_up
+                                                : Icons.keyboard_arrow_down,
+                                          )
                                         ],
                                       )),
                                 ),
                                 if (searchFilterToggle)
                                   const Column(children: [
-                                    SearchFilterRow<ProjectSearchFilterBloc,
-                                        DefaultProjectSearchFilterState>(
+                                    SearchFilterRow(
                                       label: "기술스택",
                                       category: SearchFilterCategory.techSkill,
                                       elements: constants.techSkill,
                                     ),
-                                    SearchFilterRow<ProjectSearchFilterBloc,
-                                        DefaultProjectSearchFilterState>(
+                                    SearchFilterRow(
                                       label: "포지션",
                                       category: SearchFilterCategory.position,
                                       elements: constants.position,
                                     ),
-                                    SearchFilterRow<ProjectSearchFilterBloc,
-                                        DefaultProjectSearchFilterState>(
+                                    SearchFilterRow(
                                       label: "진행방식",
                                       category: SearchFilterCategory.process,
                                       elements: constants.process,
                                     ),
-                                    SearchFilterRow<ProjectSearchFilterBloc,
-                                        DefaultProjectSearchFilterState>(
-                                      label: "모집기한(임시)",
-                                      category: SearchFilterCategory.techSkill,
-                                      elements: constants.techSkill,
+                                    SearchFilterRow(
+                                      label: "지역",
+                                      category: SearchFilterCategory.location,
+                                      elements: constants.location,
+                                    ),
+                                    SearchFilterRow(
+                                      label: "타입",
+                                      category: SearchFilterCategory.type,
+                                      elements: constants.type,
                                     ),
                                   ]),
                               ]),
@@ -120,13 +124,20 @@ class _ProjectState extends State<Project> {
                   ),
                 ),
               ),
-              SliverList(
-                  delegate: SliverChildBuilderDelegate(
-                (context, index) {
-                  return const ProjectContainer();
+              BlocBuilder<PartyArticleBloc, DefaultPartyArticleState>(
+                builder: (context, state) {
+                  return SliverList(
+                    delegate: SliverChildBuilderDelegate(
+                      (context, index) {
+                        return PartyArticle(
+                          partyArticleModel: state.partyArticleModel[index],
+                        );
+                      },
+                      childCount: state.partyArticleModel.length,
+                    ),
+                  );
                 },
-                childCount: 20,
-              ))
+              )
             ],
           ),
         ));

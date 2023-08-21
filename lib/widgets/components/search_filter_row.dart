@@ -1,13 +1,13 @@
-import 'package:dev_community/bloc/screen/project/project_search_filter_bloc.dart';
+import 'package:dev_community/bloc/screen/project/search_filter_bloc.dart';
 import 'package:dev_community/utils/enum.dart';
-import 'package:dev_community/widgets/atoms/buttons/searched_filter_chip.dart';
+import 'package:dev_community/widgets/atoms/chosen_tag.dart';
 import 'package:dev_community/widgets/components/search_filter_body.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../utils/helpers/screen_helper.dart';
 import '../atoms/buttons/button_category.dart';
 
-class SearchFilterRow<T extends Bloc<dynamic, K>, K> extends StatefulWidget {
+class SearchFilterRow extends StatefulWidget {
   final String label;
   final SearchFilterCategory category;
   final List<String> elements;
@@ -20,15 +20,14 @@ class SearchFilterRow<T extends Bloc<dynamic, K>, K> extends StatefulWidget {
   });
 
   @override
-  State<SearchFilterRow> createState() => _SearchFilterRowState<T, K>();
+  State<SearchFilterRow> createState() => _SearchFilterRowState();
 }
 
-class _SearchFilterRowState<T extends Bloc<dynamic, K>, K>
-    extends State<SearchFilterRow> {
+class _SearchFilterRowState extends State<SearchFilterRow> {
   void _activateBottomSheet() {
     ScreenHelper().modalBottomSheetHandler(
         context,
-        SearchFilterBody<T, K>(
+        SearchFilterBody(
           label: widget.label,
           category: widget.category,
           elements: widget.elements,
@@ -45,22 +44,20 @@ class _SearchFilterRowState<T extends Bloc<dynamic, K>, K>
           width: 10,
         ),
         Expanded(
-          child: BlocBuilder<T, K>(
+          child: BlocBuilder<SearchFilterBloc, DefaultSearchFilterState>(
+            buildWhen: (previous, current) {
+              return previous.filterMap[widget.category]! !=
+                  current.filterMap[widget.category]!;
+            },
             builder: (context, state) {
-              List<String> list = [];
-
-              if (state is DefaultProjectSearchFilterState) {
-                list = state.filterMap[widget.category]!;
-              }
-
               return SingleChildScrollView(
                 scrollDirection: Axis.horizontal,
                 child: Row(
                   children: List.generate(
-                    list.length,
+                    state.filterMap[widget.category]!.length,
                     (index) {
-                      return SearchedFilterChip(
-                        label: list[index],
+                      return ChosenTag(
+                        label: state.filterMap[widget.category]![index],
                       );
                     },
                   ),

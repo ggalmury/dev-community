@@ -1,7 +1,7 @@
-import 'package:dev_community/screens/profile.dart';
-import 'package:dev_community/screens/project.dart';
-import 'package:dev_community/screens/qna.dart';
-import 'package:dev_community/screens/study.dart';
+import 'package:dev_community/screens/notification_screen.dart';
+import 'package:dev_community/screens/profile_screen.dart';
+import 'package:dev_community/screens/party_screen.dart';
+import 'package:dev_community/screens/qna_screen.dart';
 import 'package:dev_community/utils/customs/custom_color.dart';
 import 'package:flutter/material.dart';
 
@@ -16,10 +16,10 @@ class _IndexState extends State<Index> {
   int _currentIndex = 0;
 
   final List<Widget> _screens = [
-    const Project(),
-    const Study(),
-    const QnA(),
-    const Profile(),
+    const PartyScreen(),
+    const QnAScreen(),
+    const NotificationScreen(),
+    const ProfileScreen(),
   ];
 
   @override
@@ -45,15 +45,15 @@ class _IndexState extends State<Index> {
           items: const [
             BottomNavigationBarItem(
               icon: Icon(Icons.code),
-              label: '프로젝트',
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.group),
-              label: '스터디',
+              label: '파티찾기',
             ),
             BottomNavigationBarItem(
               icon: Icon(Icons.question_answer_rounded),
               label: 'Q&A',
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.notifications_active),
+              label: '알림',
             ),
             BottomNavigationBarItem(
               icon: Icon(Icons.person),

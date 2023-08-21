@@ -1,10 +1,10 @@
 import 'package:dev_community/utils/customs/custom_color.dart';
 import 'package:flutter/material.dart';
 
-class SearchedFilterChip extends StatelessWidget {
+class ChosenTag extends StatelessWidget {
   final String label;
 
-  const SearchedFilterChip({super.key, required this.label});
+  const ChosenTag({super.key, required this.label});
 
   @override
   Widget build(BuildContext context) {

@@ -1,4 +1,5 @@
-import 'package:dev_community/bloc/screen/project/project_search_filter_bloc.dart';
+import 'package:dev_community/bloc/screen/project/party_article_bloc.dart';
+import 'package:dev_community/bloc/screen/project/search_filter_bloc.dart';
 import 'package:dev_community/screens/index.dart';
 import 'package:dev_community/utils/customs/custom_style.dart';
 import 'package:flutter/material.dart';
@@ -26,9 +27,13 @@ class MyApp extends StatelessWidget {
     return MultiBlocProvider(
       providers: [
         BlocProvider(
-          create: (context) => ProjectSearchFilterBloc(),
+          create: (context) => SearchFilterBloc(),
           lazy: false,
-        )
+        ),
+        BlocProvider(
+          create: (context) => PartyArticleBloc(),
+          lazy: false,
+        ),
       ],
       child: MaterialApp(
         theme: ThemeData(

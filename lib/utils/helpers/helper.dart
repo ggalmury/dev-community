@@ -6,4 +6,9 @@ class Helper {
 
     return copiedList;
   }
+
+  int dayDifference(DateTime start, DateTime end) {
+    Duration difference = end.difference(start);
+    return difference.inDays;
+  }
 }

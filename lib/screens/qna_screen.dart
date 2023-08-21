@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 
-class QnA extends StatefulWidget {
-  const QnA({super.key});
+class QnAScreen extends StatefulWidget {
+  const QnAScreen({super.key});
 
   @override
-  State<QnA> createState() => _QnAState();
+  State<QnAScreen> createState() => _QnAScreenState();
 }
 
-class _QnAState extends State<QnA> {
+class _QnAScreenState extends State<QnAScreen> {
   @override
   Widget build(BuildContext context) {
     return const SafeArea(

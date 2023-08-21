@@ -61,7 +61,7 @@ const List<String> techSkill = [
   "MariaDB",
   "MongoDB",
   "MySQL",
-  "Nest.js",
+  "NestJS",
   "Next.js",
   "Node.js",
   "Numpy",
@@ -96,7 +96,6 @@ const List<String> techSkill = [
 ];
 
 const List<String> position = [
-  "전체",
   "프론트엔드",
   "백엔드",
   "디자이너",
@@ -107,4 +106,26 @@ const List<String> position = [
   "PM"
 ];
 
-const List<String> process = ["전체", "온라인", "오프라인", "온/오프라인"];
+const List<String> process = ["온라인", "오프라인", "온/오프라인"];
+
+const List<String> location = [
+  "서울특별시",
+  "경기도",
+  "부산광역시",
+  "인천광역시",
+  "대구광역시",
+  "경상남도",
+  "경상북도",
+  "대전광역시",
+  "충청남도",
+  "충청북도",
+  "전라남도",
+  "전라북도",
+  "광주광역시",
+  "강원도",
+  "울산광역시",
+  "제주특별자치도",
+  "세종특별자치시"
+];
+
+const List<String> type = ["스터디", "프로젝트"];

@@ -2,11 +2,11 @@ import 'package:dev_community/utils/customs/custom_color.dart';
 import 'package:dev_community/widgets/atoms/buttons/button_submit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import '../../bloc/screen/project/project_search_filter_bloc.dart';
+import '../../bloc/screen/project/search_filter_bloc.dart';
 import '../../utils/enum.dart';
-import '../atoms/buttons/search_filter_chip.dart';
+import '../atoms/toggle_chip.dart';
 
-class SearchFilterBody<T extends Bloc<dynamic, K>, K> extends StatefulWidget {
+class SearchFilterBody extends StatefulWidget {
   final String label;
   final SearchFilterCategory category;
   final List<String> elements;
@@ -19,34 +19,20 @@ class SearchFilterBody<T extends Bloc<dynamic, K>, K> extends StatefulWidget {
   });
 
   @override
-  State<SearchFilterBody> createState() => _SearchFilterBodyState<T, K>();
+  State<SearchFilterBody> createState() => _SearchFilterBodyState();
 }
 
-class _SearchFilterBodyState<T extends Bloc<dynamic, K>, K>
-    extends State<SearchFilterBody> {
+class _SearchFilterBodyState extends State<SearchFilterBody> {
   void _dispatchEvent(String data) {
-    dynamic event;
-
-    if (T == ProjectSearchFilterBloc) {
-      event =
-          SetProjectSearchFilterEvent(category: widget.category, data: data);
-    } else {
-      return;
-    }
-
-    context.read<T>().add(event);
+    context
+        .read<SearchFilterBloc>()
+        .add(SetSearchFilterEvent(category: widget.category, data: data));
   }
 
   void _dispatchResetEvent() {
-    dynamic event;
-
-    if (T == ProjectSearchFilterBloc) {
-      event = ResetProjectSearchFilterEvent(category: widget.category);
-    } else {
-      return;
-    }
-
-    context.read<T>().add(event);
+    context
+        .read<SearchFilterBloc>()
+        .add(ResetSearchFilterEvent(category: widget.category));
   }
 
   void _closeBottomSheet() {
@@ -73,18 +59,30 @@ class _SearchFilterBodyState<T extends Bloc<dynamic, K>, K>
         ),
         Expanded(
           child: SingleChildScrollView(
-            child: Wrap(
-                spacing: 7,
-                runSpacing: 5,
-                children: List.generate(widget.elements.length, (index) {
-                  return SearchFilterChip<T, K>(
-                    label: widget.elements[index],
-                    category: widget.category,
-                    onPressed: () {
-                      _dispatchEvent(widget.elements[index]);
-                    },
-                  );
-                })),
+            child: Align(
+              alignment: Alignment.centerLeft,
+              child: Wrap(
+                  spacing: 7,
+                  runSpacing: 5,
+                  children: List.generate(widget.elements.length, (index) {
+                    return BlocBuilder<SearchFilterBloc,
+                        DefaultSearchFilterState>(
+                      builder: (context, state) {
+                        return ToggleChip(
+                          label: widget.elements[index],
+                          category: widget.category,
+                          onPressed: () {
+                            _dispatchEvent(widget.elements[index]);
+                          },
+                          toggle: state.filterMap[widget.category]!
+                                  .contains(widget.elements[index])
+                              ? true
+                              : false,
+                        );
+                      },
+                    );
+                  })),
+            ),
           ),
         ),
         SizedBox(
