@@ -4,10 +4,9 @@ import 'package:dev_community/utils/enum.dart';
 import 'package:dev_community/utils/helpers/helper.dart';
 import 'package:equatable/equatable.dart';
 
-class SearchFilterBloc
-    extends Bloc<DefaultSearchFilterEvent, DefaultSearchFilterState> {
+class SearchFilterBloc extends Bloc<SearchFilterEvent, SearchFilterState> {
   SearchFilterBloc() : super(InitSearchFilterState()) {
-    on<DefaultSearchFilterEvent>((event, emit) {
+    on<SearchFilterEvent>((event, emit) {
       if (event is InitSearchFilterEvent) {
         _initSearchFilterEventHandler(event, emit);
       } else if (event is SetSearchFilterEvent) {
@@ -47,16 +46,16 @@ class SearchFilterBloc
 }
 
 // event
-abstract class DefaultSearchFilterEvent extends Equatable {}
+abstract class SearchFilterEvent extends Equatable {}
 
-class InitSearchFilterEvent extends DefaultSearchFilterEvent {
+class InitSearchFilterEvent extends SearchFilterEvent {
   InitSearchFilterEvent();
 
   @override
   List<Object?> get props => [];
 }
 
-class SetSearchFilterEvent extends DefaultSearchFilterEvent {
+class SetSearchFilterEvent extends SearchFilterEvent {
   final SearchFilterCategory category;
   final String data;
 
@@ -66,7 +65,7 @@ class SetSearchFilterEvent extends DefaultSearchFilterEvent {
   List<Object?> get props => [category, data];
 }
 
-class ResetSearchFilterEvent extends DefaultSearchFilterEvent {
+class ResetSearchFilterEvent extends SearchFilterEvent {
   final SearchFilterCategory category;
 
   ResetSearchFilterEvent({required this.category});
@@ -76,13 +75,13 @@ class ResetSearchFilterEvent extends DefaultSearchFilterEvent {
 }
 
 // state
-abstract class DefaultSearchFilterState extends Equatable {
+abstract class SearchFilterState extends Equatable {
   final Map<SearchFilterCategory, List<String>> filterMap;
 
-  const DefaultSearchFilterState({required this.filterMap});
+  const SearchFilterState({required this.filterMap});
 }
 
-class InitSearchFilterState extends DefaultSearchFilterState {
+class InitSearchFilterState extends SearchFilterState {
   InitSearchFilterState()
       : super(filterMap: {
           SearchFilterCategory.techSkill: [],
@@ -96,7 +95,7 @@ class InitSearchFilterState extends DefaultSearchFilterState {
   List<Object?> get props => [filterMap];
 }
 
-class CurrentSearchFilterState extends DefaultSearchFilterState {
+class CurrentSearchFilterState extends SearchFilterState {
   const CurrentSearchFilterState({required super.filterMap});
 
   @override

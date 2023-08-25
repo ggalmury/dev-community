@@ -13,9 +13,7 @@ class TechSkillRow extends StatelessWidget {
         techSkill.length,
         (index) {
           return Container(
-            margin: const EdgeInsets.symmetric(
-              horizontal: 5,
-            ),
+            margin: const EdgeInsets.only(right: 14),
             child: SvgPicture.asset(
               "assets/svgs/skills/${techSkill[index]}.svg",
               width: 25,

@@ -1,5 +1,6 @@
-import 'package:dev_community/bloc/screen/project/party_article_bloc.dart';
+import 'package:dev_community/bloc/screen/party/party_article_bloc.dart';
 import 'package:dev_community/main.dart';
+import 'package:dev_community/screens/party_article_create.dart';
 import 'package:dev_community/utils/customs/custom_color.dart';
 import 'package:dev_community/widgets/atoms/inputs/input_search.dart';
 import 'package:flutter/material.dart';
@@ -9,14 +10,15 @@ import '../widgets/organisms/party_article.dart';
 import 'package:dev_community/utils/constant.dart' as constants;
 import '../widgets/molecules/search_filter_row.dart';
 
-class PartyScreen extends StatefulWidget {
-  const PartyScreen({super.key});
+class Party extends StatefulWidget {
+  const Party({super.key});
 
   @override
-  State<PartyScreen> createState() => _PartyScreenState();
+  State<Party> createState() => _PartyState();
 }
 
-class _PartyScreenState extends State<PartyScreen> {
+class _PartyState extends State<Party> {
+  final ScrollController _scrollController = ScrollController();
   final TextEditingController _searchOptionController = TextEditingController();
   bool searchFilterToggle = false;
 
@@ -26,8 +28,26 @@ class _PartyScreenState extends State<PartyScreen> {
     });
   }
 
+  void _scrollToTop() {
+    _scrollController.animateTo(
+      0,
+      duration: const Duration(milliseconds: 500),
+      curve: Curves.easeInOut,
+    );
+  }
+
+  void _navigateToArticleCreate() {
+    Navigator.push<void>(
+      context,
+      MaterialPageRoute(
+        builder: (context) => const PartyArticleCreate(),
+      ),
+    );
+  }
+
   @override
   void dispose() {
+    _scrollController.dispose();
     _searchOptionController.dispose();
 
     super.dispose();
@@ -44,8 +64,17 @@ class _PartyScreenState extends State<PartyScreen> {
           ),
         ),
         centerTitle: false,
-        actions: const [
-          SizedBox(width: 50, child: Icon(Icons.menu)),
+        actions: [
+          PopupMenuButton(
+            icon: const Icon(Icons.menu),
+            shadowColor: Colors.transparent,
+            itemBuilder: (context) => [
+              PopupMenuItem(
+                onTap: _navigateToArticleCreate,
+                child: const Text('새 글 쓰기'),
+              ),
+            ],
+          ),
         ],
       ),
       body: RefreshIndicator(
@@ -55,6 +84,7 @@ class _PartyScreenState extends State<PartyScreen> {
           loggerNoStack.i("refresh project page");
         },
         child: CustomScrollView(
+          controller: _scrollController,
           slivers: [
             SliverToBoxAdapter(
               child: Container(
@@ -128,7 +158,7 @@ class _PartyScreenState extends State<PartyScreen> {
                 ),
               ),
             ),
-            BlocBuilder<PartyArticleBloc, DefaultPartyArticleState>(
+            BlocBuilder<PartyArticleBloc, PartyArticleState>(
               builder: (context, state) {
                 return SliverList(
                   delegate: SliverChildBuilderDelegate(
@@ -146,9 +176,9 @@ class _PartyScreenState extends State<PartyScreen> {
         ),
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: () {},
+        onPressed: _scrollToTop,
         backgroundColor: CustomColor.mint,
-        child: const Icon(Icons.mode),
+        child: const Icon(Icons.arrow_upward),
       ),
     );
   }

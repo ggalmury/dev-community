@@ -125,4 +125,4 @@ const List<String> location = [
   "세종특별자치시"
 ];
 
-const List<String> type = ["스터디", "프로젝트"];
+const List<String> type = ["프로젝트", "스터디"];

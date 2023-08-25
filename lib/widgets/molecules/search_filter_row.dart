@@ -1,4 +1,4 @@
-import 'package:dev_community/bloc/screen/project/search_filter_bloc.dart';
+import 'package:dev_community/bloc/screen/party/search_filter_bloc.dart';
 import 'package:dev_community/utils/enum.dart';
 import 'package:dev_community/widgets/atoms/chosen_tag.dart';
 import 'package:dev_community/widgets/organisms/search_filter_body.dart';
@@ -44,7 +44,7 @@ class _SearchFilterRowState extends State<SearchFilterRow> {
           width: 10,
         ),
         Expanded(
-          child: BlocBuilder<SearchFilterBloc, DefaultSearchFilterState>(
+          child: BlocBuilder<SearchFilterBloc, SearchFilterState>(
             buildWhen: (previous, current) {
               return previous.filterMap[widget.category]! !=
                   current.filterMap[widget.category]!;

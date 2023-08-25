@@ -1,7 +1,7 @@
-import 'package:dev_community/screens/notification_screen.dart';
-import 'package:dev_community/screens/profile_screen.dart';
-import 'package:dev_community/screens/party_screen.dart';
-import 'package:dev_community/screens/qna_screen.dart';
+import 'package:dev_community/screens/notifiy.dart';
+import 'package:dev_community/screens/profile.dart';
+import 'package:dev_community/screens/party.dart';
+import 'package:dev_community/screens/qna.dart';
 import 'package:dev_community/utils/customs/custom_color.dart';
 import 'package:flutter/material.dart';
 
@@ -16,10 +16,10 @@ class _IndexState extends State<Index> {
   int _currentIndex = 0;
 
   final List<Widget> _screens = [
-    const PartyScreen(),
-    const QnAScreen(),
-    const NotificationScreen(),
-    const ProfileScreen(),
+    const Party(),
+    const QnA(),
+    const Notify(),
+    const Profile(),
   ];
 
   @override

@@ -1,19 +1,13 @@
 import 'package:dev_community/utils/customs/custom_color.dart';
 import 'package:flutter/material.dart';
-import '../../utils/enum.dart';
 
 class ToggleChip extends StatelessWidget {
   final String label;
-  final SearchFilterCategory category;
   final void Function() onPressed;
   final bool? toggle;
 
   const ToggleChip(
-      {super.key,
-      required this.label,
-      required this.category,
-      required this.onPressed,
-      this.toggle});
+      {super.key, required this.label, required this.onPressed, this.toggle});
 
   @override
   Widget build(BuildContext context) {

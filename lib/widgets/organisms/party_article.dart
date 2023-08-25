@@ -108,7 +108,7 @@ class _PartyArticleState extends State<PartyArticle> {
                         horizontal: 12,
                         vertical: 5,
                       ),
-                      margin: const EdgeInsets.all(5),
+                      margin: const EdgeInsets.only(right: 10, top: 10),
                       decoration: const BoxDecoration(
                         borderRadius: BorderRadius.all(
                           Radius.circular(10),

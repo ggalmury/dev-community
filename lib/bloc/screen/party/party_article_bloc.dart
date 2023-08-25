@@ -2,22 +2,21 @@ import 'package:bloc/bloc.dart';
 import 'package:dev_community/models/party_article_model.dart';
 import 'package:equatable/equatable.dart';
 
-class PartyArticleBloc
-    extends Bloc<DefaultPartyArticleEvent, DefaultPartyArticleState> {
+class PartyArticleBloc extends Bloc<PartyArticleEvent, PartyArticleState> {
   PartyArticleBloc() : super(InitPartyArticleState());
 }
 
 // event
-abstract class DefaultPartyArticleEvent extends Equatable {}
+abstract class PartyArticleEvent extends Equatable {}
 
 // state
-abstract class DefaultPartyArticleState extends Equatable {
+abstract class PartyArticleState extends Equatable {
   final List<PartyArticleModel> partyArticleModel;
 
-  const DefaultPartyArticleState({required this.partyArticleModel});
+  const PartyArticleState({required this.partyArticleModel});
 }
 
-class InitPartyArticleState extends DefaultPartyArticleState {
+class InitPartyArticleState extends PartyArticleState {
   InitPartyArticleState()
       : super(partyArticleModel: [
           PartyArticleModel(

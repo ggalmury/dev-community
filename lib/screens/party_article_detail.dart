@@ -3,6 +3,7 @@ import 'package:dev_community/utils/helpers/helper.dart';
 import 'package:dev_community/widgets/molecules/techskill_row.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:intl/intl.dart';
 
 class PartyArticleDetail extends StatefulWidget {
   final PartyArticleModel partyArticleModel;
@@ -100,6 +101,10 @@ class _PartyArticleDetailState extends State<PartyArticleDetail> {
                                 "assets/svgs/commons/process.svg",
                                 widget.partyArticleModel.process),
                             _articleOptionColumn(
+                                "assets/svgs/commons/play.svg",
+                                DateFormat("yy.MM.dd").format(
+                                    widget.partyArticleModel.startDate)),
+                            _articleOptionColumn(
                                 "assets/svgs/commons/calendar.svg",
                                 widget.partyArticleModel.estimatedPeriod),
                             _articleOptionColumn(
@@ -181,7 +186,7 @@ class _PartyArticleDetailState extends State<PartyArticleDetail> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         const Text(
-                          "기술스택",
+                          "기술 스택",
                           style: TextStyle(
                             fontSize: 20,
                             fontWeight: FontWeight.bold,

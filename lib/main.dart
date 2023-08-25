@@ -1,5 +1,5 @@
-import 'package:dev_community/bloc/screen/project/party_article_bloc.dart';
-import 'package:dev_community/bloc/screen/project/search_filter_bloc.dart';
+import 'package:dev_community/bloc/screen/party/party_article_bloc.dart';
+import 'package:dev_community/bloc/screen/party/search_filter_bloc.dart';
 import 'package:dev_community/screens/index.dart';
 import 'package:dev_community/utils/customs/custom_color.dart';
 import 'package:dev_community/utils/customs/custom_style.dart';

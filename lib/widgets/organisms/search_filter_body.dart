@@ -2,7 +2,7 @@ import 'package:dev_community/utils/customs/custom_color.dart';
 import 'package:dev_community/widgets/atoms/buttons/button_submit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import '../../bloc/screen/project/search_filter_bloc.dart';
+import '../../bloc/screen/party/search_filter_bloc.dart';
 import '../../utils/enum.dart';
 import '../atoms/toggle_chip.dart';
 
@@ -65,12 +65,10 @@ class _SearchFilterBodyState extends State<SearchFilterBody> {
                   spacing: 7,
                   runSpacing: 5,
                   children: List.generate(widget.elements.length, (index) {
-                    return BlocBuilder<SearchFilterBloc,
-                        DefaultSearchFilterState>(
+                    return BlocBuilder<SearchFilterBloc, SearchFilterState>(
                       builder: (context, state) {
                         return ToggleChip(
                           label: widget.elements[index],
-                          category: widget.category,
                           onPressed: () {
                             _dispatchEvent(widget.elements[index]);
                           },
