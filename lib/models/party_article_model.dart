@@ -1,12 +1,13 @@
 class PartyArticleModel {
   final String id;
   final DateTime createdDt;
+  final String poster;
   final String title;
   final String description;
   final List<String> techSkill;
-  final List<String> position;
+  final Map<String, Map<String, int>> position;
   final String process;
-  final List<String> location;
+  final String location;
   final String type;
   final DateTime deadline;
   final DateTime startDate;
@@ -15,6 +16,7 @@ class PartyArticleModel {
   PartyArticleModel(
       {required this.id,
       required this.createdDt,
+      required this.poster,
       required this.title,
       required this.description,
       required this.techSkill,
@@ -30,6 +32,7 @@ class PartyArticleModel {
     return {
       "id": id,
       "createdDt": createdDt,
+      "poster": poster,
       "title": title,
       "description": description,
       "techSkill": techSkill,
@@ -47,6 +50,7 @@ class PartyArticleModel {
     return PartyArticleModel(
         id: json["id"],
         createdDt: json["createdDt"],
+        poster: json["poster"],
         title: json["title"],
         description: json["description"],
         techSkill: json["techSkill"],

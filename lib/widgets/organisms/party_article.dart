@@ -1,7 +1,8 @@
 import 'package:dev_community/models/party_article_model.dart';
+import 'package:dev_community/screens/party_article_detail.dart';
 import 'package:dev_community/utils/customs/custom_color.dart';
+import 'package:dev_community/widgets/molecules/techskill_row.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
 
 import '../../utils/helpers/helper.dart';
 
@@ -15,9 +16,22 @@ class PartyArticle extends StatefulWidget {
 }
 
 class _PartyArticleState extends State<PartyArticle> {
+  void _navigateToDetail() {
+    Navigator.push<void>(
+      context,
+      MaterialPageRoute<void>(
+        builder: (BuildContext context) => PartyArticleDetail(
+          partyArticleModel: widget.partyArticleModel,
+        ),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
-    return Container(
+    return GestureDetector(
+      onTap: _navigateToDetail,
+      child: Container(
         height: 300,
         margin: const EdgeInsets.only(top: 20),
         color: Colors.white,
@@ -32,20 +46,26 @@ class _PartyArticleState extends State<PartyArticle> {
                   Row(
                     children: [
                       Container(
-                        width: 100,
+                        width: 120,
                         height: 30,
                         color: CustomColor.whiteGrey2,
                         child: Center(
-                          child: Text(widget.partyArticleModel.type),
+                          child: Text(
+                            widget.partyArticleModel.type,
+                            style: const TextStyle(
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
                         ),
                       ),
                       const SizedBox(
-                        width: 10,
+                        width: 15,
                       ),
                       Text(
                         "마감 D-${Helper().dayDifference(DateTime.now(), widget.partyArticleModel.deadline)}",
                         style: const TextStyle(
                           fontSize: 12,
+                          fontWeight: FontWeight.w600,
                         ),
                       )
                     ],
@@ -65,27 +85,16 @@ class _PartyArticleState extends State<PartyArticle> {
                   fontWeight: FontWeight.bold,
                 ),
               ),
+              const SizedBox(
+                height: 20,
+              ),
+              Text(
+                  "${widget.partyArticleModel.process} | ${widget.partyArticleModel.location}"),
               const Spacer(),
               SingleChildScrollView(
                 scrollDirection: Axis.horizontal,
-                child: Row(
-                  children: List.generate(
-                    widget.partyArticleModel.techSkill.length,
-                    (index) {
-                      // techskill chip
-                      return Container(
-                        margin: const EdgeInsets.symmetric(
-                          horizontal: 5,
-                        ),
-                        child: SvgPicture.asset(
-                          "assets/svgs/skills/${widget.partyArticleModel.techSkill[index]}.svg",
-                          width: 25,
-                          height: 25,
-                        ),
-                      );
-                    },
-                  ),
-                ),
+                child:
+                    TechSkillRow(techSkill: widget.partyArticleModel.techSkill),
               ),
               const SizedBox(
                 height: 12,
@@ -93,37 +102,36 @@ class _PartyArticleState extends State<PartyArticle> {
               SingleChildScrollView(
                 scrollDirection: Axis.horizontal,
                 child: Row(
-                  children: List.generate(
-                    widget.partyArticleModel.position.length,
-                    (index) {
-                      // techskill chip
-                      return Container(
-                        padding: const EdgeInsets.symmetric(
-                          horizontal: 12,
-                          vertical: 7,
+                  children: widget.partyArticleModel.position.entries.map((e) {
+                    return Container(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 12,
+                        vertical: 5,
+                      ),
+                      margin: const EdgeInsets.all(5),
+                      decoration: const BoxDecoration(
+                        borderRadius: BorderRadius.all(
+                          Radius.circular(10),
                         ),
-                        margin: const EdgeInsets.all(5),
-                        decoration: const BoxDecoration(
-                          borderRadius: BorderRadius.all(
-                            Radius.circular(10),
-                          ),
-                          color: CustomColor.whiteGrey2,
-                        ),
-                        child: Center(
-                          child: Text(
-                            widget.partyArticleModel.position[index],
-                            style: const TextStyle(
-                              fontSize: 12,
-                            ),
+                        color: CustomColor.whiteGrey2,
+                      ),
+                      child: Center(
+                        child: Text(
+                          e.key,
+                          style: const TextStyle(
+                            fontSize: 14,
+                            fontWeight: FontWeight.w500,
                           ),
                         ),
-                      );
-                    },
-                  ),
+                      ),
+                    );
+                  }).toList(),
                 ),
               ),
             ],
           ),
-        ));
+        ),
+      ),
+    );
   }
 }

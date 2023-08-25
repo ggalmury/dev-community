@@ -1,6 +1,7 @@
 import 'package:dev_community/bloc/screen/project/party_article_bloc.dart';
 import 'package:dev_community/bloc/screen/project/search_filter_bloc.dart';
 import 'package:dev_community/screens/index.dart';
+import 'package:dev_community/utils/customs/custom_color.dart';
 import 'package:dev_community/utils/customs/custom_style.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -37,22 +38,23 @@ class MyApp extends StatelessWidget {
       ],
       child: MaterialApp(
         theme: ThemeData(
-            scaffoldBackgroundColor: Colors.white,
-            inputDecorationTheme: const InputDecorationTheme(
-              border: InputBorder.none,
-            ),
-            textButtonTheme: TextButtonThemeData(
-              style: CustomStyle.defaultButtonStyle,
-            ),
-            outlinedButtonTheme: OutlinedButtonThemeData(
-              style: CustomStyle.defaultButtonStyle,
-            ),
-            appBarTheme: const AppBarTheme(
-              systemOverlayStyle: SystemUiOverlayStyle.dark,
-              elevation: 0,
-              backgroundColor: Colors.white,
-              foregroundColor: Colors.black,
-            )),
+          scaffoldBackgroundColor: CustomColor.whiteGrey1,
+          inputDecorationTheme: const InputDecorationTheme(
+            border: InputBorder.none,
+          ),
+          textButtonTheme: TextButtonThemeData(
+            style: CustomStyle.defaultButtonStyle,
+          ),
+          outlinedButtonTheme: OutlinedButtonThemeData(
+            style: CustomStyle.defaultButtonStyle,
+          ),
+          appBarTheme: const AppBarTheme(
+            systemOverlayStyle: SystemUiOverlayStyle.dark,
+            elevation: 0,
+            backgroundColor: Colors.white,
+            foregroundColor: Colors.black,
+          ),
+        ),
         home: const Index(),
       ),
     );

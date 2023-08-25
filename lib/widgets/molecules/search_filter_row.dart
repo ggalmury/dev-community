@@ -1,7 +1,7 @@
 import 'package:dev_community/bloc/screen/project/search_filter_bloc.dart';
 import 'package:dev_community/utils/enum.dart';
 import 'package:dev_community/widgets/atoms/chosen_tag.dart';
-import 'package:dev_community/widgets/components/search_filter_body.dart';
+import 'package:dev_community/widgets/organisms/search_filter_body.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../utils/helpers/screen_helper.dart';

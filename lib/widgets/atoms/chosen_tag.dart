@@ -17,7 +17,12 @@ class ChosenTag extends StatelessWidget {
           Radius.circular(10),
         ),
       ),
-      child: Text(label),
+      child: Text(
+        label,
+        style: const TextStyle(
+          fontWeight: FontWeight.bold,
+        ),
+      ),
     );
   }
 }
