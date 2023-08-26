@@ -5,12 +5,16 @@ class InputCreate extends StatelessWidget {
   final TextEditingController textEditingController;
   final String hintText;
   final int? maxLength;
+  final TextInputType? keyboardType;
+  final double? width;
 
   const InputCreate(
       {super.key,
       required this.textEditingController,
       required this.hintText,
-      this.maxLength});
+      this.maxLength,
+      this.keyboardType,
+      this.width});
 
   @override
   Widget build(BuildContext context) {
@@ -21,15 +25,21 @@ class InputCreate extends StatelessWidget {
       ),
     );
 
-    return TextField(
-      controller: textEditingController,
-      maxLength: maxLength,
-      style: const TextStyle(fontSize: 14),
-      decoration: InputDecoration(
-        hintText: hintText,
-        contentPadding: const EdgeInsets.symmetric(horizontal: 10),
-        border: commonBorder,
-        focusedBorder: commonBorder,
+    return SizedBox(
+      width: width,
+      child: TextField(
+        controller: textEditingController,
+        keyboardType: keyboardType,
+        maxLength: maxLength,
+        style: const TextStyle(
+          fontSize: 14,
+        ),
+        decoration: InputDecoration(
+          hintText: hintText,
+          contentPadding: const EdgeInsets.symmetric(horizontal: 10),
+          border: commonBorder,
+          focusedBorder: commonBorder,
+        ),
       ),
     );
   }

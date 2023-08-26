@@ -7,11 +7,11 @@ class PartyArticleModel {
   final List<String> techSkill;
   final Map<String, Map<String, int>> position;
   final String process;
-  final String location;
   final String type;
   final DateTime deadline;
   final DateTime startDate;
   final String estimatedPeriod;
+  final String? location;
 
   PartyArticleModel(
       {required this.id,
@@ -22,11 +22,11 @@ class PartyArticleModel {
       required this.techSkill,
       required this.position,
       required this.process,
-      required this.location,
       required this.type,
       required this.deadline,
       required this.startDate,
-      required this.estimatedPeriod});
+      required this.estimatedPeriod,
+      this.location});
 
   Map<String, dynamic> toJson() {
     return {
@@ -38,28 +38,29 @@ class PartyArticleModel {
       "techSkill": techSkill,
       "position": position,
       "process": process,
-      "location": location,
       "type": type,
       "deadline": deadline,
       "startDate": startDate,
       "estimatedPeriod": estimatedPeriod,
+      "location": location,
     };
   }
 
   factory PartyArticleModel.fromJson(Map<String, dynamic> json) {
     return PartyArticleModel(
-        id: json["id"],
-        createdDt: json["createdDt"],
-        poster: json["poster"],
-        title: json["title"],
-        description: json["description"],
-        techSkill: json["techSkill"],
-        position: json["position"],
-        process: json["process"],
-        location: json["location"],
-        type: json["type"],
-        deadline: json["deadline"],
-        startDate: json["startDate"],
-        estimatedPeriod: json["estimatedPeriod"]);
+      id: json["id"],
+      createdDt: json["createdDt"],
+      poster: json["poster"],
+      title: json["title"],
+      description: json["description"],
+      techSkill: json["techSkill"],
+      position: json["position"],
+      process: json["process"],
+      type: json["type"],
+      deadline: json["deadline"],
+      startDate: json["startDate"],
+      estimatedPeriod: json["estimatedPeriod"],
+      location: json["location"],
+    );
   }
 }

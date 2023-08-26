@@ -20,7 +20,7 @@ class ArticleCreateColumn extends StatelessWidget {
           Text(
             title,
             style: const TextStyle(
-              fontSize: 22,
+              fontSize: 20,
               fontWeight: FontWeight.bold,
             ),
           ),
