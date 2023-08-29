@@ -86,27 +86,28 @@ class _SearchFilterBodyState extends State<SearchFilterBody> {
         SizedBox(
           height: 70,
           child: Row(
-            mainAxisAlignment: MainAxisAlignment.end,
             children: [
-              ButtonSubmit(
-                label: "초기화",
-                onPressed: _dispatchResetEvent,
-                width: 100,
-                height: 45,
-                fontSize: 16,
+              Expanded(
+                child: ButtonSubmit(
+                  label: "초기화",
+                  onPressed: _dispatchResetEvent,
+                  height: 45,
+                  fontSize: 16,
+                ),
               ),
               const SizedBox(
                 width: 20,
               ),
-              ButtonSubmit(
-                label: "적용",
-                onPressed: _closeBottomSheet,
-                width: 170,
-                height: 45,
-                backgroundColor: CustomColor.mint,
-                foregroundColor: Colors.white,
-                fontSize: 16,
-                fontWeight: FontWeight.bold,
+              Expanded(
+                child: ButtonSubmit(
+                  label: "적용",
+                  onPressed: _closeBottomSheet,
+                  height: 45,
+                  backgroundColor: CustomColor.mint,
+                  foregroundColor: Colors.white,
+                  fontSize: 16,
+                  fontWeight: FontWeight.bold,
+                ),
               )
             ],
           ),

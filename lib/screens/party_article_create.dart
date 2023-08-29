@@ -16,14 +16,11 @@ class PartyArticleCreate extends StatefulWidget {
 
 class _PartyArticleCreateState extends State<PartyArticleCreate> {
   final TextEditingController _titleController = TextEditingController();
-  final List<TextEditingController> _positionCountControllers = [
-    TextEditingController()
-  ];
 
   String currentType = "프로젝트";
   String? currentProcess;
   String? currentLocation;
-  List<Pair<String?, int>> currentPosition = [Pair(k: null, v: 0)];
+  List<Pair<String?, int?>> currentPosition = [Pair(k: null, v: null)];
 
   void _setType(String type) {
     setState(() {
@@ -53,20 +50,22 @@ class _PartyArticleCreateState extends State<PartyArticleCreate> {
     });
   }
 
+  void _setPositionCount(int index, String count) {
+    setState(() {
+      currentPosition[index].v = int.parse(count);
+    });
+  }
+
   void _addPositionRow() {
     setState(() {
-      currentPosition = [...currentPosition, Pair(k: null, v: 0)];
+      currentPosition.add(Pair(k: null, v: null));
     });
-
-    _positionCountControllers.add(TextEditingController());
   }
 
   void _removePositionRow(index) {
     setState(() {
       currentPosition.removeAt(index);
     });
-
-    _positionCountControllers.removeLast().dispose();
   }
 
   List<String> _selectedPositions() {
@@ -76,18 +75,13 @@ class _PartyArticleCreateState extends State<PartyArticleCreate> {
   List<String> _filteredPositions() {
     Set<String> nextPositionSet = Set.from(position);
     Set<String> curPosiitonSet = Set.from(_selectedPositions());
-    nextPositionSet = nextPositionSet.difference(curPosiitonSet);
 
-    return List.from(nextPositionSet);
+    return nextPositionSet.difference(curPosiitonSet).toList();
   }
 
   @override
   void dispose() {
     _titleController.dispose();
-
-    for (TextEditingController c in _positionCountControllers) {
-      c.dispose();
-    }
 
     super.dispose();
   }
@@ -146,15 +140,13 @@ class _PartyArticleCreateState extends State<PartyArticleCreate> {
                       ButtonDropdown(
                         items: process,
                         onSelected: _setProcess,
-                        value: currentProcess,
-                        hint: "진행 방식",
+                        hintText: "진행 방식",
                       ),
                       if (currentProcess != "온라인")
                         ButtonDropdown(
                           items: location,
                           onSelected: _setLocation,
-                          value: currentLocation,
-                          hint: "지역",
+                          hintText: "지역",
                         ),
                     ],
                   ),
@@ -177,19 +169,20 @@ class _PartyArticleCreateState extends State<PartyArticleCreate> {
                                     children: [
                                       ButtonDropdown(
                                         items: _filteredPositions(),
-                                        onSelected: (pos) {
-                                          _setPosition(index, pos);
+                                        hintText: "포지션",
+                                        onSelected: (position) {
+                                          _setPosition(index, position);
                                         },
-                                        hint: "포지션",
                                       ),
                                       const SizedBox(
                                         width: 17,
                                       ),
                                       InputCreate(
-                                        textEditingController:
-                                            _positionCountControllers[index],
-                                        hintText: "",
-                                        width: 70,
+                                        width: 80,
+                                        keyboardType: TextInputType.number,
+                                        onChanged: (count) {
+                                          _setPositionCount(index, count);
+                                        },
                                       ),
                                     ],
                                   ),
@@ -206,6 +199,7 @@ class _PartyArticleCreateState extends State<PartyArticleCreate> {
                           },
                         ),
                       ),
+                      // TODO: Create option button
                       if (_selectedPositions().length == currentPosition.length)
                         Align(
                           alignment: Alignment.centerRight,
@@ -216,6 +210,11 @@ class _PartyArticleCreateState extends State<PartyArticleCreate> {
                         )
                     ],
                   ),
+                ),
+                // TODO: Implement here
+                const ArticleCreateColumn(
+                  title: "기술 스택",
+                  child: Text("asdf"),
                 ),
                 OutlinedButton(
                   onPressed: () {

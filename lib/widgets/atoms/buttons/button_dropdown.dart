@@ -3,8 +3,7 @@ import 'package:flutter/material.dart';
 class ButtonDropdown extends StatelessWidget {
   final List<String> items;
   final void Function(String?) onSelected;
-  final String hint;
-  final String? value;
+  final String hintText;
   final double? width;
   final double? height;
 
@@ -12,8 +11,7 @@ class ButtonDropdown extends StatelessWidget {
       {super.key,
       required this.items,
       required this.onSelected,
-      required this.hint,
-      this.value,
+      required this.hintText,
       this.width,
       this.height});
 
@@ -27,7 +25,7 @@ class ButtonDropdown extends StatelessWidget {
           label: value,
         );
       }).toList(),
-      hintText: hint,
+      hintText: hintText,
       menuHeight: 280,
       inputDecorationTheme: InputDecorationTheme(
         border: OutlineInputBorder(

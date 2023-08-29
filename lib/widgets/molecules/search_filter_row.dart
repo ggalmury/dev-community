@@ -39,7 +39,7 @@ class _SearchFilterRowState extends State<SearchFilterRow> {
   Widget build(BuildContext context) {
     return Row(
       children: [
-        ButtonCategory(title: widget.label, onPressed: _activateBottomSheet),
+        ButtonCategory(label: widget.label, onPressed: _activateBottomSheet),
         const SizedBox(
           width: 10,
         ),

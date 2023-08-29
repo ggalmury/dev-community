@@ -2,19 +2,22 @@ import 'package:dev_community/utils/customs/custom_color.dart';
 import 'package:flutter/material.dart';
 
 class InputCreate extends StatelessWidget {
-  final TextEditingController textEditingController;
-  final String hintText;
+  final TextEditingController? textEditingController;
+  final String? hintText;
+  final void Function(String)? onChanged;
+  final double? width;
   final int? maxLength;
   final TextInputType? keyboardType;
-  final double? width;
 
-  const InputCreate(
-      {super.key,
-      required this.textEditingController,
-      required this.hintText,
-      this.maxLength,
-      this.keyboardType,
-      this.width});
+  const InputCreate({
+    super.key,
+    this.textEditingController,
+    this.hintText,
+    this.onChanged,
+    this.width,
+    this.maxLength,
+    this.keyboardType,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -40,6 +43,7 @@ class InputCreate extends StatelessWidget {
           border: commonBorder,
           focusedBorder: commonBorder,
         ),
+        onChanged: onChanged,
       ),
     );
   }
