@@ -1,53 +1,46 @@
-import 'package:dev_community/utils/customs/custom_color.dart';
 import 'package:flutter/material.dart';
 
 class ButtonDropdown extends StatelessWidget {
   final List<String> items;
-  final void Function(dynamic) onChanged;
-  final String label;
+  final void Function(String?) onSelected;
+  final String hint;
   final String? value;
   final double? width;
+  final double? height;
 
   const ButtonDropdown(
       {super.key,
       required this.items,
-      required this.onChanged,
-      required this.label,
+      required this.onSelected,
+      required this.hint,
       this.value,
-      this.width});
+      this.width,
+      this.height});
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      width: width,
-      height: 48,
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(10),
-        border: Border.all(
-          color: CustomColor.grey,
+    return DropdownMenu(
+      width: width ?? 160,
+      dropdownMenuEntries: items.map((value) {
+        return DropdownMenuEntry(
+          value: value,
+          label: value,
+        );
+      }).toList(),
+      hintText: hint,
+      menuHeight: 280,
+      inputDecorationTheme: InputDecorationTheme(
+        border: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(10),
+        ),
+        contentPadding: const EdgeInsets.only(
+          left: 20,
+        ),
+        constraints: BoxConstraints(
+          maxHeight: height ?? 47,
         ),
       ),
-      child: DropdownButton(
-        items: items.map((e) {
-          return DropdownMenuItem(
-            value: e,
-            child: Text(e),
-          );
-        }).toList(),
-        style: const TextStyle(
-          fontSize: 14,
-          fontWeight: FontWeight.bold,
-          color: Colors.black,
-        ),
-        hint: Text(value == null ? label : value!),
-        isExpanded: width != null ? true : false,
-        alignment: Alignment.center,
-        onChanged: onChanged,
-        underline: const SizedBox(),
-        menuMaxHeight: 280,
-        dropdownColor: CustomColor.whiteGrey1,
-        elevation: 0,
-      ),
+      onSelected: onSelected,
     );
   }
 }

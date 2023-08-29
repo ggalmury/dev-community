@@ -1,11 +1,11 @@
-import 'package:dev_community/bloc/screen/party/party_article_create_bloc.dart';
+import 'package:dev_community/main.dart';
 import 'package:dev_community/utils/constant.dart';
+import 'package:dev_community/utils/helpers/pair.dart';
 import 'package:dev_community/widgets/atoms/buttons/button_dropdown.dart';
 import 'package:dev_community/widgets/atoms/inputs/input_create.dart';
 import 'package:dev_community/widgets/atoms/toggle_chip.dart';
 import 'package:dev_community/widgets/molecules/article_create_column.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 
 class PartyArticleCreate extends StatefulWidget {
   const PartyArticleCreate({super.key});
@@ -16,28 +16,78 @@ class PartyArticleCreate extends StatefulWidget {
 
 class _PartyArticleCreateState extends State<PartyArticleCreate> {
   final TextEditingController _titleController = TextEditingController();
+  final List<TextEditingController> _positionCountControllers = [
+    TextEditingController()
+  ];
+
+  String currentType = "프로젝트";
+  String? currentProcess;
+  String? currentLocation;
+  List<Pair<String?, int>> currentPosition = [Pair(k: null, v: 0)];
 
   void _setType(String type) {
-    context
-        .read<PartyArticleCreateBloc>()
-        .add(SetPartyArticleCreateTypeEvent(type: type));
+    setState(() {
+      currentType = type;
+    });
   }
 
-  void _setProcess(dynamic process) {
-    context
-        .read<PartyArticleCreateBloc>()
-        .add(SetPartyArticleCreateProcessEvent(process: process));
+  void _setProcess(String? process) {
+    setState(() {
+      currentProcess = process;
+    });
+
+    if (process == "온라인") {
+      _setLocation(null);
+    }
   }
 
-  void _setLocation(dynamic location) {
-    context
-        .read<PartyArticleCreateBloc>()
-        .add(SetPartyArticleCreateLocationEvent(location: location));
+  void _setLocation(String? location) {
+    setState(() {
+      currentLocation = location;
+    });
+  }
+
+  void _setPosition(int index, dynamic position) {
+    setState(() {
+      currentPosition[index].k = position;
+    });
+  }
+
+  void _addPositionRow() {
+    setState(() {
+      currentPosition = [...currentPosition, Pair(k: null, v: 0)];
+    });
+
+    _positionCountControllers.add(TextEditingController());
+  }
+
+  void _removePositionRow(index) {
+    setState(() {
+      currentPosition.removeAt(index);
+    });
+
+    _positionCountControllers.removeLast().dispose();
+  }
+
+  List<String> _selectedPositions() {
+    return currentPosition.where((p) => p.k != null).map((p) => p.k!).toList();
+  }
+
+  List<String> _filteredPositions() {
+    Set<String> nextPositionSet = Set.from(position);
+    Set<String> curPosiitonSet = Set.from(_selectedPositions());
+    nextPositionSet = nextPositionSet.difference(curPosiitonSet);
+
+    return List.from(nextPositionSet);
   }
 
   @override
   void dispose() {
     _titleController.dispose();
+
+    for (TextEditingController c in _positionCountControllers) {
+      c.dispose();
+    }
 
     super.dispose();
   }
@@ -68,69 +118,113 @@ class _PartyArticleCreateState extends State<PartyArticleCreate> {
                       (index) {
                         return Padding(
                           padding: const EdgeInsets.only(right: 10),
-                          child: BlocBuilder<PartyArticleCreateBloc,
-                              PartyArticleCreateState>(
-                            builder: (context, state) {
-                              return ToggleChip(
-                                label: type[index],
-                                onPressed: () {
-                                  _setType(type[index]);
-                                },
-                                toggle: state.partyArticleCreateModel.type ==
-                                    type[index],
-                              );
+                          child: ToggleChip(
+                            label: type[index],
+                            onPressed: () {
+                              _setType(type[index]);
                             },
+                            toggle: currentType == type[index],
                           ),
                         );
                       },
                     ),
                   ),
                 ),
-                BlocBuilder<PartyArticleCreateBloc, PartyArticleCreateState>(
-                  builder: (context, state) {
-                    return ArticleCreateColumn(
-                      title: "${state.partyArticleCreateModel.type}명",
-                      child: InputCreate(
-                        textEditingController: _titleController,
-                        hintText: "40자 이내로 적어주세요.",
-                        maxLength: 40,
-                      ),
-                    );
-                  },
+                ArticleCreateColumn(
+                  title: "$currentType명",
+                  child: InputCreate(
+                    textEditingController: _titleController,
+                    hintText: "40자 이내로 적어주세요.",
+                    maxLength: 40,
+                  ),
                 ),
-                BlocBuilder<PartyArticleCreateBloc, PartyArticleCreateState>(
-                  builder: (context, state) {
-                    return ArticleCreateColumn(
-                      title: "진행방식",
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          ButtonDropdown(
-                            items: process,
-                            onChanged: _setProcess,
-                            value: state.partyArticleCreateModel.process,
-                            label: "진행 방식",
-                            width: 150,
-                          ),
-                          if (state.partyArticleCreateModel.process == "온라인" ||
-                              state.partyArticleCreateModel.process == "온/오프라인")
-                            ButtonDropdown(
-                              items: location,
-                              onChanged: _setLocation,
-                              value: state.partyArticleCreateModel.location,
-                              label: "지역",
-                              width: 180,
-                            ),
-                        ],
+                ArticleCreateColumn(
+                  title: "진행방식",
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      ButtonDropdown(
+                        items: process,
+                        onSelected: _setProcess,
+                        value: currentProcess,
+                        hint: "진행 방식",
                       ),
-                    );
-                  },
+                      if (currentProcess != "온라인")
+                        ButtonDropdown(
+                          items: location,
+                          onSelected: _setLocation,
+                          value: currentLocation,
+                          hint: "지역",
+                        ),
+                    ],
+                  ),
+                ),
+                ArticleCreateColumn(
+                  title: "포지션",
+                  child: Column(
+                    children: [
+                      Column(
+                        children: List.generate(
+                          currentPosition.length,
+                          (index) {
+                            return Padding(
+                              padding: const EdgeInsets.symmetric(vertical: 5),
+                              child: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Row(
+                                    children: [
+                                      ButtonDropdown(
+                                        items: _filteredPositions(),
+                                        onSelected: (pos) {
+                                          _setPosition(index, pos);
+                                        },
+                                        hint: "포지션",
+                                      ),
+                                      const SizedBox(
+                                        width: 17,
+                                      ),
+                                      InputCreate(
+                                        textEditingController:
+                                            _positionCountControllers[index],
+                                        hintText: "",
+                                        width: 70,
+                                      ),
+                                    ],
+                                  ),
+                                  if (index != 0)
+                                    OutlinedButton(
+                                      onPressed: () {
+                                        _removePositionRow(index);
+                                      },
+                                      child: const Text("삭제"),
+                                    ),
+                                ],
+                              ),
+                            );
+                          },
+                        ),
+                      ),
+                      if (_selectedPositions().length == currentPosition.length)
+                        Align(
+                          alignment: Alignment.centerRight,
+                          child: OutlinedButton(
+                            onPressed: _addPositionRow,
+                            child: const Text("추가"),
+                          ),
+                        )
+                    ],
+                  ),
                 ),
                 OutlinedButton(
                   onPressed: () {
-                    context.read<PartyArticleCreateBloc>().add(
-                        SubmitPartyArticleCreateEvent(
-                            title: _titleController.text));
+                    loggerNoStack.i('''
+                                    type: $currentType
+                                    title: ${_titleController.text}
+                                    process: $currentProcess
+                                    location: $currentLocation
+                                    position: $currentPosition''');
                   },
                   child: const Text("상태 확인"),
                 ),

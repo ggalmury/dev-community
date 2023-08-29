@@ -8,20 +8,20 @@ class SearchFilterBloc extends Bloc<SearchFilterEvent, SearchFilterState> {
   SearchFilterBloc() : super(InitSearchFilterState()) {
     on<SearchFilterEvent>((event, emit) {
       if (event is InitSearchFilterEvent) {
-        _initSearchFilterEventHandler(event, emit);
+        _initState(event, emit);
       } else if (event is SetSearchFilterEvent) {
-        _setSearchFilterEventHandler(event, emit);
+        _setFilter(event, emit);
       } else if (event is ResetSearchFilterEvent) {
-        _resetSearchFilterEventHandler(event, emit);
+        _resetFilter(event, emit);
       }
     });
   }
 
-  void _initSearchFilterEventHandler(InitSearchFilterEvent event, emit) {
+  void _initState(InitSearchFilterEvent event, emit) {
     emit(InitSearchFilterState());
   }
 
-  void _setSearchFilterEventHandler(SetSearchFilterEvent event, emit) {
+  void _setFilter(SetSearchFilterEvent event, emit) {
     List<String> copiedList = Helper().toggleListElement<String>(
         state.filterMap[event.category]!, event.data);
 
@@ -34,7 +34,7 @@ class SearchFilterBloc extends Bloc<SearchFilterEvent, SearchFilterState> {
     loggerNoStack.i("SetSearchFilterEvent: ${state.filterMap}");
   }
 
-  void _resetSearchFilterEventHandler(ResetSearchFilterEvent event, emit) {
+  void _resetFilter(ResetSearchFilterEvent event, emit) {
     final newFilterMap =
         Map<SearchFilterCategory, List<String>>.from(state.filterMap);
 
