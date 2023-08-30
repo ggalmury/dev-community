@@ -1,9 +1,11 @@
 import 'package:dev_community/models/party_article_model.dart';
 import 'package:dev_community/utils/helpers/helper.dart';
 import 'package:dev_community/widgets/molecules/techskill_row.dart';
+import 'package:dev_community/widgets/molecules/title_column.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:intl/intl.dart';
+import 'package:flutter_html/flutter_html.dart';
 
 class PartyArticleDetail extends StatefulWidget {
   final PartyArticleModel partyArticleModel;
@@ -123,82 +125,60 @@ class _PartyArticleDetailState extends State<PartyArticleDetail> {
               Container(
                 width: double.infinity,
                 color: Colors.white,
-                padding: const EdgeInsets.all(30),
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 30, vertical: 10),
                 child: Column(
                   children: [
-                    // recruitment status container
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        const Text(
-                          "지원 현황",
-                          style: TextStyle(
-                            fontSize: 20,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                        const SizedBox(
-                          height: 10,
-                        ),
-                        Column(
-                          children: widget.partyArticleModel.position.entries
-                              .map((e) {
-                            return SizedBox(
-                              height: 55,
-                              child: Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: [
-                                  Text(
-                                    e.key,
-                                    style: const TextStyle(
-                                      fontSize: 16,
-                                      fontWeight: FontWeight.bold,
-                                    ),
+                    TitleColumn(
+                      title: "지원 현황",
+                      child: Column(
+                        children:
+                            widget.partyArticleModel.position.entries.map((e) {
+                          return SizedBox(
+                            height: 55,
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Text(
+                                  e.key,
+                                  style: const TextStyle(
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.bold,
                                   ),
-                                  Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
-                                    children: [
-                                      Text(
-                                          "${e.value["current"]} / ${e.value["max"]}"),
-                                      const SizedBox(
-                                        width: 15,
-                                      ),
-                                      OutlinedButton(
-                                        onPressed: () {},
-                                        child: const Text("지원하기"),
-                                      ),
-                                    ],
-                                  )
-                                ],
-                              ),
-                            );
-                          }).toList(),
-                        ),
-                      ],
-                    ),
-                    const SizedBox(
-                      height: 30,
+                                ),
+                                Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Text(
+                                        "${e.value["current"]} / ${e.value["max"]}"),
+                                    const SizedBox(
+                                      width: 15,
+                                    ),
+                                    OutlinedButton(
+                                      onPressed: () {},
+                                      child: const Text("지원하기"),
+                                    ),
+                                  ],
+                                )
+                              ],
+                            ),
+                          );
+                        }).toList(),
+                      ),
                     ),
                     // tech skill container
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        const Text(
-                          "기술 스택",
-                          style: TextStyle(
-                            fontSize: 20,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                        const SizedBox(
-                          height: 30,
-                        ),
-                        TechSkillRow(
-                            techSkill: widget.partyArticleModel.techSkill),
-                      ],
-                    )
+                    TitleColumn(
+                      title: "기술 스택",
+                      child: TechSkillRow(
+                          techSkill: widget.partyArticleModel.techSkill),
+                    ),
+                    TitleColumn(
+                      title: "프로젝트 소개",
+                      child: Html(
+                        data: widget.partyArticleModel.description,
+                      ),
+                    ),
                   ],
                 ),
               ),

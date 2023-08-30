@@ -24,7 +24,8 @@ class InitPartyArticleState extends PartyArticleState {
               createdDt: DateTime.now(),
               poster: "갈무리",
               title: "[APP] 영화영상 구인구직 플랫폼 \"안드로이드 개발자\" 모집합니다.",
-              description: "안녕하세요, 첫번째 게시물입니다.",
+              description:
+                  '''<p><b><font size="6">안녕하세요</font></b></p><p><i><font color="#3b3ee4">이것은 테스트 설명 입니다.</font></i>''',
               techSkill: ["Kotlin"],
               position: {
                 "Android": {"current": 0, "max": 2},

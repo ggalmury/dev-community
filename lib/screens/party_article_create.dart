@@ -8,9 +8,10 @@ import 'package:dev_community/widgets/atoms/buttons/btn_option.dart';
 import 'package:dev_community/widgets/atoms/buttons/btn_submit.dart';
 import 'package:dev_community/widgets/atoms/inputs/input_create.dart';
 import 'package:dev_community/widgets/atoms/toggle_chip.dart';
-import 'package:dev_community/widgets/molecules/article_create_column.dart';
+import 'package:dev_community/widgets/molecules/title_column.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:html_editor_enhanced/html_editor.dart';
 
 class PartyArticleCreate extends StatefulWidget {
   const PartyArticleCreate({super.key});
@@ -20,6 +21,7 @@ class PartyArticleCreate extends StatefulWidget {
 }
 
 class _PartyArticleCreateState extends State<PartyArticleCreate> {
+  final HtmlEditorController _htmlEditorController = HtmlEditorController();
   final TextEditingController _titleController = TextEditingController();
   final TextEditingController _techSkillController = TextEditingController();
 
@@ -100,7 +102,7 @@ class _PartyArticleCreateState extends State<PartyArticleCreate> {
     RegExp regExp = RegExp(
         _techSkillController.text
             .replaceAll('\\', '\\\\')
-            .replaceAll('+', '\\+'), // + 문자 이스케이프
+            .replaceAll('+', '\\+'),
         caseSensitive: false);
 
     setState(() {
@@ -113,14 +115,15 @@ class _PartyArticleCreateState extends State<PartyArticleCreate> {
     });
   }
 
-  void _submit() {
+  void _submit() async {
     loggerNoStack.i('''
     type: $currentType
     title: ${_titleController.text}
     process: $currentProcess
     location: $currentLocation
     position: $currentPosition
-    techSkill: $currentTechSkill''');
+    techSkill: $currentTechSkill
+    description: ${await _htmlEditorController.getText()}''');
   }
 
   List<String> _selectedPositions() {
@@ -174,7 +177,7 @@ class _PartyArticleCreateState extends State<PartyArticleCreate> {
             padding: const EdgeInsets.symmetric(horizontal: 25),
             child: Column(
               children: [
-                ArticleCreateColumn(
+                TitleColumn(
                   title: "유형",
                   child: Row(
                     children: List.generate(
@@ -194,7 +197,7 @@ class _PartyArticleCreateState extends State<PartyArticleCreate> {
                     ),
                   ),
                 ),
-                ArticleCreateColumn(
+                TitleColumn(
                   title: "$currentType명",
                   child: InputCreate(
                     textEditingController: _titleController,
@@ -202,7 +205,7 @@ class _PartyArticleCreateState extends State<PartyArticleCreate> {
                     maxLength: 40,
                   ),
                 ),
-                ArticleCreateColumn(
+                TitleColumn(
                   title: "진행방식",
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -221,7 +224,7 @@ class _PartyArticleCreateState extends State<PartyArticleCreate> {
                     ],
                   ),
                 ),
-                ArticleCreateColumn(
+                TitleColumn(
                   title: "포지션",
                   child: Column(
                     children: [
@@ -283,7 +286,7 @@ class _PartyArticleCreateState extends State<PartyArticleCreate> {
                   ),
                 ),
                 // TODO: Implement here
-                ArticleCreateColumn(
+                TitleColumn(
                   title: "기술 스택",
                   child: Column(
                     children: [
@@ -343,6 +346,33 @@ class _PartyArticleCreateState extends State<PartyArticleCreate> {
                         ),
                       )
                     ],
+                  ),
+                ),
+                // TODO: implement here
+                TitleColumn(
+                  title: "$currentType 설명",
+                  child: HtmlEditor(
+                    controller: _htmlEditorController,
+                    otherOptions: const OtherOptions(
+                      height: 400,
+                    ),
+                    htmlToolbarOptions: const HtmlToolbarOptions(
+                      toolbarType: ToolbarType.nativeScrollable,
+                      defaultToolbarButtons: [
+                        FontButtons(clearAll: false),
+                        FontSettingButtons(
+                            fontSizeUnit: false, fontName: false),
+                        ColorButtons(),
+                        ListButtons(listStyles: false),
+                        ParagraphButtons(
+                          textDirection: false,
+                          lineHeight: false,
+                          caseConverter: false,
+                          increaseIndent: false,
+                          decreaseIndent: false,
+                        ),
+                      ],
+                    ),
                   ),
                 ),
               ],
