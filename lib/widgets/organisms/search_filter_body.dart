@@ -1,9 +1,9 @@
-import 'package:dev_community/utils/customs/custom_color.dart';
-import 'package:dev_community/widgets/atoms/buttons/button_submit.dart';
+import 'package:dev_community/utils/enums/global.dart';
+import 'package:dev_community/utils/enums/widget_property.dart';
+import 'package:dev_community/widgets/atoms/buttons/btn_submit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../bloc/screen/party/search_filter_bloc.dart';
-import '../../utils/enum.dart';
 import '../atoms/toggle_chip.dart';
 
 class SearchFilterBody extends StatefulWidget {
@@ -88,25 +88,24 @@ class _SearchFilterBodyState extends State<SearchFilterBody> {
           child: Row(
             children: [
               Expanded(
-                child: ButtonSubmit(
+                child: BtnSubmit(
                   label: "초기화",
                   onPressed: _dispatchResetEvent,
-                  height: 45,
                   fontSize: 16,
+                  widgetSize: WidgetSize.big,
+                  widgetColor: WidgetColor.white,
                 ),
               ),
               const SizedBox(
                 width: 20,
               ),
               Expanded(
-                child: ButtonSubmit(
+                child: BtnSubmit(
                   label: "적용",
                   onPressed: _closeBottomSheet,
-                  height: 45,
-                  backgroundColor: CustomColor.mint,
-                  foregroundColor: Colors.white,
                   fontSize: 16,
-                  fontWeight: FontWeight.bold,
+                  widgetSize: WidgetSize.big,
+                  widgetColor: WidgetColor.mint,
                 ),
               )
             ],

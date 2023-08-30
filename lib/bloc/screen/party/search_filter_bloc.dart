@@ -1,6 +1,6 @@
 import 'package:bloc/bloc.dart';
 import 'package:dev_community/main.dart';
-import 'package:dev_community/utils/enum.dart';
+import 'package:dev_community/utils/enums/global.dart';
 import 'package:dev_community/utils/helpers/helper.dart';
 import 'package:equatable/equatable.dart';
 

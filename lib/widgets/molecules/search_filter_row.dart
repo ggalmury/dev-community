@@ -1,11 +1,11 @@
 import 'package:dev_community/bloc/screen/party/search_filter_bloc.dart';
-import 'package:dev_community/utils/enum.dart';
+import 'package:dev_community/utils/enums/global.dart';
 import 'package:dev_community/widgets/atoms/chosen_tag.dart';
 import 'package:dev_community/widgets/organisms/search_filter_body.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../utils/helpers/screen_helper.dart';
-import '../atoms/buttons/button_category.dart';
+import '../atoms/buttons/btn_category.dart';
 
 class SearchFilterRow extends StatefulWidget {
   final String label;
@@ -39,7 +39,7 @@ class _SearchFilterRowState extends State<SearchFilterRow> {
   Widget build(BuildContext context) {
     return Row(
       children: [
-        ButtonCategory(label: widget.label, onPressed: _activateBottomSheet),
+        BtnCategory(label: widget.label, onPressed: _activateBottomSheet),
         const SizedBox(
           width: 10,
         ),

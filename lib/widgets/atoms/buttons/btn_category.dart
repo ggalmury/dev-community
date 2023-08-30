@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
 
-class ButtonCategory extends StatelessWidget {
+class BtnCategory extends StatelessWidget {
   final String label;
   final void Function() onPressed;
 
-  const ButtonCategory(
-      {super.key, required this.label, required this.onPressed});
+  const BtnCategory({super.key, required this.label, required this.onPressed});
 
   @override
   Widget build(BuildContext context) {

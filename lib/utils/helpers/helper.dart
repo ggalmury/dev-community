@@ -7,6 +7,13 @@ class Helper {
     return copiedList;
   }
 
+  List<T> deduplicatedList<T>(List<T> target, List<T> list) {
+    Set<String> nextPositionSet = Set.from(target);
+    Set<String> curPosiitonSet = Set.from(list);
+
+    return nextPositionSet.difference(curPosiitonSet).toList() as List<T>;
+  }
+
   int dayDifference(DateTime start, DateTime end) {
     Duration difference = end.difference(start);
     return difference.inDays;
