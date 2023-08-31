@@ -1,28 +1,28 @@
 class PartyArticleCreateModel {
   final String poster;
   final String type;
-  final String? title;
+  final String title;
   final String? description;
-  final List<String>? techSkill;
-  final Map<String, int>? position;
-  final String? process;
-  final String? location;
-  final DateTime? deadline;
-  final DateTime? startDate;
-  final String? estimatedPeriod;
+  final List<String> techSkill;
+  final Map<String, int> position;
+  final String process;
+  final String location;
+  final DateTime deadline;
+  final DateTime startDate;
+  final String span;
 
   const PartyArticleCreateModel(
       {required this.poster,
       required this.type,
-      this.title,
-      this.description,
-      this.techSkill,
-      this.position,
-      this.process,
-      this.location,
-      this.deadline,
-      this.startDate,
-      this.estimatedPeriod});
+      required this.title,
+      required this.description,
+      required this.techSkill,
+      required this.position,
+      required this.process,
+      required this.location,
+      required this.deadline,
+      required this.startDate,
+      required this.span});
 
   Map<String, dynamic> toJson() {
     return {
@@ -36,35 +36,7 @@ class PartyArticleCreateModel {
       "location": location,
       "deadline": deadline,
       "startDate": startDate,
-      "estimatedPeriod": estimatedPeriod,
+      "span": span,
     };
-  }
-
-  PartyArticleCreateModel copyWith({
-    String? poster,
-    String? type,
-    String? title,
-    String? description,
-    List<String>? techSkill,
-    Map<String, int>? position,
-    String? process,
-    String? location,
-    DateTime? deadline,
-    DateTime? startDate,
-    String? estimatedPeriod,
-  }) {
-    return PartyArticleCreateModel(
-      poster: poster ?? this.poster,
-      type: type ?? this.type,
-      title: title ?? this.title,
-      description: description ?? this.description,
-      techSkill: techSkill ?? this.techSkill,
-      position: position ?? this.position,
-      process: process ?? this.process,
-      location: location ?? this.location,
-      deadline: deadline ?? this.deadline,
-      startDate: startDate ?? this.startDate,
-      estimatedPeriod: estimatedPeriod ?? this.estimatedPeriod,
-    );
   }
 }

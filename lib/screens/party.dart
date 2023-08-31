@@ -3,7 +3,7 @@ import 'package:dev_community/main.dart';
 import 'package:dev_community/screens/party_article_create.dart';
 import 'package:dev_community/utils/customs/custom_color.dart';
 import 'package:dev_community/utils/enums/global.dart';
-import 'package:dev_community/widgets/atoms/inputs/input_search.dart';
+import 'package:dev_community/widgets/atoms/inputs/search_input.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../widgets/organisms/party_article.dart';
@@ -105,7 +105,7 @@ class _PartyState extends State<Party> {
                         child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              InputSearch(
+                              SearchInput(
                                   textEditingController:
                                       _searchOptionController,
                                   hintText: "검색할 제목을 입력해 주세요."),

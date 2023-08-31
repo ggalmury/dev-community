@@ -1,11 +1,11 @@
 import 'package:dev_community/utils/customs/custom_color.dart';
 import 'package:flutter/material.dart';
 
-class InputSearch extends StatelessWidget {
+class SearchInput extends StatelessWidget {
   final TextEditingController textEditingController;
   final String hintText;
 
-  const InputSearch(
+  const SearchInput(
       {super.key, required this.textEditingController, required this.hintText});
 
   @override

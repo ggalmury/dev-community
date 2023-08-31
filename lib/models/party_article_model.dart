@@ -10,7 +10,7 @@ class PartyArticleModel {
   final String type;
   final DateTime deadline;
   final DateTime startDate;
-  final String estimatedPeriod;
+  final String span;
   final String? location;
 
   PartyArticleModel(
@@ -25,7 +25,7 @@ class PartyArticleModel {
       required this.type,
       required this.deadline,
       required this.startDate,
-      required this.estimatedPeriod,
+      required this.span,
       this.location});
 
   Map<String, dynamic> toJson() {
@@ -41,7 +41,7 @@ class PartyArticleModel {
       "type": type,
       "deadline": deadline,
       "startDate": startDate,
-      "estimatedPeriod": estimatedPeriod,
+      "span": span,
       "location": location,
     };
   }
@@ -59,7 +59,7 @@ class PartyArticleModel {
       type: json["type"],
       deadline: json["deadline"],
       startDate: json["startDate"],
-      estimatedPeriod: json["estimatedPeriod"],
+      span: json["span"],
       location: json["location"],
     );
   }

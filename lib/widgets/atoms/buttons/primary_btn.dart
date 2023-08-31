@@ -2,7 +2,7 @@ import 'package:dev_community/utils/customs/custom_color.dart';
 import 'package:dev_community/utils/enums/widget_property.dart';
 import 'package:flutter/material.dart';
 
-class BtnSubmit extends StatelessWidget {
+class PrimaryBtn extends StatelessWidget {
   final String label;
   final void Function() onPressed;
   final WidgetSize widgetSize;
@@ -10,7 +10,7 @@ class BtnSubmit extends StatelessWidget {
   final double? width;
   final double? fontSize;
 
-  const BtnSubmit(
+  const PrimaryBtn(
       {super.key,
       required this.label,
       required this.onPressed,
@@ -69,6 +69,12 @@ class BtnSubmit extends StatelessWidget {
         style: OutlinedButton.styleFrom(
           backgroundColor: _backgroundColor(),
           foregroundColor: _foregroundColor(),
+          side: const BorderSide(
+            color: Colors.transparent,
+          ),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(10),
+          ),
         ),
         child: Text(
           label,

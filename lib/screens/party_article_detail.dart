@@ -103,12 +103,13 @@ class _PartyArticleDetailState extends State<PartyArticleDetail> {
                                 "assets/svgs/commons/process.svg",
                                 widget.partyArticleModel.process),
                             _articleOptionColumn(
-                                "assets/svgs/commons/play.svg",
-                                DateFormat("yy.MM.dd").format(
-                                    widget.partyArticleModel.startDate)),
+                              "assets/svgs/commons/play.svg",
+                              DateFormat("yy.MM.dd")
+                                  .format(widget.partyArticleModel.startDate),
+                            ),
                             _articleOptionColumn(
                                 "assets/svgs/commons/calendar.svg",
-                                widget.partyArticleModel.estimatedPeriod),
+                                widget.partyArticleModel.span),
                             _articleOptionColumn(
                                 "assets/svgs/commons/alarm.svg",
                                 "D-${Helper().dayDifference(DateTime.now(), widget.partyArticleModel.deadline)}일 전"),

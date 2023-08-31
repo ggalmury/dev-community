@@ -1,7 +1,7 @@
 import 'package:dev_community/utils/customs/custom_color.dart';
 import 'package:flutter/material.dart';
 
-class InputCreate extends StatelessWidget {
+class CreateInput extends StatelessWidget {
   final TextEditingController? textEditingController;
   final String? hintText;
   final void Function(String)? onChanged;
@@ -9,7 +9,7 @@ class InputCreate extends StatelessWidget {
   final int? maxLength;
   final TextInputType? keyboardType;
 
-  const InputCreate({
+  const CreateInput({
     super.key,
     this.textEditingController,
     this.hintText,

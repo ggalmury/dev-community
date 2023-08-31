@@ -6,6 +6,7 @@ import 'package:dev_community/utils/customs/custom_style.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:logger/logger.dart';
 
 var logger = Logger(
@@ -37,6 +38,14 @@ class MyApp extends StatelessWidget {
         ),
       ],
       child: MaterialApp(
+        localizationsDelegates: const [
+          GlobalMaterialLocalizations.delegate,
+          GlobalWidgetsLocalizations.delegate,
+          GlobalCupertinoLocalizations.delegate,
+        ],
+        supportedLocales: const [
+          Locale('ko'),
+        ],
         theme: ThemeData(
           scaffoldBackgroundColor: CustomColor.whiteGrey1,
           inputDecorationTheme: const InputDecorationTheme(

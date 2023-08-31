@@ -126,3 +126,14 @@ const List<String> location = [
 ];
 
 const List<String> type = ["프로젝트", "스터디"];
+
+const List<String> span = [
+  "1개월",
+  "2개월",
+  "3개월",
+  "4개월",
+  "5개월",
+  "6개월",
+  "6개월 이상",
+  "미정"
+];

@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 
-class BtnDropdown extends StatelessWidget {
+class DropdownBtn extends StatelessWidget {
   final List<String> items;
   final void Function(String?) onSelected;
   final String hintText;
   final double? width;
 
-  const BtnDropdown(
+  const DropdownBtn(
       {super.key,
       required this.items,
       required this.onSelected,
@@ -33,7 +33,7 @@ class BtnDropdown extends StatelessWidget {
           left: 20,
         ),
         constraints: const BoxConstraints(
-          maxHeight: 47,
+          maxHeight: 45,
         ),
       ),
       onSelected: onSelected,

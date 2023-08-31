@@ -1,6 +1,6 @@
 import 'package:dev_community/utils/enums/global.dart';
 import 'package:dev_community/utils/enums/widget_property.dart';
-import 'package:dev_community/widgets/atoms/buttons/btn_submit.dart';
+import 'package:dev_community/widgets/atoms/buttons/primary_btn.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../bloc/screen/party/search_filter_bloc.dart';
@@ -88,7 +88,7 @@ class _SearchFilterBodyState extends State<SearchFilterBody> {
           child: Row(
             children: [
               Expanded(
-                child: BtnSubmit(
+                child: PrimaryBtn(
                   label: "초기화",
                   onPressed: _dispatchResetEvent,
                   fontSize: 16,
@@ -100,7 +100,7 @@ class _SearchFilterBodyState extends State<SearchFilterBody> {
                 width: 20,
               ),
               Expanded(
-                child: BtnSubmit(
+                child: PrimaryBtn(
                   label: "적용",
                   onPressed: _closeBottomSheet,
                   fontSize: 16,

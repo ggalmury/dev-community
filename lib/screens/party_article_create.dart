@@ -3,15 +3,17 @@ import 'package:dev_community/utils/constant.dart';
 import 'package:dev_community/utils/enums/widget_property.dart';
 import 'package:dev_community/utils/helpers/helper.dart';
 import 'package:dev_community/utils/helpers/pair.dart';
-import 'package:dev_community/widgets/atoms/buttons/btn_dropdown.dart';
-import 'package:dev_community/widgets/atoms/buttons/btn_option.dart';
-import 'package:dev_community/widgets/atoms/buttons/btn_submit.dart';
-import 'package:dev_community/widgets/atoms/inputs/input_create.dart';
+import 'package:dev_community/utils/helpers/screen_helper.dart';
+import 'package:dev_community/widgets/atoms/buttons/dropdown_btn.dart';
+import 'package:dev_community/widgets/atoms/buttons/primary_btn.dart';
+import 'package:dev_community/widgets/atoms/buttons/secondary_btn.dart';
+import 'package:dev_community/widgets/atoms/inputs/create_input.dart';
 import 'package:dev_community/widgets/atoms/toggle_chip.dart';
 import 'package:dev_community/widgets/molecules/title_column.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:html_editor_enhanced/html_editor.dart';
+import 'package:intl/intl.dart';
 
 class PartyArticleCreate extends StatefulWidget {
   const PartyArticleCreate({super.key});
@@ -26,8 +28,11 @@ class _PartyArticleCreateState extends State<PartyArticleCreate> {
   final TextEditingController _techSkillController = TextEditingController();
 
   String currentType = "프로젝트";
-  String? currentProcess;
   String? currentLocation;
+  DateTime? currentStartDate;
+  String? currentSpan;
+  DateTime? currentDeadline;
+  String? currentProcess;
   List<Pair<String?, int?>> currentPosition = [Pair(k: null, v: null)];
   List<String> currentTechSkill = [];
 
@@ -37,6 +42,36 @@ class _PartyArticleCreateState extends State<PartyArticleCreate> {
     setState(() {
       currentType = type;
     });
+  }
+
+  void _setStartDate() async {
+    DateTime? startDate = await ScreenHelper().datePickerHandler(context);
+
+    if (startDate != null) {
+      setState(() {
+        currentStartDate = startDate;
+      });
+    }
+
+    // exception handling
+  }
+
+  void _setSpan(String? span) {
+    setState(() {
+      currentSpan = span;
+    });
+  }
+
+  void _setDeadline() async {
+    DateTime? deadline = await ScreenHelper().datePickerHandler(context);
+
+    if (deadline != null) {
+      setState(() {
+        currentDeadline = deadline;
+      });
+    }
+
+    // exception handling
   }
 
   void _setProcess(String? process) {
@@ -120,9 +155,13 @@ class _PartyArticleCreateState extends State<PartyArticleCreate> {
     type: $currentType
     title: ${_titleController.text}
     process: $currentProcess
+    startDate: $currentStartDate
+    span: $currentSpan
+    deadline: $currentDeadline
     location: $currentLocation
     position: $currentPosition
     techSkill: $currentTechSkill
+    span: $currentSpan
     description: ${await _htmlEditorController.getText()}''');
   }
 
@@ -158,10 +197,9 @@ class _PartyArticleCreateState extends State<PartyArticleCreate> {
           ),
         ),
         actions: [
-          // TODO: implement submit button
           Padding(
             padding: const EdgeInsets.all(10),
-            child: BtnSubmit(
+            child: PrimaryBtn(
               label: "완료",
               onPressed: _submit,
               widgetSize: WidgetSize.small,
@@ -187,9 +225,7 @@ class _PartyArticleCreateState extends State<PartyArticleCreate> {
                           padding: const EdgeInsets.only(right: 10),
                           child: ToggleChip(
                             label: type[index],
-                            onPressed: () {
-                              _setType(type[index]);
-                            },
+                            onPressed: () => _setType(type[index]),
                             toggle: currentType == type[index],
                           ),
                         );
@@ -199,10 +235,44 @@ class _PartyArticleCreateState extends State<PartyArticleCreate> {
                 ),
                 TitleColumn(
                   title: "$currentType명",
-                  child: InputCreate(
+                  child: CreateInput(
                     textEditingController: _titleController,
                     hintText: "40자 이내로 적어주세요.",
                     maxLength: 40,
+                  ),
+                ),
+                TitleColumn(
+                  title: "프로젝트 기간",
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      SecondaryBtn(
+                        label: currentStartDate == null
+                            ? "시작 날짜"
+                            : DateFormat("yy.MM.dd").format(currentStartDate!),
+                        onPressed: _setStartDate,
+                        widgetSize: WidgetSize.big,
+                        width: 160,
+                        alignment: Alignment.centerLeft,
+                      ),
+                      DropdownBtn(
+                        items: span,
+                        hintText: "기간",
+                        onSelected: _setSpan,
+                      ),
+                    ],
+                  ),
+                ),
+                TitleColumn(
+                  title: "마감 기한",
+                  child: SecondaryBtn(
+                    label: currentDeadline == null
+                        ? "마감 날짜"
+                        : DateFormat("yy.MM.dd").format(currentDeadline!),
+                    onPressed: _setDeadline,
+                    widgetSize: WidgetSize.big,
+                    width: 160,
+                    alignment: Alignment.centerLeft,
                   ),
                 ),
                 TitleColumn(
@@ -210,13 +280,13 @@ class _PartyArticleCreateState extends State<PartyArticleCreate> {
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      BtnDropdown(
+                      DropdownBtn(
                         items: process,
                         onSelected: _setProcess,
                         hintText: "진행 방식",
                       ),
                       if (currentProcess != "온라인")
-                        BtnDropdown(
+                        DropdownBtn(
                           items: location,
                           onSelected: _setLocation,
                           hintText: "지역",
@@ -240,32 +310,29 @@ class _PartyArticleCreateState extends State<PartyArticleCreate> {
                                 children: [
                                   Row(
                                     children: [
-                                      BtnDropdown(
+                                      DropdownBtn(
                                         items: Helper()
                                             .deduplicatedList<String>(
                                                 position, _selectedPositions()),
                                         hintText: "포지션",
-                                        onSelected: (position) {
-                                          _setPosition(index, position);
-                                        },
+                                        onSelected: (position) =>
+                                            _setPosition(index, position),
                                       ),
                                       const SizedBox(
                                         width: 17,
                                       ),
-                                      InputCreate(
+                                      CreateInput(
                                         width: 80,
                                         keyboardType: TextInputType.number,
-                                        onChanged: (count) {
-                                          _setPositionCount(index, count);
-                                        },
+                                        onChanged: (count) =>
+                                            _setPositionCount(index, count),
                                       ),
                                     ],
                                   ),
                                   if (index != 0)
                                     OutlinedButton(
-                                      onPressed: () {
-                                        _removePositionRow(index);
-                                      },
+                                      onPressed: () =>
+                                          _removePositionRow(index),
                                       child: const Text("삭제"),
                                     ),
                                 ],
@@ -277,22 +344,23 @@ class _PartyArticleCreateState extends State<PartyArticleCreate> {
                       if (_selectedPositions().length == currentPosition.length)
                         Align(
                           alignment: Alignment.centerRight,
-                          child: BtnOption(
+                          child: PrimaryBtn(
                             label: "추가",
                             onPressed: _addPositionRow,
+                            widgetSize: WidgetSize.small,
+                            widgetColor: WidgetColor.mint,
                           ),
                         )
                     ],
                   ),
                 ),
-                // TODO: Implement here
                 TitleColumn(
                   title: "기술 스택",
                   child: Column(
                     children: [
                       Column(
                         children: [
-                          InputCreate(
+                          CreateInput(
                             textEditingController: _techSkillController,
                             hintText: "기술 스택을 입력해 주세요.",
                           ),
@@ -309,9 +377,8 @@ class _PartyArticleCreateState extends State<PartyArticleCreate> {
                               List.generate(searchedTechSkills.length, (index) {
                             return ToggleChip(
                               label: searchedTechSkills[index],
-                              onPressed: () {
-                                _addTechSkill(searchedTechSkills[index]);
-                              },
+                              onPressed: () =>
+                                  _addTechSkill(searchedTechSkills[index]),
                             );
                           }),
                         ),
@@ -322,7 +389,8 @@ class _PartyArticleCreateState extends State<PartyArticleCreate> {
                       Align(
                         alignment: Alignment.centerLeft,
                         child: Wrap(
-                          spacing: 5,
+                          spacing: 15,
+                          runSpacing: 15,
                           children:
                               List.generate(currentTechSkill.length, (index) {
                             return Row(
@@ -331,14 +399,16 @@ class _PartyArticleCreateState extends State<PartyArticleCreate> {
                               children: [
                                 SvgPicture.asset(
                                   "assets/svgs/skills/${currentTechSkill[index]}.svg",
-                                  width: 32,
-                                  height: 32,
+                                  width: 30,
+                                  height: 30,
                                 ),
                                 GestureDetector(
-                                  onTap: () {
-                                    _removeTechSkill(currentTechSkill[index]);
-                                  },
-                                  child: const Icon(Icons.close),
+                                  onTap: () =>
+                                      _removeTechSkill(currentTechSkill[index]),
+                                  child: const Icon(
+                                    Icons.close,
+                                    size: 18,
+                                  ),
                                 )
                               ],
                             );
@@ -348,7 +418,6 @@ class _PartyArticleCreateState extends State<PartyArticleCreate> {
                     ],
                   ),
                 ),
-                // TODO: implement here
                 TitleColumn(
                   title: "$currentType 설명",
                   child: HtmlEditor(

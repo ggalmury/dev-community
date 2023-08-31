@@ -35,7 +35,7 @@ class InitPartyArticleState extends PartyArticleState {
               type: "프로젝트",
               deadline: DateTime(2023, 10, 1),
               startDate: DateTime(2023, 10, 8),
-              estimatedPeriod: "2개월"),
+              span: "2개월"),
           PartyArticleModel(
               id: "2",
               createdDt: DateTime.now(),
@@ -51,7 +51,7 @@ class InitPartyArticleState extends PartyArticleState {
               type: "프로젝트",
               deadline: DateTime(2023, 9, 23),
               startDate: DateTime(2023, 10, 1),
-              estimatedPeriod: "6개월"),
+              span: "6개월"),
           PartyArticleModel(
               id: "3",
               createdDt: DateTime.now(),
@@ -68,7 +68,7 @@ class InitPartyArticleState extends PartyArticleState {
               type: "프로젝트",
               deadline: DateTime(2023, 8, 30),
               startDate: DateTime(2023, 9, 1),
-              estimatedPeriod: "3개월"),
+              span: "3개월"),
           PartyArticleModel(
               id: "4",
               createdDt: DateTime.now(),
@@ -85,7 +85,7 @@ class InitPartyArticleState extends PartyArticleState {
               type: "스터디",
               deadline: DateTime(2023, 12, 23),
               startDate: DateTime(2024, 1, 1),
-              estimatedPeriod: "1개월"),
+              span: "1개월"),
         ]);
 
   @override
