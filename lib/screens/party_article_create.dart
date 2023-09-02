@@ -1,4 +1,3 @@
-import 'package:dev_community/main.dart';
 import 'package:dev_community/utils/constant.dart';
 import 'package:dev_community/utils/enums/widget_property.dart';
 import 'package:dev_community/utils/helpers/helper.dart';
@@ -45,15 +44,13 @@ class _PartyArticleCreateState extends State<PartyArticleCreate> {
   }
 
   void _setStartDate() async {
-    DateTime? startDate = await ScreenHelper().datePickerHandler(context);
+    DateTime? startDate = await ScreenHelper.datePickerHandler(context);
 
     if (startDate != null) {
       setState(() {
         currentStartDate = startDate;
       });
     }
-
-    // exception handling
   }
 
   void _setSpan(String? span) {
@@ -63,15 +60,13 @@ class _PartyArticleCreateState extends State<PartyArticleCreate> {
   }
 
   void _setDeadline() async {
-    DateTime? deadline = await ScreenHelper().datePickerHandler(context);
+    DateTime? deadline = await ScreenHelper.datePickerHandler(context);
 
     if (deadline != null) {
       setState(() {
         currentDeadline = deadline;
       });
     }
-
-    // exception handling
   }
 
   void _setProcess(String? process) {
@@ -98,12 +93,11 @@ class _PartyArticleCreateState extends State<PartyArticleCreate> {
 
   void _setPositionCount(int index, String count) {
     setState(() {
-      if (count == "") {
+      try {
+        currentPosition[index].v = int.parse(count);
+      } catch (e) {
         currentPosition[index].v = null;
-        return;
       }
-
-      currentPosition[index].v = int.parse(count);
     });
   }
 
@@ -141,8 +135,8 @@ class _PartyArticleCreateState extends State<PartyArticleCreate> {
         caseSensitive: false);
 
     setState(() {
-      searchedTechSkills = Helper()
-          .deduplicatedList<String>(techSkill, currentTechSkill)
+      searchedTechSkills = Helper.deduplicatedList<String>(
+              techSkill, currentTechSkill)
           .where((element) =>
               _techSkillController.text.isNotEmpty && regExp.hasMatch(element))
           .take(4)
@@ -151,18 +145,35 @@ class _PartyArticleCreateState extends State<PartyArticleCreate> {
   }
 
   void _submit() async {
-    loggerNoStack.i('''
-    type: $currentType
-    title: ${_titleController.text}
-    process: $currentProcess
-    startDate: $currentStartDate
-    span: $currentSpan
-    deadline: $currentDeadline
-    location: $currentLocation
-    position: $currentPosition
-    techSkill: $currentTechSkill
-    span: $currentSpan
-    description: ${await _htmlEditorController.getText()}''');
+    if (_titleController.text == "") {
+      ScreenHelper.alertDialogHandler(
+          context, "프로젝트명을 입력해 주세요.", "40자 이내로 적어주세요.");
+      return;
+    }
+
+    if (currentStartDate == null || currentSpan == null) {
+      ScreenHelper.alertDialogHandler(
+          context, "프로젝트 기간을 입력해 주세요.", "날짜를 선택해 주세요.");
+      return;
+    }
+
+    if (currentDeadline == null) {
+      ScreenHelper.alertDialogHandler(
+          context, "마감 기한을 입력해 주세요.", "날짜를 선택해 주세요.");
+      return;
+    }
+
+    if (currentProcess == null) {
+      ScreenHelper.alertDialogHandler(
+          context, "진행 방식을 선택해 주세요.", "팀원과의 소통은 중요하니깐요.");
+      return;
+    }
+
+    if (currentProcess != "온라인" && currentLocation == null) {
+      ScreenHelper.alertDialogHandler(
+          context, "만날 지역을 선택해 주세요.", "어디서 만나실건가요?");
+      return;
+    }
   }
 
   List<String> _selectedPositions() {
@@ -276,7 +287,7 @@ class _PartyArticleCreateState extends State<PartyArticleCreate> {
                   ),
                 ),
                 TitleColumn(
-                  title: "진행방식",
+                  title: "진행 방식",
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
@@ -311,9 +322,8 @@ class _PartyArticleCreateState extends State<PartyArticleCreate> {
                                   Row(
                                     children: [
                                       DropdownBtn(
-                                        items: Helper()
-                                            .deduplicatedList<String>(
-                                                position, _selectedPositions()),
+                                        items: Helper.deduplicatedList<String>(
+                                            position, _selectedPositions()),
                                         hintText: "포지션",
                                         onSelected: (position) =>
                                             _setPosition(index, position),

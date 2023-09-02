@@ -26,7 +26,7 @@ class SearchFilterRow extends StatefulWidget {
 
 class _SearchFilterRowState extends State<SearchFilterRow> {
   void _activateBottomSheet() {
-    ScreenHelper().modalBottomSheetHandler(
+    ScreenHelper.modalBottomSheetHandler(
         context,
         SearchFilterBody(
           label: widget.label,

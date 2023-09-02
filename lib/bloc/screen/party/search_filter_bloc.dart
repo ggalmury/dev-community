@@ -22,7 +22,7 @@ class SearchFilterBloc extends Bloc<SearchFilterEvent, SearchFilterState> {
   }
 
   void _setFilter(SetSearchFilterEvent event, emit) {
-    List<String> copiedList = Helper().toggleListElement<String>(
+    List<String> copiedList = Helper.toggleListElement<String>(
         state.filterMap[event.category]!, event.data);
 
     final newFilterMap =

@@ -1,5 +1,5 @@
 class Helper {
-  List<T> toggleListElement<T>(List<T> list, dynamic data) {
+  static List<T> toggleListElement<T>(List<T> list, dynamic data) {
     List<T> copiedList = List.from(list);
 
     list.contains(data) ? copiedList.remove(data) : copiedList.add(data);
@@ -7,14 +7,14 @@ class Helper {
     return copiedList;
   }
 
-  List<T> deduplicatedList<T>(List<T> target, List<T> list) {
+  static List<T> deduplicatedList<T>(List<T> target, List<T> list) {
     Set<String> nextPositionSet = Set.from(target);
     Set<String> curPosiitonSet = Set.from(list);
 
     return nextPositionSet.difference(curPosiitonSet).toList() as List<T>;
   }
 
-  int dayDifference(DateTime start, DateTime end) {
+  static int dayDifference(DateTime start, DateTime end) {
     Duration difference = end.difference(start);
     return difference.inDays;
   }

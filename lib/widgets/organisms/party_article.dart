@@ -62,7 +62,7 @@ class _PartyArticleState extends State<PartyArticle> {
                         width: 15,
                       ),
                       Text(
-                        "마감 D-${Helper().dayDifference(DateTime.now(), widget.partyArticleModel.deadline)}",
+                        "마감 D-${Helper.dayDifference(DateTime.now(), widget.partyArticleModel.deadline)}",
                         style: const TextStyle(
                           fontSize: 12,
                           fontWeight: FontWeight.w600,

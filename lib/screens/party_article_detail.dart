@@ -112,7 +112,7 @@ class _PartyArticleDetailState extends State<PartyArticleDetail> {
                                 widget.partyArticleModel.span),
                             _articleOptionColumn(
                                 "assets/svgs/commons/alarm.svg",
-                                "D-${Helper().dayDifference(DateTime.now(), widget.partyArticleModel.deadline)}일 전"),
+                                "D-${Helper.dayDifference(DateTime.now(), widget.partyArticleModel.deadline)}일 전"),
                           ],
                         ),
                       ],

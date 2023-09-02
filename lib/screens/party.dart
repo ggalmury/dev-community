@@ -58,7 +58,7 @@ class _PartyState extends State<Party> {
     return Scaffold(
       appBar: AppBar(
         title: const Text(
-          "프로젝트",
+          "파티찾기",
           style: TextStyle(
             fontWeight: FontWeight.bold,
           ),
