@@ -98,7 +98,7 @@ class _PartyArticleDetailState extends State<PartyArticleDetail> {
                           children: [
                             _articleOptionColumn(
                                 "assets/svgs/commons/category.svg",
-                                widget.partyArticleModel.type),
+                                widget.partyArticleModel.category),
                             _articleOptionColumn(
                                 "assets/svgs/commons/process.svg",
                                 widget.partyArticleModel.process),
@@ -152,7 +152,8 @@ class _PartyArticleDetailState extends State<PartyArticleDetail> {
                                       MainAxisAlignment.spaceBetween,
                                   children: [
                                     Text(
-                                        "${e.value["current"]} / ${e.value["max"]}"),
+                                      e.value.toString(),
+                                    ),
                                     const SizedBox(
                                       width: 15,
                                     ),

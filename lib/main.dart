@@ -1,3 +1,4 @@
+import 'package:dev_community/apis/party_api.dart';
 import 'package:dev_community/bloc/screen/party/party_article_bloc.dart';
 import 'package:dev_community/bloc/screen/party/search_filter_bloc.dart';
 import 'package:dev_community/screens/index.dart';
@@ -26,45 +27,52 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MultiBlocProvider(
+    return MultiRepositoryProvider(
       providers: [
-        BlocProvider(
-          create: (context) => SearchFilterBloc(),
-          lazy: false,
-        ),
-        BlocProvider(
-          create: (context) => PartyArticleBloc(),
-          lazy: false,
+        RepositoryProvider(
+          create: (context) => PartyApi(),
         ),
       ],
-      child: MaterialApp(
-        localizationsDelegates: const [
-          GlobalMaterialLocalizations.delegate,
-          GlobalWidgetsLocalizations.delegate,
-          GlobalCupertinoLocalizations.delegate,
+      child: MultiBlocProvider(
+        providers: [
+          BlocProvider(
+            create: (context) => SearchFilterBloc(),
+            lazy: false,
+          ),
+          BlocProvider(
+            create: (context) => PartyArticleBloc(),
+            lazy: false,
+          ),
         ],
-        supportedLocales: const [
-          Locale('ko'),
-        ],
-        theme: ThemeData(
-          scaffoldBackgroundColor: CustomColor.whiteGrey1,
-          inputDecorationTheme: const InputDecorationTheme(
-            border: InputBorder.none,
+        child: MaterialApp(
+          localizationsDelegates: const [
+            GlobalMaterialLocalizations.delegate,
+            GlobalWidgetsLocalizations.delegate,
+            GlobalCupertinoLocalizations.delegate,
+          ],
+          supportedLocales: const [
+            Locale('ko'),
+          ],
+          theme: ThemeData(
+            scaffoldBackgroundColor: CustomColor.whiteGrey1,
+            inputDecorationTheme: const InputDecorationTheme(
+              border: InputBorder.none,
+            ),
+            textButtonTheme: TextButtonThemeData(
+              style: CustomStyle.defaultButtonStyle,
+            ),
+            outlinedButtonTheme: OutlinedButtonThemeData(
+              style: CustomStyle.defaultButtonStyle,
+            ),
+            appBarTheme: const AppBarTheme(
+              systemOverlayStyle: SystemUiOverlayStyle.dark,
+              elevation: 0,
+              backgroundColor: Colors.white,
+              foregroundColor: Colors.black,
+            ),
           ),
-          textButtonTheme: TextButtonThemeData(
-            style: CustomStyle.defaultButtonStyle,
-          ),
-          outlinedButtonTheme: OutlinedButtonThemeData(
-            style: CustomStyle.defaultButtonStyle,
-          ),
-          appBarTheme: const AppBarTheme(
-            systemOverlayStyle: SystemUiOverlayStyle.dark,
-            elevation: 0,
-            backgroundColor: Colors.white,
-            foregroundColor: Colors.black,
-          ),
+          home: const Index(),
         ),
-        home: const Index(),
       ),
     );
   }

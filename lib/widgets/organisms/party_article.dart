@@ -51,7 +51,7 @@ class _PartyArticleState extends State<PartyArticle> {
                         color: CustomColor.whiteGrey2,
                         child: Center(
                           child: Text(
-                            widget.partyArticleModel.type,
+                            widget.partyArticleModel.category,
                             style: const TextStyle(
                               fontWeight: FontWeight.bold,
                             ),

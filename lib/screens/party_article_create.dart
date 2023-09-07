@@ -1,3 +1,5 @@
+import 'package:dev_community/apis/party_api.dart';
+import 'package:dev_community/models/party_article_create_model.dart';
 import 'package:dev_community/utils/constant.dart';
 import 'package:dev_community/utils/enums/widget_property.dart';
 import 'package:dev_community/utils/helpers/helper.dart';
@@ -10,6 +12,7 @@ import 'package:dev_community/widgets/atoms/inputs/create_input.dart';
 import 'package:dev_community/widgets/atoms/toggle_chip.dart';
 import 'package:dev_community/widgets/molecules/title_column.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:html_editor_enhanced/html_editor.dart';
 import 'package:intl/intl.dart';
@@ -26,7 +29,7 @@ class _PartyArticleCreateState extends State<PartyArticleCreate> {
   final TextEditingController _titleController = TextEditingController();
   final TextEditingController _techSkillController = TextEditingController();
 
-  String currentType = "프로젝트";
+  String currentCategory = "프로젝트";
   String? currentLocation;
   DateTime? currentStartDate;
   String? currentSpan;
@@ -37,9 +40,9 @@ class _PartyArticleCreateState extends State<PartyArticleCreate> {
 
   List<String> searchedTechSkills = [];
 
-  void _setType(String type) {
+  void _setCategory(String type) {
     setState(() {
-      currentType = type;
+      currentCategory = type;
     });
   }
 
@@ -144,40 +147,78 @@ class _PartyArticleCreateState extends State<PartyArticleCreate> {
     });
   }
 
-  void _submit() async {
+  List<String> _selectedPositions() {
+    return currentPosition.where((p) => p.k != null).map((p) => p.k!).toList();
+  }
+
+  bool _validate() {
     if (_titleController.text == "") {
       ScreenHelper.alertDialogHandler(
-          context, "프로젝트명을 입력해 주세요.", "40자 이내로 적어주세요.");
-      return;
+          context, "$currentCategory명을 입력해 주세요.", "40자 이내로 적어주세요.");
+      return false;
     }
 
     if (currentStartDate == null || currentSpan == null) {
       ScreenHelper.alertDialogHandler(
           context, "프로젝트 기간을 입력해 주세요.", "날짜를 선택해 주세요.");
-      return;
+      return false;
     }
 
     if (currentDeadline == null) {
       ScreenHelper.alertDialogHandler(
           context, "마감 기한을 입력해 주세요.", "날짜를 선택해 주세요.");
-      return;
+      return false;
     }
 
     if (currentProcess == null) {
       ScreenHelper.alertDialogHandler(
           context, "진행 방식을 선택해 주세요.", "팀원과의 소통은 중요하니깐요.");
-      return;
+      return false;
     }
 
     if (currentProcess != "온라인" && currentLocation == null) {
       ScreenHelper.alertDialogHandler(
           context, "만날 지역을 선택해 주세요.", "어디서 만나실건가요?");
-      return;
+      return false;
     }
+
+    for (Pair p in currentPosition) {
+      if (p.k == null || p.v == null) {
+        ScreenHelper.alertDialogHandler(
+            context, "포지션을 선택해 주세요.", "어떤 포지션이 필요하신가요?");
+        return false;
+      }
+    }
+
+    if (currentTechSkill.isEmpty) {
+      ScreenHelper.alertDialogHandler(
+          context, "기술 스택을 선택해 주세요.", "하나 이상의 기술 스택이 필요해요.");
+      return false;
+    }
+
+    return true;
   }
 
-  List<String> _selectedPositions() {
-    return currentPosition.where((p) => p.k != null).map((p) => p.k!).toList();
+  void _submit() async {
+    if (!_validate()) return;
+
+    PartyArticleCreateModel partyArticleCreateModel = PartyArticleCreateModel(
+        poster: "테스트",
+        category: currentCategory,
+        title: _titleController.text,
+        description: await _htmlEditorController.getText(),
+        techSkill: currentTechSkill,
+        position: Helper.pairListToMap<String, int>(currentPosition),
+        process: currentProcess!,
+        location: currentLocation!,
+        deadline: currentDeadline.toString(),
+        startDate: currentStartDate.toString(),
+        span: currentSpan!);
+
+    if (!mounted) return;
+
+    bool isCreated =
+        await context.read<PartyApi>().createArticle(partyArticleCreateModel);
   }
 
   @override
@@ -236,8 +277,8 @@ class _PartyArticleCreateState extends State<PartyArticleCreate> {
                           padding: const EdgeInsets.only(right: 10),
                           child: ToggleChip(
                             label: type[index],
-                            onPressed: () => _setType(type[index]),
-                            toggle: currentType == type[index],
+                            onPressed: () => _setCategory(type[index]),
+                            toggle: currentCategory == type[index],
                           ),
                         );
                       },
@@ -245,7 +286,7 @@ class _PartyArticleCreateState extends State<PartyArticleCreate> {
                   ),
                 ),
                 TitleColumn(
-                  title: "$currentType명",
+                  title: "$currentCategory명",
                   child: CreateInput(
                     textEditingController: _titleController,
                     hintText: "40자 이내로 적어주세요.",
@@ -429,7 +470,7 @@ class _PartyArticleCreateState extends State<PartyArticleCreate> {
                   ),
                 ),
                 TitleColumn(
-                  title: "$currentType 설명",
+                  title: "$currentCategory 설명",
                   child: HtmlEditor(
                     controller: _htmlEditorController,
                     otherOptions: const OtherOptions(

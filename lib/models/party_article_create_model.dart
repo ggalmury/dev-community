@@ -1,19 +1,19 @@
 class PartyArticleCreateModel {
   final String poster;
-  final String type;
+  final String category;
   final String title;
   final String? description;
   final List<String> techSkill;
   final Map<String, int> position;
   final String process;
   final String location;
-  final DateTime deadline;
-  final DateTime startDate;
+  final String deadline;
+  final String startDate;
   final String span;
 
   const PartyArticleCreateModel(
       {required this.poster,
-      required this.type,
+      required this.category,
       required this.title,
       required this.description,
       required this.techSkill,
@@ -27,7 +27,7 @@ class PartyArticleCreateModel {
   Map<String, dynamic> toJson() {
     return {
       "poster": poster,
-      "type": type,
+      "category": category,
       "title": title,
       "description": description,
       "techSkill": techSkill,

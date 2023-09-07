@@ -1,13 +1,13 @@
 class PartyArticleModel {
-  final String id;
+  final int id;
   final DateTime createdDt;
   final String poster;
   final String title;
   final String description;
   final List<String> techSkill;
-  final Map<String, Map<String, int>> position;
+  final Map<String, int> position;
   final String process;
-  final String type;
+  final String category;
   final DateTime deadline;
   final DateTime startDate;
   final String span;
@@ -22,7 +22,7 @@ class PartyArticleModel {
       required this.techSkill,
       required this.position,
       required this.process,
-      required this.type,
+      required this.category,
       required this.deadline,
       required this.startDate,
       required this.span,
@@ -38,7 +38,7 @@ class PartyArticleModel {
       "techSkill": techSkill,
       "position": position,
       "process": process,
-      "type": type,
+      "category": category,
       "deadline": deadline,
       "startDate": startDate,
       "span": span,
@@ -56,7 +56,7 @@ class PartyArticleModel {
       techSkill: json["techSkill"],
       position: json["position"],
       process: json["process"],
-      type: json["type"],
+      category: json["category"],
       deadline: json["deadline"],
       startDate: json["startDate"],
       span: json["span"],
