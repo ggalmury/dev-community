@@ -6,7 +6,7 @@ class PartyArticleCreateModel {
   final List<String> techSkill;
   final Map<String, int> position;
   final String process;
-  final String location;
+  final String? location;
   final String deadline;
   final String startDate;
   final String span;
@@ -15,11 +15,11 @@ class PartyArticleCreateModel {
       {required this.poster,
       required this.category,
       required this.title,
-      required this.description,
+      this.description,
       required this.techSkill,
       required this.position,
       required this.process,
-      required this.location,
+      this.location,
       required this.deadline,
       required this.startDate,
       required this.span});

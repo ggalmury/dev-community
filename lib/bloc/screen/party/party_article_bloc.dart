@@ -1,13 +1,33 @@
 import 'package:bloc/bloc.dart';
+import 'package:dev_community/apis/party_api.dart';
 import 'package:dev_community/models/party_article_model.dart';
 import 'package:equatable/equatable.dart';
 
 class PartyArticleBloc extends Bloc<PartyArticleEvent, PartyArticleState> {
-  PartyArticleBloc() : super(InitPartyArticleState());
+  final PartyApi partyApi;
+
+  PartyArticleBloc({required this.partyApi}) : super(InitPartyArticleState()) {
+    on<PartyArticleEvent>((event, emit) async {
+      if (event is FetchPartyArticleEvent) await _fetchArticle(event, emit);
+    });
+  }
+
+  Future<void> _fetchArticle(FetchPartyArticleEvent event, emit) async {
+    List<PartyArticleModel> result = await partyApi.getArticle();
+
+    emit(CurrentPartyArticleState(partyArticleModel: result));
+  }
 }
 
 // event
 abstract class PartyArticleEvent extends Equatable {}
+
+class FetchPartyArticleEvent extends PartyArticleEvent {
+  FetchPartyArticleEvent();
+
+  @override
+  List<Object?> get props => [];
+}
 
 // state
 abstract class PartyArticleState extends Equatable {
@@ -17,76 +37,14 @@ abstract class PartyArticleState extends Equatable {
 }
 
 class InitPartyArticleState extends PartyArticleState {
-  InitPartyArticleState()
-      : super(partyArticleModel: [
-          PartyArticleModel(
-              id: 1,
-              createdDt: DateTime.now(),
-              poster: "갈무리",
-              title: "[APP] 영화영상 구인구직 플랫폼 \"안드로이드 개발자\" 모집합니다.",
-              description:
-                  '''<p><b><font size="6">안녕하세요</font></b></p><p><i><font color="#3b3ee4">이것은 테스트 설명 입니다.</font></i>''',
-              techSkill: ["Kotlin"],
-              position: {
-                "Android": 1,
-              },
-              process: "온라인",
-              location: "서울특별시",
-              category: "프로젝트",
-              deadline: DateTime(2023, 10, 1),
-              startDate: DateTime(2023, 10, 8),
-              span: "2개월"),
-          PartyArticleModel(
-              id: 2,
-              createdDt: DateTime.now(),
-              poster: "다리우스",
-              title: "같이 사이드 프로젝트 하면서 역량 쌓으실 프론트 한분 구합니다!",
-              description: "안녕하세요, 두번째 게시물입니다.",
-              techSkill: ["React", "NestJS", "AWS", "Docker"],
-              position: {
-                "프론트엔드": 3,
-              },
-              process: "온/오프라인",
-              location: "전라북도",
-              category: "프로젝트",
-              deadline: DateTime(2023, 9, 23),
-              startDate: DateTime(2023, 10, 1),
-              span: "6개월"),
-          PartyArticleModel(
-              id: 3,
-              createdDt: DateTime.now(),
-              poster: "최동규",
-              title: "창업팀 개발자 모집합니다!",
-              description: "안녕하세요, 세번째 게시물입니다.",
-              techSkill: ["Typescript", "React", "Next.js"],
-              position: {
-                "프론트엔드": 2,
-                "백엔드": 3,
-              },
-              process: "오프라인",
-              location: "부산광역시",
-              category: "프로젝트",
-              deadline: DateTime(2023, 8, 30),
-              startDate: DateTime(2023, 9, 1),
-              span: "3개월"),
-          PartyArticleModel(
-              id: 4,
-              createdDt: DateTime.now(),
-              poster: "핑이",
-              title: "수원 아주대 인근 모각코 하실분",
-              description: "안녕하세요, 네번째 게시물입니다.",
-              techSkill: ["Javascript", "Java"],
-              position: {
-                "프론트엔드": 2,
-                "백엔드": 2,
-              },
-              process: "오프라인",
-              location: "경기도",
-              category: "스터디",
-              deadline: DateTime(2023, 12, 23),
-              startDate: DateTime(2024, 1, 1),
-              span: "1개월"),
-        ]);
+  InitPartyArticleState() : super(partyArticleModel: []);
+
+  @override
+  List<Object?> get props => [partyArticleModel];
+}
+
+class CurrentPartyArticleState extends PartyArticleState {
+  const CurrentPartyArticleState({required super.partyArticleModel});
 
   @override
   List<Object?> get props => [partyArticleModel];

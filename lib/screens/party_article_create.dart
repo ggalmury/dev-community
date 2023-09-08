@@ -1,4 +1,5 @@
 import 'package:dev_community/apis/party_api.dart';
+import 'package:dev_community/bloc/screen/party/party_article_bloc.dart';
 import 'package:dev_community/models/party_article_create_model.dart';
 import 'package:dev_community/utils/constant.dart';
 import 'package:dev_community/utils/enums/widget_property.dart';
@@ -203,16 +204,16 @@ class _PartyArticleCreateState extends State<PartyArticleCreate> {
     if (!_validate()) return;
 
     PartyArticleCreateModel partyArticleCreateModel = PartyArticleCreateModel(
-        poster: "테스트",
+        poster: "테스터",
         category: currentCategory,
         title: _titleController.text,
         description: await _htmlEditorController.getText(),
         techSkill: currentTechSkill,
         position: Helper.pairListToMap<String, int>(currentPosition),
         process: currentProcess!,
-        location: currentLocation!,
-        deadline: currentDeadline.toString(),
-        startDate: currentStartDate.toString(),
+        location: currentLocation,
+        deadline: currentDeadline!.toUtc().toIso8601String(),
+        startDate: currentStartDate!.toUtc().toIso8601String(),
         span: currentSpan!);
 
     if (!mounted) return;

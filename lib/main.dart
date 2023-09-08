@@ -40,7 +40,9 @@ class MyApp extends StatelessWidget {
             lazy: false,
           ),
           BlocProvider(
-            create: (context) => PartyArticleBloc(),
+            create: (context) => PartyArticleBloc(
+              partyApi: context.read<PartyApi>(),
+            ),
             lazy: false,
           ),
         ],

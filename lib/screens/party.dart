@@ -46,6 +46,15 @@ class _PartyState extends State<Party> {
   }
 
   @override
+  void initState() {
+    super.initState();
+
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      context.read<PartyArticleBloc>().add(FetchPartyArticleEvent());
+    });
+  }
+
+  @override
   void dispose() {
     _scrollController.dispose();
     _searchOptionController.dispose();

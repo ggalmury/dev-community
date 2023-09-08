@@ -88,8 +88,9 @@ class _PartyArticleState extends State<PartyArticle> {
               const SizedBox(
                 height: 20,
               ),
-              Text(
-                  "${widget.partyArticleModel.process} | ${widget.partyArticleModel.location}"),
+              Text(widget.partyArticleModel.location == null
+                  ? widget.partyArticleModel.process
+                  : "${widget.partyArticleModel.process} | ${widget.partyArticleModel.location}"),
               const Spacer(),
               SingleChildScrollView(
                 scrollDirection: Axis.horizontal,

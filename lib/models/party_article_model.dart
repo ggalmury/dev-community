@@ -1,9 +1,8 @@
 class PartyArticleModel {
   final int id;
-  final DateTime createdDt;
   final String poster;
   final String title;
-  final String description;
+  final String? description;
   final List<String> techSkill;
   final Map<String, int> position;
   final String process;
@@ -12,13 +11,13 @@ class PartyArticleModel {
   final DateTime startDate;
   final String span;
   final String? location;
+  final DateTime createdAt;
 
   PartyArticleModel(
       {required this.id,
-      required this.createdDt,
       required this.poster,
       required this.title,
-      required this.description,
+      this.description,
       required this.techSkill,
       required this.position,
       required this.process,
@@ -26,12 +25,12 @@ class PartyArticleModel {
       required this.deadline,
       required this.startDate,
       required this.span,
-      this.location});
+      this.location,
+      required this.createdAt});
 
   Map<String, dynamic> toJson() {
     return {
       "id": id,
-      "createdDt": createdDt,
       "poster": poster,
       "title": title,
       "description": description,
@@ -43,24 +42,29 @@ class PartyArticleModel {
       "startDate": startDate,
       "span": span,
       "location": location,
+      "createdAt": createdAt
     };
   }
 
   factory PartyArticleModel.fromJson(Map<String, dynamic> json) {
     return PartyArticleModel(
       id: json["id"],
-      createdDt: json["createdDt"],
       poster: json["poster"],
       title: json["title"],
       description: json["description"],
-      techSkill: json["techSkill"],
-      position: json["position"],
+      techSkill: (json["techSkill"] as List<dynamic>)
+          .map((s) => s.toString())
+          .toList(),
+      position: (json["position"] as Map<String, dynamic>).map<String, int>(
+        (k, v) => MapEntry<String, int>(k, v as int),
+      ),
       process: json["process"],
       category: json["category"],
-      deadline: json["deadline"],
-      startDate: json["startDate"],
+      deadline: DateTime.parse(json["deadline"]),
+      startDate: DateTime.parse(json["startDate"]),
       span: json["span"],
       location: json["location"],
+      createdAt: DateTime.parse(json["createdAt"]),
     );
   }
 }
