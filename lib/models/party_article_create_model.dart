@@ -1,3 +1,8 @@
+import 'package:json_annotation/json_annotation.dart';
+
+part 'party_article_create_model.g.dart';
+
+@JsonSerializable()
 class PartyArticleCreateModel {
   final String poster;
   final String category;
@@ -24,19 +29,8 @@ class PartyArticleCreateModel {
       required this.startDate,
       required this.span});
 
-  Map<String, dynamic> toJson() {
-    return {
-      "poster": poster,
-      "category": category,
-      "title": title,
-      "description": description,
-      "techSkill": techSkill,
-      "position": position,
-      "process": process,
-      "location": location,
-      "deadline": deadline,
-      "startDate": startDate,
-      "span": span,
-    };
-  }
+  factory PartyArticleCreateModel.fromJson(Map<String, dynamic> json) =>
+      _$PartyArticleCreateModelFromJson(json);
+
+  Map<String, dynamic> toJson() => _$PartyArticleCreateModelToJson(this);
 }
