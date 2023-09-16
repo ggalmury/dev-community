@@ -1,7 +1,7 @@
 import 'package:bloc/bloc.dart';
-import 'package:dev_community/main.dart';
 import 'package:dev_community/utils/enums/global.dart';
 import 'package:dev_community/utils/helpers/helper.dart';
+import 'package:dev_community/utils/logger.dart';
 import 'package:equatable/equatable.dart';
 
 class SearchFilterBloc extends Bloc<SearchFilterEvent, SearchFilterState> {
@@ -88,7 +88,8 @@ class InitSearchFilterState extends SearchFilterState {
           SearchFilterCategory.position: [],
           SearchFilterCategory.process: [],
           SearchFilterCategory.location: [],
-          SearchFilterCategory.type: [],
+          SearchFilterCategory.category: [],
+          SearchFilterCategory.inProgress: []
         });
 
   @override

@@ -1,27 +1,26 @@
-import 'package:dev_community/models/party_article_model.dart';
+import 'package:dev_community/models/party_article.dart';
 import 'package:dev_community/screens/party_article_detail.dart';
 import 'package:dev_community/utils/customs/custom_color.dart';
 import 'package:dev_community/widgets/molecules/techskill_row.dart';
 import 'package:flutter/material.dart';
-
 import '../../utils/helpers/helper.dart';
 
-class PartyArticle extends StatefulWidget {
-  final PartyArticleModel partyArticleModel;
+class PartyArticleContainer extends StatefulWidget {
+  final PartyArticle partyArticle;
 
-  const PartyArticle({super.key, required this.partyArticleModel});
+  const PartyArticleContainer({super.key, required this.partyArticle});
 
   @override
-  State<PartyArticle> createState() => _PartyArticleState();
+  State<PartyArticleContainer> createState() => _PartyArticleContainerState();
 }
 
-class _PartyArticleState extends State<PartyArticle> {
+class _PartyArticleContainerState extends State<PartyArticleContainer> {
   void _navigateToDetail() {
     Navigator.push<void>(
       context,
       MaterialPageRoute<void>(
         builder: (BuildContext context) => PartyArticleDetail(
-          partyArticleModel: widget.partyArticleModel,
+          partyArticle: widget.partyArticle,
         ),
       ),
     );
@@ -51,7 +50,7 @@ class _PartyArticleState extends State<PartyArticle> {
                         color: CustomColor.whiteGrey2,
                         child: Center(
                           child: Text(
-                            widget.partyArticleModel.category,
+                            widget.partyArticle.category,
                             style: const TextStyle(
                               fontWeight: FontWeight.bold,
                             ),
@@ -62,7 +61,7 @@ class _PartyArticleState extends State<PartyArticle> {
                         width: 15,
                       ),
                       Text(
-                        "마감 D-${Helper.dayDifference(DateTime.now(), widget.partyArticleModel.deadline)}",
+                        Helper.isOverdue(widget.partyArticle.deadline),
                         style: const TextStyle(
                           fontSize: 12,
                           fontWeight: FontWeight.w600,
@@ -77,7 +76,7 @@ class _PartyArticleState extends State<PartyArticle> {
                 height: 25,
               ),
               Text(
-                widget.partyArticleModel.title,
+                widget.partyArticle.title,
                 overflow: TextOverflow.ellipsis,
                 maxLines: 2,
                 style: const TextStyle(
@@ -88,14 +87,13 @@ class _PartyArticleState extends State<PartyArticle> {
               const SizedBox(
                 height: 20,
               ),
-              Text(widget.partyArticleModel.location == null
-                  ? widget.partyArticleModel.process
-                  : "${widget.partyArticleModel.process} | ${widget.partyArticleModel.location}"),
+              Text(widget.partyArticle.location == null
+                  ? widget.partyArticle.process
+                  : "${widget.partyArticle.process} | ${widget.partyArticle.location}"),
               const Spacer(),
               SingleChildScrollView(
                 scrollDirection: Axis.horizontal,
-                child:
-                    TechSkillRow(techSkill: widget.partyArticleModel.techSkill),
+                child: TechSkillRow(techSkill: widget.partyArticle.techSkill),
               ),
               const SizedBox(
                 height: 12,
@@ -103,7 +101,7 @@ class _PartyArticleState extends State<PartyArticle> {
               SingleChildScrollView(
                 scrollDirection: Axis.horizontal,
                 child: Row(
-                  children: widget.partyArticleModel.position.entries.map((e) {
+                  children: widget.partyArticle.position.entries.map((e) {
                     return Container(
                       padding: const EdgeInsets.symmetric(
                         horizontal: 12,

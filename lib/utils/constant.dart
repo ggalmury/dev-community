@@ -125,7 +125,7 @@ const List<String> location = [
   "세종특별자치시"
 ];
 
-const List<String> type = ["프로젝트", "스터디"];
+const List<String> category = ["프로젝트", "스터디"];
 
 const List<String> span = [
   "1개월",
@@ -137,3 +137,5 @@ const List<String> span = [
   "6개월 이상",
   "미정"
 ];
+
+const List<String> inProgress = ["진행중", "마감"];

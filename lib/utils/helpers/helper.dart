@@ -1,33 +1,54 @@
 import 'package:dev_community/utils/helpers/pair.dart';
+import 'package:flutter/material.dart';
 
 class Helper {
-  static List<T> toggleListElement<T>(List<T> list, dynamic data) {
-    List<T> copiedList = List.from(list);
+  static List<T> toggleListElement<T>(List<T> l, dynamic d) {
+    List<T> cl = List.from(l);
 
-    list.contains(data) ? copiedList.remove(data) : copiedList.add(data);
+    l.contains(d) ? cl.remove(d) : cl.add(d);
 
-    return copiedList;
+    return cl;
   }
 
-  static List<T> deduplicatedList<T>(List<T> target, List<T> list) {
-    Set<String> nextPositionSet = Set.from(target);
-    Set<String> curPosiitonSet = Set.from(list);
+  static List<T> deduplicatedList<T>(List<T> t, List<T> l) {
+    Set<String> nextPos = Set.from(t);
+    Set<String> curPos = Set.from(l);
 
-    return nextPositionSet.difference(curPosiitonSet).toList() as List<T>;
+    return nextPos.difference(curPos).toList() as List<T>;
   }
 
-  static int dayDifference(DateTime start, DateTime end) {
-    Duration difference = end.difference(start);
-    return difference.inDays;
-  }
-
-  static Map<K, V> pairListToMap<K, V>(List<Pair> pairList) {
+  static Map<K, V> pairListToMap<K, V>(List<Pair> pl) {
     Map<K, V> map = {};
 
-    for (Pair p in pairList) {
+    for (Pair p in pl) {
       map[p.k] = p.v;
     }
 
     return map;
+  }
+
+  static int dayDifference(DateTime s, DateTime e) {
+    Duration diff = e.difference(s);
+    return diff.inDays;
+  }
+
+  static String isOverdue(DateTime t) {
+    DateTime n = DateTime.now();
+
+    return t.isBefore(n)
+        ? "마감"
+        : "마감 D-${Helper.dayDifference(DateTime.now(), t)}";
+  }
+
+  static void pushScreen(BuildContext context, Widget s) {
+    Navigator.push(
+        context, MaterialPageRoute(builder: (BuildContext context) => s));
+  }
+
+  static void pushRemoveScreen(BuildContext context, Widget s) {
+    Navigator.pushAndRemoveUntil(
+        context,
+        MaterialPageRoute(builder: (BuildContext context) => s),
+        ((route) => false));
   }
 }

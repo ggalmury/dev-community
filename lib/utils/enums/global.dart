@@ -1,1 +1,8 @@
-enum SearchFilterCategory { techSkill, position, process, location, type }
+enum SearchFilterCategory {
+  techSkill,
+  position,
+  process,
+  location,
+  category,
+  inProgress
+}

@@ -1,14 +1,12 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'party_article_model.dart';
+part of 'party_article.dart';
 
 // **************************************************************************
 // JsonSerializableGenerator
 // **************************************************************************
 
-PartyArticleModel _$PartyArticleModelFromJson(Map<String, dynamic> json) =>
-    PartyArticleModel(
-      id: json['id'] as int,
+PartyArticle _$PartyArticleFromJson(Map<String, dynamic> json) => PartyArticle(
       poster: json['poster'] as String,
       title: json['title'] as String,
       description: json['description'] as String?,
@@ -24,9 +22,8 @@ PartyArticleModel _$PartyArticleModelFromJson(Map<String, dynamic> json) =>
       createdAt: DateTime.parse(json['createdAt'] as String),
     );
 
-Map<String, dynamic> _$PartyArticleModelToJson(PartyArticleModel instance) =>
+Map<String, dynamic> _$PartyArticleToJson(PartyArticle instance) =>
     <String, dynamic>{
-      'id': instance.id,
       'poster': instance.poster,
       'title': instance.title,
       'description': instance.description,

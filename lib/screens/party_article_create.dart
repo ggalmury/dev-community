@@ -1,6 +1,6 @@
 import 'package:dev_community/apis/party_api.dart';
-import 'package:dev_community/bloc/screen/party/party_article_bloc.dart';
-import 'package:dev_community/models/party_article_create_model.dart';
+import 'package:dev_community/models/party_article_creator.dart';
+import 'package:dev_community/screens/party.dart';
 import 'package:dev_community/utils/constant.dart';
 import 'package:dev_community/utils/enums/widget_property.dart';
 import 'package:dev_community/utils/helpers/helper.dart';
@@ -41,9 +41,9 @@ class _PartyArticleCreateState extends State<PartyArticleCreate> {
 
   List<String> searchedTechSkills = [];
 
-  void _setCategory(String type) {
+  void _setCategory(String category) {
     setState(() {
-      currentCategory = type;
+      currentCategory = category;
     });
   }
 
@@ -154,46 +154,45 @@ class _PartyArticleCreateState extends State<PartyArticleCreate> {
 
   bool _validate() {
     if (_titleController.text == "") {
-      ScreenHelper.alertDialogHandler(
-          context, "$currentCategory명을 입력해 주세요.", "40자 이내로 적어주세요.");
+      ScreenHelper.alertDialogHandler(context, "$currentCategory명을 입력해 주세요.",
+          content: "40자 이내로 적어주세요.");
       return false;
     }
 
     if (currentStartDate == null || currentSpan == null) {
-      ScreenHelper.alertDialogHandler(
-          context, "프로젝트 기간을 입력해 주세요.", "날짜를 선택해 주세요.");
+      ScreenHelper.alertDialogHandler(context, "프로젝트 기간을 입력해 주세요.");
       return false;
     }
 
     if (currentDeadline == null) {
-      ScreenHelper.alertDialogHandler(
-          context, "마감 기한을 입력해 주세요.", "날짜를 선택해 주세요.");
+      ScreenHelper.alertDialogHandler(context, "마감 기한을 입력해 주세요.");
       return false;
     }
 
     if (currentProcess == null) {
-      ScreenHelper.alertDialogHandler(
-          context, "진행 방식을 선택해 주세요.", "팀원과의 소통은 중요하니깐요.");
+      ScreenHelper.alertDialogHandler(context, "진행 방식을 선택해 주세요.");
       return false;
     }
 
     if (currentProcess != "온라인" && currentLocation == null) {
-      ScreenHelper.alertDialogHandler(
-          context, "만날 지역을 선택해 주세요.", "어디서 만나실건가요?");
+      ScreenHelper.alertDialogHandler(context, "만날 지역을 선택해 주세요.");
       return false;
     }
 
     for (Pair p in currentPosition) {
       if (p.k == null || p.v == null) {
-        ScreenHelper.alertDialogHandler(
-            context, "포지션을 선택해 주세요.", "어떤 포지션이 필요하신가요?");
+        ScreenHelper.alertDialogHandler(context, "포지션을 선택해 주세요.");
         return false;
       }
     }
 
     if (currentTechSkill.isEmpty) {
-      ScreenHelper.alertDialogHandler(
-          context, "기술 스택을 선택해 주세요.", "하나 이상의 기술 스택이 필요해요.");
+      ScreenHelper.alertDialogHandler(context, "기술 스택을 선택해 주세요.");
+      return false;
+    }
+
+    if (currentDeadline!.isBefore(DateTime.now())) {
+      ScreenHelper.alertDialogHandler(context, "마감기한을 재선택 해주세요.");
       return false;
     }
 
@@ -203,7 +202,7 @@ class _PartyArticleCreateState extends State<PartyArticleCreate> {
   void _submit() async {
     if (!_validate()) return;
 
-    PartyArticleCreateModel partyArticleCreateModel = PartyArticleCreateModel(
+    PartyArticleCreator partyArticleCreateModel = PartyArticleCreator(
         poster: "테스터",
         category: currentCategory,
         title: _titleController.text,
@@ -220,6 +219,12 @@ class _PartyArticleCreateState extends State<PartyArticleCreate> {
 
     bool isCreated =
         await context.read<PartyApi>().createArticle(partyArticleCreateModel);
+
+    if (isCreated && mounted) {
+      ScreenHelper.alertDialogHandler(context, "게시물이 등록되었습니다!", onPressed: () {
+        Helper.pushRemoveScreen(context, const Party());
+      });
+    }
   }
 
   @override
@@ -272,14 +277,14 @@ class _PartyArticleCreateState extends State<PartyArticleCreate> {
                   title: "유형",
                   child: Row(
                     children: List.generate(
-                      type.length,
+                      category.length,
                       (index) {
                         return Padding(
                           padding: const EdgeInsets.only(right: 10),
                           child: ToggleChip(
-                            label: type[index],
-                            onPressed: () => _setCategory(type[index]),
-                            toggle: currentCategory == type[index],
+                            label: category[index],
+                            onPressed: () => _setCategory(category[index]),
+                            toggle: currentCategory == category[index],
                           ),
                         );
                       },

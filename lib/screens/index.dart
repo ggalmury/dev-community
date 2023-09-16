@@ -1,9 +1,12 @@
-import 'package:dev_community/screens/notifiy.dart';
-import 'package:dev_community/screens/profile.dart';
-import 'package:dev_community/screens/party.dart';
-import 'package:dev_community/screens/qna.dart';
-import 'package:dev_community/utils/customs/custom_color.dart';
+import 'package:dev_community/bloc/global/user_account_bloc.dart';
+import 'package:dev_community/screens/home.dart';
+import 'package:dev_community/utils/enums/widget_property.dart';
+import 'package:dev_community/utils/exceptions/request_canceled_exception.dart';
+import 'package:dev_community/utils/helpers/helper.dart';
+import 'package:dev_community/utils/helpers/screen_helper.dart';
+import 'package:dev_community/widgets/atoms/buttons/primary_btn.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class Index extends StatefulWidget {
   const Index({super.key});
@@ -13,56 +16,89 @@ class Index extends StatefulWidget {
 }
 
 class _IndexState extends State<Index> {
-  int _currentIndex = 0;
+  Future<void> _kakaoLogin() async {
+    context.read<UserAccountBloc>().add(KakaoLoginEvent());
+  }
 
-  final List<Widget> _screens = [
-    const Party(),
-    const QnA(),
-    const Notify(),
-    const Profile(),
-  ];
+  void _logout() {
+    context.read<UserAccountBloc>().add(LogoutEvent());
+  }
+
+  void _exceptionAlert(Exception e) {
+    String title;
+
+    if (e is RequestCanceledException) {
+      title = "카카오 로그인 요청이 취소되었습니다.";
+    } else {
+      title = "네트워크 에러가 발생했습니다.";
+    }
+
+    ScreenHelper.alertDialogHandler(
+      context,
+      title,
+      onPressed: () =>
+          context.read<UserAccountBloc>().add(SubmitAccountErrorEvent()),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: IndexedStack(
-        index: _currentIndex,
-        children: _screens,
-      ),
-      bottomNavigationBar: Theme(
-        data: ThemeData(
-          splashFactory: NoSplash.splashFactory,
-          splashColor: Colors.transparent,
-          highlightColor: Colors.transparent,
-        ),
-        child: BottomNavigationBar(
-          currentIndex: _currentIndex,
-          onTap: (index) {
-            setState(() {
-              _currentIndex = index;
-            });
+      body: SafeArea(
+        child: BlocListener<UserAccountBloc, UserAccountState>(
+          listener: (context, state) {
+            if (state.exception != null) _exceptionAlert(state.exception!);
+            if (state.isLoggedIn) {
+              Helper.pushRemoveScreen(context, const Home());
+            }
           },
-          items: const [
-            BottomNavigationBarItem(
-              icon: Icon(Icons.code),
-              label: '파티찾기',
+          child: Padding(
+            padding: const EdgeInsets.all(20),
+            child: Column(
+              children: [
+                BlocBuilder<UserAccountBloc, UserAccountState>(
+                  builder: (context, state) {
+                    return Column(
+                      children: [
+                        Text(state.userAccount.uuid),
+                        const SizedBox(
+                          height: 20,
+                        ),
+                        Text(state.isLoggedIn.toString()),
+                        const SizedBox(
+                          height: 20,
+                        ),
+                        Text(state.exception.toString()),
+                      ],
+                    );
+                  },
+                ),
+                Expanded(
+                    child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    PrimaryBtn(
+                      label: "카카오로 로그인",
+                      onPressed: _kakaoLogin,
+                      widgetSize: WidgetSize.big,
+                      widgetColor: WidgetColor.mint,
+                      width: double.infinity,
+                    ),
+                    const SizedBox(
+                      height: 30,
+                    ),
+                    PrimaryBtn(
+                      label: "로그아웃",
+                      onPressed: _logout,
+                      widgetSize: WidgetSize.big,
+                      widgetColor: WidgetColor.mint,
+                      width: double.infinity,
+                    ),
+                  ],
+                ))
+              ],
             ),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.question_answer_rounded),
-              label: 'Q&A',
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.notifications_active),
-              label: '알림',
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.person),
-              label: '내 프로필',
-            ),
-          ],
-          type: BottomNavigationBarType.fixed,
-          selectedItemColor: CustomColor.mint,
-          elevation: 8.0,
+          ),
         ),
       ),
     );

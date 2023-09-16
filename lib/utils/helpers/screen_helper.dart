@@ -23,9 +23,8 @@ class ScreenHelper {
     );
   }
 
-  static void alertDialogHandler(
-      BuildContext context, String title, String content,
-      {String? label, void Function()? onPressed}) {
+  static void alertDialogHandler(BuildContext context, String title,
+      {String? content, String? label, Function? onPressed}) {
     showDialog(
       context: context,
       builder: (context) {
@@ -49,17 +48,17 @@ class ScreenHelper {
                       Text(
                         title,
                         style: const TextStyle(
-                          fontSize: 18,
+                          fontSize: 20,
                           fontWeight: FontWeight.bold,
                         ),
                       ),
-                      Text(content),
+                      content != null ? Text(content) : const SizedBox(),
                       PrimaryBtn(
                         label: label ?? "확인",
-                        onPressed: onPressed ??
-                            () {
-                              Navigator.pop(context);
-                            },
+                        onPressed: () {
+                          if (onPressed != null) onPressed();
+                          Navigator.pop(context);
+                        },
                         widgetSize: WidgetSize.big,
                         widgetColor: WidgetColor.mint,
                         width: double.infinity,
@@ -72,6 +71,7 @@ class ScreenHelper {
                   right: 10,
                   child: IconButton(
                     onPressed: () {
+                      if (onPressed != null) onPressed();
                       Navigator.pop(context);
                     },
                     icon: const Icon(Icons.close),

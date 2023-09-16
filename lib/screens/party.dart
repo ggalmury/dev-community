@@ -1,12 +1,12 @@
 import 'package:dev_community/bloc/screen/party/party_article_bloc.dart';
-import 'package:dev_community/main.dart';
 import 'package:dev_community/screens/party_article_create.dart';
 import 'package:dev_community/utils/customs/custom_color.dart';
 import 'package:dev_community/utils/enums/global.dart';
+import 'package:dev_community/utils/logger.dart';
 import 'package:dev_community/widgets/atoms/inputs/search_input.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import '../widgets/organisms/party_article.dart';
+import '../widgets/organisms/party_article_container.dart';
 import 'package:dev_community/utils/constant.dart' as constants;
 import '../widgets/molecules/search_filter_row.dart';
 
@@ -155,9 +155,14 @@ class _PartyState extends State<Party> {
                                     elements: constants.location,
                                   ),
                                   SearchFilterRow(
-                                    label: "타입",
-                                    category: SearchFilterCategory.type,
-                                    elements: constants.type,
+                                    label: "카테고리",
+                                    category: SearchFilterCategory.category,
+                                    elements: constants.category,
+                                  ),
+                                  SearchFilterRow(
+                                    label: "진행여부",
+                                    category: SearchFilterCategory.inProgress,
+                                    elements: constants.inProgress,
                                   ),
                                 ]),
                             ]),
@@ -172,8 +177,8 @@ class _PartyState extends State<Party> {
                 return SliverList(
                   delegate: SliverChildBuilderDelegate(
                     (context, index) {
-                      return PartyArticle(
-                        partyArticleModel: state.partyArticleModel[index],
+                      return PartyArticleContainer(
+                        partyArticle: state.partyArticleModel[index],
                       );
                     },
                     childCount: state.partyArticleModel.length,

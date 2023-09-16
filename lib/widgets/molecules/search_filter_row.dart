@@ -38,40 +38,44 @@ class _SearchFilterRowState extends State<SearchFilterRow> {
 
   @override
   Widget build(BuildContext context) {
-    return Row(
-      children: [
-        SecondaryBtn(
-          label: widget.label,
-          onPressed: _activateBottomSheet,
-          widgetSize: WidgetSize.small,
-        ),
-        const SizedBox(
-          width: 10,
-        ),
-        Expanded(
-          child: BlocBuilder<SearchFilterBloc, SearchFilterState>(
-            buildWhen: (previous, current) {
-              return previous.filterMap[widget.category]! !=
-                  current.filterMap[widget.category]!;
-            },
-            builder: (context, state) {
-              return SingleChildScrollView(
-                scrollDirection: Axis.horizontal,
-                child: Row(
-                  children: List.generate(
-                    state.filterMap[widget.category]!.length,
-                    (index) {
-                      return ChosenTag(
-                        label: state.filterMap[widget.category]![index],
-                      );
-                    },
-                  ),
-                ),
-              );
-            },
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 5),
+      child: Row(
+        children: [
+          SecondaryBtn(
+            label: widget.label,
+            onPressed: _activateBottomSheet,
+            widgetSize: WidgetSize.small,
+            width: 100,
           ),
-        ),
-      ],
+          const SizedBox(
+            width: 10,
+          ),
+          Expanded(
+            child: BlocBuilder<SearchFilterBloc, SearchFilterState>(
+              buildWhen: (previous, current) {
+                return previous.filterMap[widget.category]! !=
+                    current.filterMap[widget.category]!;
+              },
+              builder: (context, state) {
+                return SingleChildScrollView(
+                  scrollDirection: Axis.horizontal,
+                  child: Row(
+                    children: List.generate(
+                      state.filterMap[widget.category]!.length,
+                      (index) {
+                        return ChosenTag(
+                          label: state.filterMap[widget.category]![index],
+                        );
+                      },
+                    ),
+                  ),
+                );
+              },
+            ),
+          ),
+        ],
+      ),
     );
   }
 }

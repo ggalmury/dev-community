@@ -1,6 +1,6 @@
 import 'package:bloc/bloc.dart';
 import 'package:dev_community/apis/party_api.dart';
-import 'package:dev_community/models/party_article_model.dart';
+import 'package:dev_community/models/party_article.dart';
 import 'package:equatable/equatable.dart';
 
 class PartyArticleBloc extends Bloc<PartyArticleEvent, PartyArticleState> {
@@ -13,9 +13,13 @@ class PartyArticleBloc extends Bloc<PartyArticleEvent, PartyArticleState> {
   }
 
   Future<void> _fetchArticle(FetchPartyArticleEvent event, emit) async {
-    List<PartyArticleModel> result = await partyApi.getArticle();
+    try {
+      List<PartyArticle> result = await partyApi.getArticle();
 
-    emit(CurrentPartyArticleState(partyArticleModel: result));
+      emit(CurrentPartyArticleState(partyArticleModel: result));
+    } catch (e) {
+      // 데이터 조회 실패 예외처리
+    }
   }
 }
 
@@ -31,7 +35,7 @@ class FetchPartyArticleEvent extends PartyArticleEvent {
 
 // state
 abstract class PartyArticleState extends Equatable {
-  final List<PartyArticleModel> partyArticleModel;
+  final List<PartyArticle> partyArticleModel;
 
   const PartyArticleState({required this.partyArticleModel});
 }

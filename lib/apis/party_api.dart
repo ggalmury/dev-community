@@ -1,39 +1,38 @@
 import 'dart:convert';
-import 'package:dev_community/models/party_article_create_model.dart';
-import 'package:dev_community/models/party_article_model.dart';
+import 'package:dev_community/models/party_article_creator.dart';
+import 'package:dev_community/models/party_article.dart';
+import 'package:dev_community/utils/exceptions/network_exception.dart';
 import 'package:http/http.dart';
-import 'package:http/http.dart' as http;
 
 class PartyApi {
   final String path = "http://localhost:8080/party";
 
-  Future<List<PartyArticleModel>> getArticle() async {
-    Response response = await http.get(Uri.parse("$path/articles"));
+  Future<List<PartyArticle>> getArticle() async {
+    Response response = await get(Uri.parse("$path/articles"));
 
     if (response.statusCode == 200) {
-      List<dynamic> rawResult = jsonDecode(response.body)["result"];
+      List<dynamic> rawResult = jsonDecode(response.body);
 
-      List<PartyArticleModel> result = rawResult.map((m) {
-        return PartyArticleModel.fromJson(m);
+      List<PartyArticle> articles = rawResult.map((m) {
+        return PartyArticle.fromJson(m);
       }).toList();
 
-      return result;
+      return articles;
     } else {
-      throw Exception("Failed to load party article list");
+      throw NetworkException("Failed to load party article list");
     }
   }
 
   Future<bool> createArticle(
-      PartyArticleCreateModel partyArticleCreateModel) async {
-    Response response = await http.post(Uri.parse("$path/create"),
+      PartyArticleCreator partyArticleCreateModel) async {
+    Response response = await post(Uri.parse("$path/create"),
         headers: {'Content-Type': 'application/json'},
         body: jsonEncode(partyArticleCreateModel.toJson()));
 
-    // temp
-    if (response.statusCode == 200) {
+    if (response.statusCode == 201) {
       return true;
     } else {
-      return false;
+      throw NetworkException("Failed to create party article");
     }
   }
 }

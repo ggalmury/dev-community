@@ -1,4 +1,4 @@
-import 'package:dev_community/models/party_article_model.dart';
+import 'package:dev_community/models/party_article.dart';
 import 'package:dev_community/utils/helpers/helper.dart';
 import 'package:dev_community/widgets/molecules/techskill_row.dart';
 import 'package:dev_community/widgets/molecules/title_column.dart';
@@ -8,9 +8,9 @@ import 'package:intl/intl.dart';
 import 'package:flutter_html/flutter_html.dart';
 
 class PartyArticleDetail extends StatefulWidget {
-  final PartyArticleModel partyArticleModel;
+  final PartyArticle partyArticle;
 
-  const PartyArticleDetail({super.key, required this.partyArticleModel});
+  const PartyArticleDetail({super.key, required this.partyArticle});
 
   @override
   State<PartyArticleDetail> createState() => _PartyArticleDetailState();
@@ -56,7 +56,7 @@ class _PartyArticleDetailState extends State<PartyArticleDetail> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Text(
-                      widget.partyArticleModel.title,
+                      widget.partyArticle.title,
                       textAlign: TextAlign.center,
                       style: const TextStyle(
                         fontSize: 20,
@@ -79,7 +79,7 @@ class _PartyArticleDetailState extends State<PartyArticleDetail> {
                           width: 7,
                         ),
                         Text(
-                          widget.partyArticleModel.poster,
+                          widget.partyArticle.poster,
                           style: const TextStyle(
                             fontSize: 16,
                           ),
@@ -98,21 +98,21 @@ class _PartyArticleDetailState extends State<PartyArticleDetail> {
                           children: [
                             _articleOptionColumn(
                                 "assets/svgs/commons/category.svg",
-                                widget.partyArticleModel.category),
+                                widget.partyArticle.category),
                             _articleOptionColumn(
                                 "assets/svgs/commons/process.svg",
-                                widget.partyArticleModel.process),
+                                widget.partyArticle.process),
                             _articleOptionColumn(
                               "assets/svgs/commons/play.svg",
                               DateFormat("yy.MM.dd")
-                                  .format(widget.partyArticleModel.startDate),
+                                  .format(widget.partyArticle.startDate),
                             ),
                             _articleOptionColumn(
                                 "assets/svgs/commons/calendar.svg",
-                                widget.partyArticleModel.span),
+                                widget.partyArticle.span),
                             _articleOptionColumn(
                                 "assets/svgs/commons/alarm.svg",
-                                "D-${Helper.dayDifference(DateTime.now(), widget.partyArticleModel.deadline)}일 전"),
+                                Helper.isOverdue(widget.partyArticle.deadline)),
                           ],
                         ),
                       ],
@@ -133,8 +133,7 @@ class _PartyArticleDetailState extends State<PartyArticleDetail> {
                     TitleColumn(
                       title: "지원 현황",
                       child: Column(
-                        children:
-                            widget.partyArticleModel.position.entries.map((e) {
+                        children: widget.partyArticle.position.entries.map((e) {
                           return SizedBox(
                             height: 55,
                             child: Row(
@@ -173,12 +172,12 @@ class _PartyArticleDetailState extends State<PartyArticleDetail> {
                     TitleColumn(
                       title: "기술 스택",
                       child: TechSkillRow(
-                          techSkill: widget.partyArticleModel.techSkill),
+                          techSkill: widget.partyArticle.techSkill),
                     ),
                     TitleColumn(
                       title: "프로젝트 소개",
                       child: Html(
-                        data: widget.partyArticleModel.description,
+                        data: widget.partyArticle.description,
                       ),
                     ),
                   ],

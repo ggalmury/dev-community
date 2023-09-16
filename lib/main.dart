@@ -1,4 +1,6 @@
+import 'package:dev_community/apis/auth_api.dart';
 import 'package:dev_community/apis/party_api.dart';
+import 'package:dev_community/bloc/global/user_account_bloc.dart';
 import 'package:dev_community/bloc/screen/party/party_article_bloc.dart';
 import 'package:dev_community/bloc/screen/party/search_filter_bloc.dart';
 import 'package:dev_community/screens/index.dart';
@@ -7,18 +9,14 @@ import 'package:dev_community/utils/customs/custom_style.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
-import 'package:logger/logger.dart';
+import 'package:kakao_flutter_sdk/kakao_flutter_sdk_template.dart';
 
-var logger = Logger(
-  printer: PrettyPrinter(lineLength: 60, colors: true),
-);
+void main() async {
+  await dotenv.load();
+  KakaoSdk.init(nativeAppKey: dotenv.env["KAKAO_NATIVE_KEY"]);
 
-var loggerNoStack = Logger(
-  printer: PrettyPrinter(lineLength: 60, methodCount: 0),
-);
-
-void main() {
   runApp(const MyApp());
 }
 
@@ -32,9 +30,18 @@ class MyApp extends StatelessWidget {
         RepositoryProvider(
           create: (context) => PartyApi(),
         ),
+        RepositoryProvider(
+          create: (context) => AuthApi(),
+        ),
       ],
       child: MultiBlocProvider(
         providers: [
+          BlocProvider(
+            create: (context) => UserAccountBloc(
+              authApi: context.read<AuthApi>(),
+            ),
+            lazy: false,
+          ),
           BlocProvider(
             create: (context) => SearchFilterBloc(),
             lazy: false,
