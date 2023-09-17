@@ -3,6 +3,7 @@ import 'package:dev_community/apis/party_api.dart';
 import 'package:dev_community/bloc/global/user_account_bloc.dart';
 import 'package:dev_community/bloc/screen/party/party_article_bloc.dart';
 import 'package:dev_community/bloc/screen/party/search_filter_bloc.dart';
+import 'package:dev_community/repositories/key_value_store.dart';
 import 'package:dev_community/screens/index.dart';
 import 'package:dev_community/utils/customs/custom_color.dart';
 import 'package:dev_community/utils/customs/custom_style.dart';
@@ -16,6 +17,7 @@ import 'package:kakao_flutter_sdk/kakao_flutter_sdk_template.dart';
 void main() async {
   await dotenv.load();
   KakaoSdk.init(nativeAppKey: dotenv.env["KAKAO_NATIVE_KEY"]);
+  await KeyValueStore().initialize();
 
   runApp(const MyApp());
 }
@@ -39,6 +41,7 @@ class MyApp extends StatelessWidget {
           BlocProvider(
             create: (context) => UserAccountBloc(
               authApi: context.read<AuthApi>(),
+              keyValueStore: KeyValueStore(),
             ),
             lazy: false,
           ),

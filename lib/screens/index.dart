@@ -1,10 +1,10 @@
 import 'package:dev_community/bloc/global/user_account_bloc.dart';
 import 'package:dev_community/screens/home.dart';
-import 'package:dev_community/utils/enums/widget_property.dart';
+import 'package:dev_community/utils/enums/global.dart';
 import 'package:dev_community/utils/exceptions/request_canceled_exception.dart';
 import 'package:dev_community/utils/helpers/helper.dart';
 import 'package:dev_community/utils/helpers/screen_helper.dart';
-import 'package:dev_community/widgets/atoms/buttons/primary_btn.dart';
+import 'package:dev_community/widgets/atoms/buttons/login_btn.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -36,9 +36,18 @@ class _IndexState extends State<Index> {
     ScreenHelper.alertDialogHandler(
       context,
       title,
-      onPressed: () =>
+      callback: () =>
           context.read<UserAccountBloc>().add(SubmitAccountErrorEvent()),
     );
+  }
+
+  @override
+  void initState() {
+    super.initState();
+
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      context.read<UserAccountBloc>().add(InitUserAccountEvent());
+    });
   }
 
   @override
@@ -56,46 +65,43 @@ class _IndexState extends State<Index> {
             padding: const EdgeInsets.all(20),
             child: Column(
               children: [
-                BlocBuilder<UserAccountBloc, UserAccountState>(
-                  builder: (context, state) {
-                    return Column(
-                      children: [
-                        Text(state.userAccount.uuid),
-                        const SizedBox(
-                          height: 20,
-                        ),
-                        Text(state.isLoggedIn.toString()),
-                        const SizedBox(
-                          height: 20,
-                        ),
-                        Text(state.exception.toString()),
-                      ],
-                    );
-                  },
+                const SizedBox(
+                  height: 450,
+                  child: Center(
+                    child: Text(
+                      "DevWithMe",
+                      style: TextStyle(
+                        fontSize: 30,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ),
                 ),
                 Expanded(
-                    child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    PrimaryBtn(
-                      label: "카카오로 로그인",
-                      onPressed: _kakaoLogin,
-                      widgetSize: WidgetSize.big,
-                      widgetColor: WidgetColor.mint,
-                      width: double.infinity,
-                    ),
-                    const SizedBox(
-                      height: 30,
-                    ),
-                    PrimaryBtn(
-                      label: "로그아웃",
-                      onPressed: _logout,
-                      widgetSize: WidgetSize.big,
-                      widgetColor: WidgetColor.mint,
-                      width: double.infinity,
-                    ),
-                  ],
-                ))
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      LoginBtn(
+                        loginType: LoginType.email,
+                        onPressed: () {},
+                      ),
+                      const SizedBox(
+                        height: 14,
+                      ),
+                      LoginBtn(
+                        loginType: LoginType.kakao,
+                        onPressed: _kakaoLogin,
+                      ),
+                      const SizedBox(
+                        height: 14,
+                      ),
+                      LoginBtn(
+                        loginType: LoginType.google,
+                        onPressed: _logout,
+                      ),
+                    ],
+                  ),
+                )
               ],
             ),
           ),

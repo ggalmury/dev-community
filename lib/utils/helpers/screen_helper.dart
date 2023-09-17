@@ -24,7 +24,7 @@ class ScreenHelper {
   }
 
   static void alertDialogHandler(BuildContext context, String title,
-      {String? content, String? label, Function? onPressed}) {
+      {String? content, String? label, Function? callback}) {
     showDialog(
       context: context,
       builder: (context) {
@@ -55,10 +55,7 @@ class ScreenHelper {
                       content != null ? Text(content) : const SizedBox(),
                       PrimaryBtn(
                         label: label ?? "확인",
-                        onPressed: () {
-                          if (onPressed != null) onPressed();
-                          Navigator.pop(context);
-                        },
+                        onPressed: () => Navigator.pop(context),
                         widgetSize: WidgetSize.big,
                         widgetColor: WidgetColor.mint,
                         width: double.infinity,
@@ -70,10 +67,7 @@ class ScreenHelper {
                   top: 10,
                   right: 10,
                   child: IconButton(
-                    onPressed: () {
-                      if (onPressed != null) onPressed();
-                      Navigator.pop(context);
-                    },
+                    onPressed: () => Navigator.pop(context),
                     icon: const Icon(Icons.close),
                   ),
                 )
@@ -82,7 +76,9 @@ class ScreenHelper {
           ),
         );
       },
-    );
+    ).then((value) {
+      if (callback != null) callback();
+    });
   }
 
   static Future<DateTime?> datePickerHandler(BuildContext context) async {

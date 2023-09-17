@@ -27,6 +27,10 @@ class Helper {
     return map;
   }
 
+  static String dateToIsoString(DateTime s) {
+    return s.toUtc().toIso8601String();
+  }
+
   static int dayDifference(DateTime s, DateTime e) {
     Duration diff = e.difference(s);
     return diff.inDays;

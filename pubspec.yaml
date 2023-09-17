@@ -25,6 +25,7 @@ dependencies:
   html_editor_enhanced: ^2.5.1
   json_annotation: ^4.8.1
   kakao_flutter_sdk: ^1.5.0
+  shared_preferences: ^2.2.1
 
 dev_dependencies:
   flutter_test:
@@ -38,5 +39,6 @@ flutter:
   assets:
     - .env
     - assets/images/
-    - assets/svgs/skills/
     - assets/svgs/commons/
+    - assets/svgs/logos/
+    - assets/svgs/skills/

@@ -1,4 +1,5 @@
 import 'package:dev_community/apis/party_api.dart';
+import 'package:dev_community/bloc/global/user_account_bloc.dart';
 import 'package:dev_community/models/party_article_creator.dart';
 import 'package:dev_community/screens/party.dart';
 import 'package:dev_community/utils/constant.dart';
@@ -202,8 +203,11 @@ class _PartyArticleCreateState extends State<PartyArticleCreate> {
   void _submit() async {
     if (!_validate()) return;
 
+    final String poster =
+        context.read<UserAccountBloc>().state.userAccount.nickname!;
+
     PartyArticleCreator partyArticleCreateModel = PartyArticleCreator(
-        poster: "테스터",
+        poster: poster,
         category: currentCategory,
         title: _titleController.text,
         description: await _htmlEditorController.getText(),
@@ -211,8 +215,8 @@ class _PartyArticleCreateState extends State<PartyArticleCreate> {
         position: Helper.pairListToMap<String, int>(currentPosition),
         process: currentProcess!,
         location: currentLocation,
-        deadline: currentDeadline!.toUtc().toIso8601String(),
-        startDate: currentStartDate!.toUtc().toIso8601String(),
+        deadline: Helper.dateToIsoString(currentDeadline!),
+        startDate: Helper.dateToIsoString(currentStartDate!),
         span: currentSpan!);
 
     if (!mounted) return;
@@ -221,7 +225,7 @@ class _PartyArticleCreateState extends State<PartyArticleCreate> {
         await context.read<PartyApi>().createArticle(partyArticleCreateModel);
 
     if (isCreated && mounted) {
-      ScreenHelper.alertDialogHandler(context, "게시물이 등록되었습니다!", onPressed: () {
+      ScreenHelper.alertDialogHandler(context, "게시물이 등록되었습니다!", callback: () {
         Helper.pushRemoveScreen(context, const Party());
       });
     }
