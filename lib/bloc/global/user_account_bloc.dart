@@ -1,4 +1,5 @@
 import 'package:dev_community/apis/auth_api.dart';
+import 'package:dev_community/models/token.dart';
 import 'package:dev_community/models/user_account.dart';
 import 'package:dev_community/repositories/key_value_store.dart';
 import 'package:dev_community/utils/logger.dart';
@@ -12,8 +13,8 @@ class UserAccountBloc extends Bloc<UserAccountEvent, UserAccountState> {
   UserAccountBloc({required this.authApi, required this.keyValueStore})
       : super(InitUserAccountState()) {
     on<UserAccountEvent>((event, emit) async {
-      if (event is InitUserAccountEvent) {
-        _getAccountFromStore(event, emit);
+      if (event is AutoLoginEvent) {
+        await _autoLogin(event, emit);
       } else if (event is KakaoLoginEvent) {
         await _kakaoLogin(event, emit);
       } else if (event is LogoutEvent) {
@@ -24,19 +25,36 @@ class UserAccountBloc extends Bloc<UserAccountEvent, UserAccountState> {
     });
   }
 
-  void _getAccountFromStore(InitUserAccountEvent event, emit) {
-    UserAccount userAccount = keyValueStore.getUserAccount();
-    bool isLoggedIn = userAccount.uuid == "" ? false : true;
+  Future<void> _autoLogin(AutoLoginEvent event, emit) async {
+    try {
+      Token? token = keyValueStore.getToken();
 
-    emit(CurrentUserAccountState(
-        userAccount: userAccount, isLoggedIn: isLoggedIn, exception: null));
+      //TODO: implement auth token not exists error
+      if (token == null) return;
+
+      UserAccount userAccount = await authApi.fetchAutoLogin(token);
+
+      await keyValueStore.setToken(userAccount.token).then((_) {
+        emit(CurrentUserAccountState(
+            userAccount: userAccount, isLoggedIn: true, exception: null));
+      });
+    } catch (e) {
+      await keyValueStore.removeToken().then((_) {
+        emit(CurrentUserAccountState(
+            userAccount: state.userAccount,
+            isLoggedIn: state.isLoggedIn,
+            exception: e as Exception));
+      });
+
+      loggerNoStack.e("Error occurred in auto login process");
+    }
   }
 
   Future<void> _kakaoLogin(KakaoLoginEvent event, emit) async {
     try {
       UserAccount userAccount = await authApi.fetchKakaoLogin();
 
-      await keyValueStore.setUserAccount(userAccount).then((_) {
+      await keyValueStore.setToken(userAccount.token).then((_) {
         emit(CurrentUserAccountState(
             userAccount: userAccount, isLoggedIn: true, exception: null));
       });
@@ -48,16 +66,29 @@ class UserAccountBloc extends Bloc<UserAccountEvent, UserAccountState> {
           isLoggedIn: state.isLoggedIn,
           exception: e as Exception));
 
-      loggerNoStack.e("Error occured in Kakao login process");
+      loggerNoStack.e("Error occurred in Kakao login process");
     }
   }
 
   Future<void> _logout(LogoutEvent event, emit) async {
-    await keyValueStore.removeUserAccount().then((_) {
-      emit(InitUserAccountState());
-    });
+    try {
+      bool isLoggedOut = await authApi.fetchLogout(state.userAccount.uuid);
 
-    loggerNoStack.i("User logged out");
+      if (isLoggedOut) {
+        await keyValueStore.removeToken().then((_) {
+          emit(InitUserAccountState());
+        });
+
+        loggerNoStack.i("User logged out");
+      }
+    } catch (e) {
+      emit(CurrentUserAccountState(
+          userAccount: state.userAccount,
+          isLoggedIn: state.isLoggedIn,
+          exception: e as Exception));
+
+      loggerNoStack.e("Error occurred in logout process");
+    }
   }
 
   void _submitError(SubmitAccountErrorEvent event, emit) {
@@ -73,7 +104,7 @@ class UserAccountBloc extends Bloc<UserAccountEvent, UserAccountState> {
 // event
 abstract class UserAccountEvent extends Equatable {}
 
-class InitUserAccountEvent extends UserAccountEvent {
+class AutoLoginEvent extends UserAccountEvent {
   @override
   List<Object?> get props => [];
 }

@@ -35,13 +35,16 @@ class MyApp extends StatelessWidget {
         RepositoryProvider(
           create: (context) => AuthApi(),
         ),
+        RepositoryProvider(
+          create: (context) => KeyValueStore(),
+        )
       ],
       child: MultiBlocProvider(
         providers: [
           BlocProvider(
             create: (context) => UserAccountBloc(
               authApi: context.read<AuthApi>(),
-              keyValueStore: KeyValueStore(),
+              keyValueStore: context.read<KeyValueStore>(),
             ),
             lazy: false,
           ),

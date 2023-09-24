@@ -1,3 +1,4 @@
+import 'package:dev_community/models/token.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 part 'user_account.g.dart';
@@ -6,6 +7,7 @@ part 'user_account.g.dart';
 class UserAccount {
   final String uuid;
   final DateTime createdAt;
+  final Token token;
   final String? email;
   final String? nickname;
   final String? profileImgUrl;
@@ -15,21 +17,24 @@ class UserAccount {
   final String? kakaoProfileImgUrl;
   final String? kakaoThumbnailImgUrl;
 
-  UserAccount(
-      {required this.uuid,
-      required this.createdAt,
-      this.email,
-      this.nickname,
-      this.profileImgUrl,
-      this.kakaoId,
-      this.kakaoEmail,
-      this.kakaoNickname,
-      this.kakaoProfileImgUrl,
-      this.kakaoThumbnailImgUrl});
+  UserAccount({
+    required this.uuid,
+    required this.createdAt,
+    required this.token,
+    this.email,
+    this.nickname,
+    this.profileImgUrl,
+    this.kakaoId,
+    this.kakaoEmail,
+    this.kakaoNickname,
+    this.kakaoProfileImgUrl,
+    this.kakaoThumbnailImgUrl,
+  });
 
   UserAccount.init()
       : uuid = "",
         createdAt = DateTime.now(),
+        token = Token.init(),
         email = "",
         nickname = "",
         profileImgUrl = "",

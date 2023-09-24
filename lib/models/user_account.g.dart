@@ -9,6 +9,7 @@ part of 'user_account.dart';
 UserAccount _$UserAccountFromJson(Map<String, dynamic> json) => UserAccount(
       uuid: json['uuid'] as String,
       createdAt: DateTime.parse(json['createdAt'] as String),
+      token: Token.fromJson(json['token'] as Map<String, dynamic>),
       email: json['email'] as String?,
       nickname: json['nickname'] as String?,
       profileImgUrl: json['profileImgUrl'] as String?,
@@ -23,6 +24,7 @@ Map<String, dynamic> _$UserAccountToJson(UserAccount instance) =>
     <String, dynamic>{
       'uuid': instance.uuid,
       'createdAt': instance.createdAt.toIso8601String(),
+      'token': instance.token,
       'email': instance.email,
       'nickname': instance.nickname,
       'profileImgUrl': instance.profileImgUrl,

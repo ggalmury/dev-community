@@ -1,9 +1,12 @@
 import 'package:dev_community/bloc/global/user_account_bloc.dart';
+import 'package:dev_community/models/token.dart';
+import 'package:dev_community/repositories/key_value_store.dart';
 import 'package:dev_community/screens/home.dart';
 import 'package:dev_community/utils/enums/global.dart';
 import 'package:dev_community/utils/exceptions/request_canceled_exception.dart';
 import 'package:dev_community/utils/helpers/helper.dart';
 import 'package:dev_community/utils/helpers/screen_helper.dart';
+import 'package:dev_community/utils/logger.dart';
 import 'package:dev_community/widgets/atoms/buttons/login_btn.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -46,7 +49,13 @@ class _IndexState extends State<Index> {
     super.initState();
 
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      context.read<UserAccountBloc>().add(InitUserAccountEvent());
+      Token? token = context.read<KeyValueStore>().getToken();
+      loggerNoStack.i(
+          "accessToken: ${token?.accessToken}, refreshToken: ${token?.refreshToken}");
+
+      if (context.read<KeyValueStore>().getToken() != null) {
+        context.read<UserAccountBloc>().add(AutoLoginEvent());
+      }
     });
   }
 

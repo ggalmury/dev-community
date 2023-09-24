@@ -1,3 +1,4 @@
+import 'package:dev_community/bloc/global/user_account_bloc.dart';
 import 'package:dev_community/bloc/screen/party/party_article_bloc.dart';
 import 'package:dev_community/screens/party_article_create.dart';
 import 'package:dev_community/utils/customs/custom_color.dart';
@@ -74,6 +75,11 @@ class _PartyState extends State<Party> {
         ),
         centerTitle: false,
         actions: [
+          IconButton(
+              onPressed: () {
+                context.read<UserAccountBloc>().add(LogoutEvent());
+              },
+              icon: const Icon(Icons.logout)),
           PopupMenuButton(
             icon: const Icon(Icons.menu),
             shadowColor: Colors.transparent,

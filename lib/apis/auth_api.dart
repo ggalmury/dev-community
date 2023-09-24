@@ -1,5 +1,7 @@
 import 'dart:convert';
+import 'package:dev_community/models/token.dart';
 import 'package:dev_community/models/user_account.dart';
+import 'package:dev_community/utils/exceptions/authentication_exception.dart';
 import 'package:dev_community/utils/exceptions/network_exception.dart';
 import 'package:dev_community/utils/exceptions/request_canceled_exception.dart';
 import 'package:flutter/services.dart';
@@ -22,20 +24,56 @@ class AuthApi {
         throw RequestCanceledException("User canceled Kakao login process");
       } else {
         throw NetworkException(
-            "Error occured in requesting Kakao oAuth token process");
+            "Error occurred in requesting Kakao oAuth token process");
       }
     }
 
-    Response response = await post(Uri.parse("$path/kakao"),
-        headers: {'Content-Type': 'application/json'},
-        body: jsonEncode({"accessToken": oAuthToken.accessToken}));
+    Response response = await post(Uri.parse("$path/kakao"), headers: {
+      'Content-Type': 'application/json',
+      'Authorization': 'Bearer ${oAuthToken.accessToken}',
+    });
 
     if (response.statusCode == 201) {
       UserAccount userAccount = UserAccount.fromJson(jsonDecode(response.body));
 
       return userAccount;
     } else {
-      throw NetworkException("Error occured in Kakao login process");
+      throw NetworkException("Error occurred in Kakao login process");
+    }
+  }
+
+  Future<UserAccount> fetchAutoLogin(Token token) async {
+    Response response = await post(
+      Uri.parse("$path/auto-login"),
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer ${token.accessToken}',
+        "X-Refresh-Token": token.refreshToken,
+      },
+    );
+
+    if (response.statusCode == 201) {
+      UserAccount userAccount = UserAccount.fromJson(jsonDecode(response.body));
+
+      return userAccount;
+    } else if (response.statusCode == 401) {
+      throw AuthenticationException("Unauthorization");
+    } else {
+      throw NetworkException("Error occurred in auto login process");
+    }
+  }
+
+  Future<bool> fetchLogout(String uuid) async {
+    Response response = await post(Uri.parse("$path/logout"),
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: jsonEncode({"uuid": uuid}));
+
+    if (response.statusCode == 201) {
+      return true;
+    } else {
+      throw NetworkException("Error occurred in logout process");
     }
   }
 }
