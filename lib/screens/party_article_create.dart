@@ -192,11 +192,6 @@ class _PartyArticleCreateState extends State<PartyArticleCreate> {
       return false;
     }
 
-    if (currentDeadline!.isBefore(DateTime.now())) {
-      ScreenHelper.alertDialogHandler(context, "마감기한을 재선택 해주세요.");
-      return false;
-    }
-
     return true;
   }
 

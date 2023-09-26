@@ -3,6 +3,8 @@ import 'package:dev_community/models/token.dart';
 import 'package:dev_community/repositories/key_value_store.dart';
 import 'package:dev_community/screens/home.dart';
 import 'package:dev_community/utils/enums/global.dart';
+import 'package:dev_community/utils/exceptions/authentication_exception.dart';
+import 'package:dev_community/utils/exceptions/not_found_exception.dart';
 import 'package:dev_community/utils/exceptions/request_canceled_exception.dart';
 import 'package:dev_community/utils/helpers/helper.dart';
 import 'package:dev_community/utils/helpers/screen_helper.dart';
@@ -32,6 +34,10 @@ class _IndexState extends State<Index> {
 
     if (e is RequestCanceledException) {
       title = "카카오 로그인 요청이 취소되었습니다.";
+    } else if (e is NotFoundException) {
+      title = "인증 정보가 존재하지 않습니다.";
+    } else if (e is AuthenticationException) {
+      title = "인증이 만료되었습니다.";
     } else {
       title = "네트워크 에러가 발생했습니다.";
     }
@@ -53,7 +59,7 @@ class _IndexState extends State<Index> {
       loggerNoStack.i(
           "accessToken: ${token?.accessToken}, refreshToken: ${token?.refreshToken}");
 
-      if (context.read<KeyValueStore>().getToken() != null) {
+      if (token != null) {
         context.read<UserAccountBloc>().add(AutoLoginEvent());
       }
     });

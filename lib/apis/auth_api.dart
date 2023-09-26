@@ -21,10 +21,9 @@ class AuthApi {
           : await UserApi.instance.loginWithKakaoAccount();
     } catch (e) {
       if (e is PlatformException && e.code == "CANCELED") {
-        throw RequestCanceledException("User canceled Kakao login process");
+        throw RequestCanceledException();
       } else {
-        throw NetworkException(
-            "Error occurred in requesting Kakao oAuth token process");
+        throw NetworkException();
       }
     }
 
@@ -38,7 +37,7 @@ class AuthApi {
 
       return userAccount;
     } else {
-      throw NetworkException("Error occurred in Kakao login process");
+      throw NetworkException();
     }
   }
 
@@ -57,9 +56,9 @@ class AuthApi {
 
       return userAccount;
     } else if (response.statusCode == 401) {
-      throw AuthenticationException("Unauthorization");
+      throw AuthenticationException();
     } else {
-      throw NetworkException("Error occurred in auto login process");
+      throw NetworkException();
     }
   }
 
@@ -73,7 +72,7 @@ class AuthApi {
     if (response.statusCode == 201) {
       return true;
     } else {
-      throw NetworkException("Error occurred in logout process");
+      throw NetworkException();
     }
   }
 }

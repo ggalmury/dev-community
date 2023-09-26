@@ -2,6 +2,8 @@ import 'package:dev_community/apis/auth_api.dart';
 import 'package:dev_community/models/token.dart';
 import 'package:dev_community/models/user_account.dart';
 import 'package:dev_community/repositories/key_value_store.dart';
+import 'package:dev_community/utils/exceptions/authentication_exception.dart';
+import 'package:dev_community/utils/exceptions/not_found_exception.dart';
 import 'package:dev_community/utils/logger.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -29,8 +31,13 @@ class UserAccountBloc extends Bloc<UserAccountEvent, UserAccountState> {
     try {
       Token? token = keyValueStore.getToken();
 
-      //TODO: implement auth token not exists error
-      if (token == null) return;
+      if (token == null) {
+        emit(CurrentUserAccountState(
+            userAccount: state.userAccount,
+            isLoggedIn: state.isLoggedIn,
+            exception: NotFoundException()));
+        return;
+      }
 
       UserAccount userAccount = await authApi.fetchAutoLogin(token);
 
@@ -38,13 +45,20 @@ class UserAccountBloc extends Bloc<UserAccountEvent, UserAccountState> {
         emit(CurrentUserAccountState(
             userAccount: userAccount, isLoggedIn: true, exception: null));
       });
-    } catch (e) {
+    } on AuthenticationException catch (e) {
       await keyValueStore.removeToken().then((_) {
         emit(CurrentUserAccountState(
             userAccount: state.userAccount,
             isLoggedIn: state.isLoggedIn,
-            exception: e as Exception));
+            exception: e));
       });
+
+      loggerNoStack.e("Token exired");
+    } catch (e) {
+      emit(CurrentUserAccountState(
+          userAccount: state.userAccount,
+          isLoggedIn: state.isLoggedIn,
+          exception: e as Exception));
 
       loggerNoStack.e("Error occurred in auto login process");
     }

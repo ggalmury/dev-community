@@ -19,7 +19,7 @@ class PartyApi {
 
       return articles;
     } else {
-      throw NetworkException("Failed to load party article list");
+      throw NetworkException();
     }
   }
 
@@ -32,7 +32,7 @@ class PartyApi {
     if (response.statusCode == 201) {
       return true;
     } else {
-      throw NetworkException("Failed to create party article");
+      throw NetworkException();
     }
   }
 }

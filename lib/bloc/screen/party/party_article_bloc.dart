@@ -1,6 +1,7 @@
 import 'package:bloc/bloc.dart';
 import 'package:dev_community/apis/party_api.dart';
 import 'package:dev_community/models/party_article.dart';
+import 'package:dev_community/utils/logger.dart';
 import 'package:equatable/equatable.dart';
 
 class PartyArticleBloc extends Bloc<PartyArticleEvent, PartyArticleState> {
@@ -8,7 +9,11 @@ class PartyArticleBloc extends Bloc<PartyArticleEvent, PartyArticleState> {
 
   PartyArticleBloc({required this.partyApi}) : super(InitPartyArticleState()) {
     on<PartyArticleEvent>((event, emit) async {
-      if (event is FetchPartyArticleEvent) await _fetchArticle(event, emit);
+      if (event is FetchPartyArticleEvent) {
+        await _fetchArticle(event, emit);
+      } else if (event is SubmitPartyArticleEvent) {
+        _submitError(event, emit);
+      }
     });
   }
 
@@ -16,10 +21,22 @@ class PartyArticleBloc extends Bloc<PartyArticleEvent, PartyArticleState> {
     try {
       List<PartyArticle> result = await partyApi.getArticle();
 
-      emit(CurrentPartyArticleState(partyArticleModel: result));
+      emit(
+          CurrentPartyArticleState(partyArticleModel: result, exception: null));
     } catch (e) {
-      // 데이터 조회 실패 예외처리
+      emit(CurrentPartyArticleState(
+          partyArticleModel: state.partyArticleModel,
+          exception: e as Exception));
+
+      loggerNoStack.e("Error occurred in fetching party articles");
     }
+  }
+
+  void _submitError(SubmitPartyArticleEvent event, emit) {
+    emit(CurrentPartyArticleState(
+        partyArticleModel: state.partyArticleModel, exception: null));
+
+    loggerNoStack.i("Reset party article error");
   }
 }
 
@@ -27,8 +44,11 @@ class PartyArticleBloc extends Bloc<PartyArticleEvent, PartyArticleState> {
 abstract class PartyArticleEvent extends Equatable {}
 
 class FetchPartyArticleEvent extends PartyArticleEvent {
-  FetchPartyArticleEvent();
+  @override
+  List<Object?> get props => [];
+}
 
+class SubmitPartyArticleEvent extends PartyArticleEvent {
   @override
   List<Object?> get props => [];
 }
@@ -36,20 +56,23 @@ class FetchPartyArticleEvent extends PartyArticleEvent {
 // state
 abstract class PartyArticleState extends Equatable {
   final List<PartyArticle> partyArticleModel;
+  final Exception? exception;
 
-  const PartyArticleState({required this.partyArticleModel});
+  const PartyArticleState(
+      {required this.partyArticleModel, required this.exception});
 }
 
 class InitPartyArticleState extends PartyArticleState {
-  InitPartyArticleState() : super(partyArticleModel: []);
+  InitPartyArticleState() : super(partyArticleModel: [], exception: null);
 
   @override
-  List<Object?> get props => [partyArticleModel];
+  List<Object?> get props => [partyArticleModel, exception];
 }
 
 class CurrentPartyArticleState extends PartyArticleState {
-  const CurrentPartyArticleState({required super.partyArticleModel});
+  const CurrentPartyArticleState(
+      {required super.partyArticleModel, required super.exception});
 
   @override
-  List<Object?> get props => [partyArticleModel];
+  List<Object?> get props => [partyArticleModel, exception];
 }
