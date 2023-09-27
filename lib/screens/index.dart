@@ -55,7 +55,7 @@ class _IndexState extends State<Index> {
     super.initState();
 
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      Token? token = context.read<KeyValueStore>().getToken();
+      Token? token = KeyValueStore().getToken();
       loggerNoStack.i(
           "accessToken: ${token?.accessToken}, refreshToken: ${token?.refreshToken}");
 

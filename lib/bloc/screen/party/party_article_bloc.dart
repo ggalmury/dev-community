@@ -23,6 +23,8 @@ class PartyArticleBloc extends Bloc<PartyArticleEvent, PartyArticleState> {
 
       emit(
           CurrentPartyArticleState(partyArticleModel: result, exception: null));
+
+      loggerNoStack.i("Party article responsed");
     } catch (e) {
       emit(CurrentPartyArticleState(
           partyArticleModel: state.partyArticleModel,

@@ -3,7 +3,6 @@ import 'package:dev_community/bloc/screen/party/party_article_bloc.dart';
 import 'package:dev_community/screens/party_article_create.dart';
 import 'package:dev_community/utils/customs/custom_color.dart';
 import 'package:dev_community/utils/enums/global.dart';
-import 'package:dev_community/utils/logger.dart';
 import 'package:dev_community/widgets/atoms/inputs/search_input.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -94,9 +93,7 @@ class _PartyState extends State<Party> {
       ),
       body: RefreshIndicator(
         onRefresh: () async {
-          await Future.delayed(const Duration(seconds: 1));
-
-          loggerNoStack.i("refresh project page");
+          context.read<PartyArticleBloc>().add(FetchPartyArticleEvent());
         },
         child: CustomScrollView(
           controller: _scrollController,

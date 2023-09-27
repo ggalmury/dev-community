@@ -1,4 +1,5 @@
 import 'package:dev_community/apis/auth_api.dart';
+import 'package:dev_community/apis/dio/dio_provider.dart';
 import 'package:dev_community/apis/party_api.dart';
 import 'package:dev_community/bloc/global/user_account_bloc.dart';
 import 'package:dev_community/bloc/screen/party/party_article_bloc.dart';
@@ -17,7 +18,9 @@ import 'package:kakao_flutter_sdk/kakao_flutter_sdk_template.dart';
 void main() async {
   await dotenv.load();
   KakaoSdk.init(nativeAppKey: dotenv.env["KAKAO_NATIVE_KEY"]);
+
   await KeyValueStore().initialize();
+  DioProvider().initialize();
 
   runApp(const MyApp());
 }
@@ -35,16 +38,12 @@ class MyApp extends StatelessWidget {
         RepositoryProvider(
           create: (context) => AuthApi(),
         ),
-        RepositoryProvider(
-          create: (context) => KeyValueStore(),
-        )
       ],
       child: MultiBlocProvider(
         providers: [
           BlocProvider(
             create: (context) => UserAccountBloc(
               authApi: context.read<AuthApi>(),
-              keyValueStore: context.read<KeyValueStore>(),
             ),
             lazy: false,
           ),

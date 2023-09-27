@@ -1,11 +1,12 @@
 import 'dart:convert';
+import 'package:dev_community/apis/dio/dio_provider.dart';
 import 'package:dev_community/models/token.dart';
 import 'package:dev_community/models/user_account.dart';
 import 'package:dev_community/utils/exceptions/authentication_exception.dart';
 import 'package:dev_community/utils/exceptions/network_exception.dart';
 import 'package:dev_community/utils/exceptions/request_canceled_exception.dart';
+import 'package:dio/dio.dart';
 import 'package:flutter/services.dart';
-import 'package:http/http.dart';
 import 'package:kakao_flutter_sdk/kakao_flutter_sdk_talk.dart';
 
 class AuthApi {
@@ -27,13 +28,15 @@ class AuthApi {
       }
     }
 
-    Response response = await post(Uri.parse("$path/kakao"), headers: {
-      'Content-Type': 'application/json',
-      'Authorization': 'Bearer ${oAuthToken.accessToken}',
-    });
+    Response response = await DioProvider().dio.post("$path/kakao",
+        options: Options(
+          headers: {
+            'Authorization': 'Bearer ${oAuthToken.accessToken}',
+          },
+        ));
 
     if (response.statusCode == 201) {
-      UserAccount userAccount = UserAccount.fromJson(jsonDecode(response.body));
+      UserAccount userAccount = UserAccount.fromJson(response.data);
 
       return userAccount;
     } else {
@@ -42,17 +45,16 @@ class AuthApi {
   }
 
   Future<UserAccount> fetchAutoLogin(Token token) async {
-    Response response = await post(
-      Uri.parse("$path/auto-login"),
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': 'Bearer ${token.accessToken}',
-        "X-Refresh-Token": token.refreshToken,
-      },
-    );
+    Response response = await DioProvider().dio.post("$path/auto-login",
+        options: Options(
+          headers: {
+            'Authorization': 'Bearer ${token.accessToken}',
+            "X-Refresh-Token": token.refreshToken,
+          },
+        ));
 
     if (response.statusCode == 201) {
-      UserAccount userAccount = UserAccount.fromJson(jsonDecode(response.body));
+      UserAccount userAccount = UserAccount.fromJson(response.data);
 
       return userAccount;
     } else if (response.statusCode == 401) {
@@ -63,11 +65,9 @@ class AuthApi {
   }
 
   Future<bool> fetchLogout(String uuid) async {
-    Response response = await post(Uri.parse("$path/logout"),
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: jsonEncode({"uuid": uuid}));
+    Response response = await DioProvider()
+        .dio
+        .post("$path/logout", data: jsonEncode({"uuid": uuid}));
 
     if (response.statusCode == 201) {
       return true;
