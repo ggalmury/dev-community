@@ -23,8 +23,8 @@ class PrimaryBtn extends StatelessWidget {
     Color? color;
 
     switch (widgetColor) {
-      case WidgetColor.mint:
-        color = CustomColor.mint;
+      case WidgetColor.black:
+        color = CustomColor.black;
         break;
       case WidgetColor.white:
         color = Colors.white;
@@ -43,7 +43,7 @@ class PrimaryBtn extends StatelessWidget {
     Color? color;
 
     switch (widgetColor) {
-      case WidgetColor.mint:
+      case WidgetColor.black:
         color = Colors.white;
         break;
       case WidgetColor.white:

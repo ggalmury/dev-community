@@ -68,7 +68,7 @@ class MyApp extends StatelessWidget {
             Locale('ko'),
           ],
           theme: ThemeData(
-            scaffoldBackgroundColor: CustomColor.whiteGrey1,
+            scaffoldBackgroundColor: Colors.white,
             inputDecorationTheme: const InputDecorationTheme(
               border: InputBorder.none,
             ),

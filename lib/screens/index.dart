@@ -59,7 +59,7 @@ class _IndexState extends State<Index> {
       loggerNoStack.i(
           "accessToken: ${token?.accessToken}, refreshToken: ${token?.refreshToken}");
 
-      if (token != null) {
+      if (token != null && mounted) {
         context.read<UserAccountBloc>().add(AutoLoginEvent());
       }
     });

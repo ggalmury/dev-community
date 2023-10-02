@@ -71,7 +71,7 @@ class _HomeState extends State<Home> {
               ),
             ],
             type: BottomNavigationBarType.fixed,
-            selectedItemColor: CustomColor.mint,
+            selectedItemColor: CustomColor.purple,
             elevation: 8.0,
           ),
         ),

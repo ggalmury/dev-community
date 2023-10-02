@@ -56,7 +56,7 @@ class LoginBtn extends StatelessWidget {
 
     switch (loginType) {
       case LoginType.email:
-        color = CustomColor.mint;
+        color = CustomColor.purple;
         break;
       case LoginType.kakao:
         color = CustomColor.kakao;

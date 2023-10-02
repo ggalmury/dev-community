@@ -1,6 +1,7 @@
 import 'package:dev_community/models/party_article.dart';
 import 'package:dev_community/screens/party_article_detail.dart';
 import 'package:dev_community/utils/customs/custom_color.dart';
+import 'package:dev_community/widgets/atoms/article_type.dart';
 import 'package:dev_community/widgets/molecules/techskill_row.dart';
 import 'package:flutter/material.dart';
 import '../../utils/helpers/helper.dart';
@@ -32,7 +33,7 @@ class _PartyArticleContainerState extends State<PartyArticleContainer> {
       onTap: _navigateToDetail,
       child: Container(
         height: 300,
-        margin: const EdgeInsets.only(top: 20),
+        margin: const EdgeInsets.only(top: 10),
         color: Colors.white,
         child: Padding(
           padding: const EdgeInsets.all(20),
@@ -44,19 +45,7 @@ class _PartyArticleContainerState extends State<PartyArticleContainer> {
                 children: [
                   Row(
                     children: [
-                      Container(
-                        width: 120,
-                        height: 30,
-                        color: CustomColor.whiteGrey2,
-                        child: Center(
-                          child: Text(
-                            widget.partyArticle.category,
-                            style: const TextStyle(
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                        ),
-                      ),
+                      ArticleType(label: widget.partyArticle.category),
                       const SizedBox(
                         width: 15,
                       ),

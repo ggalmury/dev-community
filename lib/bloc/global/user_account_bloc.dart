@@ -75,7 +75,6 @@ class UserAccountBloc extends Bloc<UserAccountEvent, UserAccountState> {
           userAccount: UserAccount.init(),
           isLoggedIn: false,
           exception: e as Exception));
-
       loggerNoStack.e("Error occurred in auto login process");
     }
   }

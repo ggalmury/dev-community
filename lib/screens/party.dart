@@ -75,10 +75,11 @@ class _PartyState extends State<Party> {
         centerTitle: false,
         actions: [
           IconButton(
-              onPressed: () {
-                context.read<UserAccountBloc>().add(LogoutEvent());
-              },
-              icon: const Icon(Icons.logout)),
+            onPressed: () {
+              context.read<UserAccountBloc>().add(LogoutEvent());
+            },
+            icon: const Icon(Icons.logout),
+          ),
           PopupMenuButton(
             icon: const Icon(Icons.menu),
             shadowColor: Colors.transparent,
@@ -91,6 +92,7 @@ class _PartyState extends State<Party> {
           ),
         ],
       ),
+      backgroundColor: CustomColor.whiteGrey1,
       body: RefreshIndicator(
         onRefresh: () async {
           context.read<PartyArticleBloc>().add(FetchPartyArticleEvent());
@@ -101,77 +103,80 @@ class _PartyState extends State<Party> {
             SliverToBoxAdapter(
               child: Container(
                 color: Colors.white,
-                child: Padding(
-                  padding: const EdgeInsets.all(20),
-                  child: Column(
-                    children: [
-                      Container(
-                        height: 200,
-                        color: CustomColor.whiteGrey1,
-                        child: const Center(
-                          child: Text("banner"),
-                        ),
+                child: Column(
+                  children: [
+                    Container(
+                      height: 200,
+                      color: CustomColor.whiteGrey1,
+                      child: const Center(
+                        child: Text("banner"),
                       ),
-                      Padding(
-                        padding: const EdgeInsets.symmetric(vertical: 10),
-                        child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              SearchInput(
-                                  textEditingController:
-                                      _searchOptionController,
-                                  hintText: "검색할 제목을 입력해 주세요."),
-                              IntrinsicWidth(
-                                child: TextButton(
-                                    onPressed: _setSearchFilterToggle,
-                                    child: Row(
-                                      children: [
-                                        const Text("상세검색"),
-                                        Icon(
-                                          searchFilterToggle
-                                              ? Icons.keyboard_arrow_up
-                                              : Icons.keyboard_arrow_down,
-                                        )
-                                      ],
-                                    )),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 20,
+                        vertical: 20,
+                      ),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          SearchInput(
+                              textEditingController: _searchOptionController,
+                              hintText: "검색할 제목을 입력해 주세요."),
+                          IntrinsicWidth(
+                            child: TextButton(
+                              onPressed: _setSearchFilterToggle,
+                              child: Row(
+                                children: [
+                                  const Text("상세검색"),
+                                  Icon(
+                                    searchFilterToggle
+                                        ? Icons.keyboard_arrow_up
+                                        : Icons.keyboard_arrow_down,
+                                  )
+                                ],
                               ),
-                              if (searchFilterToggle)
-                                const Column(children: [
-                                  SearchFilterRow(
-                                    label: "기술스택",
-                                    category: SearchFilterCategory.techSkill,
-                                    elements: constants.techSkill,
-                                  ),
-                                  SearchFilterRow(
-                                    label: "포지션",
-                                    category: SearchFilterCategory.position,
-                                    elements: constants.position,
-                                  ),
-                                  SearchFilterRow(
-                                    label: "진행방식",
-                                    category: SearchFilterCategory.process,
-                                    elements: constants.process,
-                                  ),
-                                  SearchFilterRow(
-                                    label: "지역",
-                                    category: SearchFilterCategory.location,
-                                    elements: constants.location,
-                                  ),
-                                  SearchFilterRow(
-                                    label: "카테고리",
-                                    category: SearchFilterCategory.category,
-                                    elements: constants.category,
-                                  ),
-                                  SearchFilterRow(
-                                    label: "진행여부",
-                                    category: SearchFilterCategory.inProgress,
-                                    elements: constants.inProgress,
-                                  ),
-                                ]),
-                            ]),
+                            ),
+                          ),
+                          if (searchFilterToggle)
+                            const Column(
+                              children: [
+                                SearchFilterRow(
+                                  label: "기술스택",
+                                  category: SearchFilterCategory.techSkill,
+                                  elements: constants.techSkill,
+                                ),
+                                SearchFilterRow(
+                                  label: "포지션",
+                                  category: SearchFilterCategory.position,
+                                  elements: constants.position,
+                                ),
+                                SearchFilterRow(
+                                  label: "진행방식",
+                                  category: SearchFilterCategory.process,
+                                  elements: constants.process,
+                                ),
+                                SearchFilterRow(
+                                  label: "지역",
+                                  category: SearchFilterCategory.location,
+                                  elements: constants.location,
+                                ),
+                                SearchFilterRow(
+                                  label: "카테고리",
+                                  category: SearchFilterCategory.category,
+                                  elements: constants.category,
+                                ),
+                                SearchFilterRow(
+                                  label: "진행여부",
+                                  category: SearchFilterCategory.inProgress,
+                                  elements: constants.inProgress,
+                                ),
+                              ],
+                            ),
+                        ],
                       ),
-                    ],
-                  ),
+                    ),
+                  ],
                 ),
               ),
             ),
@@ -194,7 +199,7 @@ class _PartyState extends State<Party> {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: _scrollToTop,
-        backgroundColor: CustomColor.mint,
+        backgroundColor: CustomColor.black,
         child: const Icon(Icons.arrow_upward),
       ),
     );

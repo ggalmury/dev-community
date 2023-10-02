@@ -105,7 +105,7 @@ class _SearchFilterBodyState extends State<SearchFilterBody> {
                   onPressed: _closeBottomSheet,
                   fontSize: 16,
                   widgetSize: WidgetSize.big,
-                  widgetColor: WidgetColor.mint,
+                  widgetColor: WidgetColor.black,
                 ),
               )
             ],

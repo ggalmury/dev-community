@@ -57,7 +57,7 @@ class ScreenHelper {
                         label: label ?? "확인",
                         onPressed: () => Navigator.pop(context),
                         widgetSize: WidgetSize.big,
-                        widgetColor: WidgetColor.mint,
+                        widgetColor: WidgetColor.black,
                         width: double.infinity,
                       )
                     ],

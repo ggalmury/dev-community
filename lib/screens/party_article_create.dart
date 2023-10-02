@@ -4,6 +4,7 @@ import 'package:dev_community/models/party_article_creator.dart';
 import 'package:dev_community/screens/party.dart';
 import 'package:dev_community/utils/constant.dart';
 import 'package:dev_community/utils/enums/widget_property.dart';
+import 'package:dev_community/utils/exceptions/bad_request_exception.dart';
 import 'package:dev_community/utils/helpers/helper.dart';
 import 'package:dev_community/utils/helpers/pair.dart';
 import 'package:dev_community/utils/helpers/screen_helper.dart';
@@ -196,6 +197,8 @@ class _PartyArticleCreateState extends State<PartyArticleCreate> {
   }
 
   void _submit() async {
+    bool isCreated;
+
     if (!_validate()) return;
 
     final String poster =
@@ -216,13 +219,23 @@ class _PartyArticleCreateState extends State<PartyArticleCreate> {
 
     if (!mounted) return;
 
-    bool isCreated =
-        await context.read<PartyApi>().createArticle(partyArticleCreateModel);
+    try {
+      isCreated =
+          await context.read<PartyApi>().createArticle(partyArticleCreateModel);
 
-    if (isCreated && mounted) {
-      ScreenHelper.alertDialogHandler(context, "게시물이 등록되었습니다!", callback: () {
-        Helper.pushRemoveScreen(context, const Party());
-      });
+      if (isCreated && mounted) {
+        ScreenHelper.alertDialogHandler(context, "게시물이 등록되었습니다!", callback: () {
+          Helper.pushRemoveScreen(context, const Party());
+        });
+      }
+    } on BadRequestException {
+      if (!mounted) return;
+
+      ScreenHelper.alertDialogHandler(context, "잘못된 요청입니다.");
+    } catch (e) {
+      if (!mounted) return;
+
+      ScreenHelper.alertDialogHandler(context, "네트워크 에러가 발생했습니다.");
     }
   }
 
@@ -260,7 +273,7 @@ class _PartyArticleCreateState extends State<PartyArticleCreate> {
               label: "완료",
               onPressed: _submit,
               widgetSize: WidgetSize.small,
-              widgetColor: WidgetColor.mint,
+              widgetColor: WidgetColor.black,
             ),
           ),
         ],
@@ -404,7 +417,7 @@ class _PartyArticleCreateState extends State<PartyArticleCreate> {
                             label: "추가",
                             onPressed: _addPositionRow,
                             widgetSize: WidgetSize.small,
-                            widgetColor: WidgetColor.mint,
+                            widgetColor: WidgetColor.black,
                           ),
                         )
                     ],

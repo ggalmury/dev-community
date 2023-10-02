@@ -9,9 +9,8 @@ class TitleColumn extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: double.infinity,
       margin: const EdgeInsets.symmetric(
-        vertical: 25,
+        vertical: 30,
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
