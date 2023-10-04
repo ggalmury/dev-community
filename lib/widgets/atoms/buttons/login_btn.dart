@@ -35,9 +35,6 @@ class LoginBtn extends StatelessWidget {
     String icon;
 
     switch (loginType) {
-      case LoginType.email:
-        icon = "assets/svgs/logos/google.svg";
-        break;
       case LoginType.kakao:
         icon = "assets/svgs/logos/kakao.svg";
         break;
@@ -56,9 +53,6 @@ class LoginBtn extends StatelessWidget {
     Color? color;
 
     switch (loginType) {
-      case LoginType.email:
-        color = CustomColor.purple;
-        break;
       case LoginType.kakao:
         color = CustomColor.kakao;
         break;
@@ -66,6 +60,7 @@ class LoginBtn extends StatelessWidget {
         color = CustomColor.google;
         break;
       default:
+        color = CustomColor.google;
         break;
     }
 

@@ -2,14 +2,18 @@ import 'package:dev_community/utils/customs/custom_color.dart';
 import 'package:flutter/material.dart';
 
 class SliverTabBar extends SliverPersistentHeaderDelegate {
+  final List<String> tabs;
+
+  SliverTabBar({required this.tabs});
+
   @override
   Widget build(
       BuildContext context, double shrinkOffset, bool overlapsContent) {
     return Align(
       child: Container(
         color: Colors.white,
-        child: const TabBar(
-          indicator: BoxDecoration(
+        child: TabBar(
+          indicator: const BoxDecoration(
             border: Border(
               bottom: BorderSide(
                 color: CustomColor.purple,
@@ -18,13 +22,12 @@ class SliverTabBar extends SliverPersistentHeaderDelegate {
             ),
           ),
           labelColor: Colors.black,
-          labelStyle: TextStyle(
+          labelStyle: const TextStyle(
             fontWeight: FontWeight.bold,
           ),
-          tabs: [
-            Tab(text: '정보'),
-            Tab(text: '댓글'),
-          ],
+          tabs: tabs.map((e) {
+            return Tab(text: e);
+          }).toList(),
         ),
       ),
     );

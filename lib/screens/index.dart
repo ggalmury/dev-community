@@ -97,13 +97,6 @@ class _IndexState extends State<Index> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       LoginBtn(
-                        loginType: LoginType.email,
-                        onPressed: () {},
-                      ),
-                      const SizedBox(
-                        height: 14,
-                      ),
-                      LoginBtn(
                         loginType: LoginType.kakao,
                         onPressed: _kakaoLogin,
                       ),
@@ -113,6 +106,13 @@ class _IndexState extends State<Index> {
                       LoginBtn(
                         loginType: LoginType.google,
                         onPressed: _logout,
+                      ),
+                      const SizedBox(
+                        height: 14,
+                      ),
+                      LoginBtn(
+                        loginType: LoginType.email,
+                        onPressed: () {},
                       ),
                     ],
                   ),

@@ -12,7 +12,7 @@ class ArticleType extends StatelessWidget {
       height: 30,
       color: label == "프로젝트"
           ? const Color.fromARGB(255, 213, 236, 255)
-          : const Color.fromARGB(255, 255, 218, 255),
+          : const Color.fromARGB(255, 255, 218, 218),
       child: Center(
         child: Text(
           label,

@@ -75,12 +75,15 @@ class _PartyState extends State<Party> {
         ),
         centerTitle: false,
         actions: [
+          //////////////////////////////////////
+          // TODO: remove this widget after debug
           IconButton(
             onPressed: () {
               context.read<UserAccountBloc>().add(LogoutEvent());
             },
             icon: const Icon(Icons.logout),
           ),
+          //////////////////////////////////////
           PopupMenuButton(
             icon: const Icon(Icons.menu),
             shadowColor: Colors.transparent,
@@ -98,109 +101,109 @@ class _PartyState extends State<Party> {
         onRefresh: () async {
           context.read<PartyArticleBloc>().add(FetchPartyArticleEvent());
         },
-        child: CustomScrollView(
+        child: NestedScrollView(
           controller: _scrollController,
-          slivers: [
-            SliverToBoxAdapter(
-              child: Container(
-                color: Colors.white,
-                child: Column(
-                  children: [
-                    Container(
-                      height: 200,
-                      color: CustomColor.whiteGrey1,
-                      child: const Center(
-                        child: Text("banner"),
+          headerSliverBuilder: (context, innerBoxIsScrolled) {
+            return [
+              SliverToBoxAdapter(
+                child: Container(
+                  color: Colors.white,
+                  child: Column(
+                    children: [
+                      Container(
+                        height: 200,
+                        color: CustomColor.whiteGrey1,
+                        child: const Center(
+                          child: Text("banner"),
+                        ),
                       ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: 20,
-                        vertical: 20,
-                      ),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          SearchInput(
-                              textEditingController: _searchOptionController,
-                              hintText: "검색할 제목을 입력해 주세요."),
-                          IntrinsicWidth(
-                            child: TextButton(
-                              onPressed: _setSearchFilterToggle,
-                              child: Row(
-                                children: [
-                                  Text(
-                                    "상세검색",
-                                    style: TextStyle(
-                                      fontSize: CustomStyle.fs16,
+                      Padding(
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 20,
+                          vertical: 20,
+                        ),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            SearchInput(
+                                textEditingController: _searchOptionController,
+                                hintText: "검색할 제목을 입력해 주세요."),
+                            IntrinsicWidth(
+                              child: TextButton(
+                                onPressed: _setSearchFilterToggle,
+                                child: Row(
+                                  children: [
+                                    Text(
+                                      "상세검색",
+                                      style: TextStyle(
+                                        fontSize: CustomStyle.fs16,
+                                      ),
                                     ),
-                                  ),
-                                  Icon(
-                                    searchFilterToggle
-                                        ? Icons.keyboard_arrow_up
-                                        : Icons.keyboard_arrow_down,
-                                  )
-                                ],
+                                    Icon(
+                                      searchFilterToggle
+                                          ? Icons.keyboard_arrow_up
+                                          : Icons.keyboard_arrow_down,
+                                    )
+                                  ],
+                                ),
                               ),
                             ),
-                          ),
-                          if (searchFilterToggle)
-                            const Column(
-                              children: [
-                                SearchFilterRow(
-                                  label: "기술스택",
-                                  category: SearchFilterCategory.techSkill,
-                                  elements: constants.techSkill,
-                                ),
-                                SearchFilterRow(
-                                  label: "포지션",
-                                  category: SearchFilterCategory.position,
-                                  elements: constants.position,
-                                ),
-                                SearchFilterRow(
-                                  label: "진행방식",
-                                  category: SearchFilterCategory.process,
-                                  elements: constants.process,
-                                ),
-                                SearchFilterRow(
-                                  label: "지역",
-                                  category: SearchFilterCategory.location,
-                                  elements: constants.location,
-                                ),
-                                SearchFilterRow(
-                                  label: "카테고리",
-                                  category: SearchFilterCategory.category,
-                                  elements: constants.category,
-                                ),
-                                SearchFilterRow(
-                                  label: "진행여부",
-                                  category: SearchFilterCategory.inProgress,
-                                  elements: constants.inProgress,
-                                ),
-                              ],
-                            ),
-                        ],
+                            if (searchFilterToggle)
+                              const Column(
+                                children: [
+                                  SearchFilterRow(
+                                    label: "기술스택",
+                                    category: SearchFilterCategory.techSkill,
+                                    elements: constants.techSkill,
+                                  ),
+                                  SearchFilterRow(
+                                    label: "포지션",
+                                    category: SearchFilterCategory.position,
+                                    elements: constants.position,
+                                  ),
+                                  SearchFilterRow(
+                                    label: "진행방식",
+                                    category: SearchFilterCategory.process,
+                                    elements: constants.process,
+                                  ),
+                                  SearchFilterRow(
+                                    label: "지역",
+                                    category: SearchFilterCategory.location,
+                                    elements: constants.location,
+                                  ),
+                                  SearchFilterRow(
+                                    label: "카테고리",
+                                    category: SearchFilterCategory.category,
+                                    elements: constants.category,
+                                  ),
+                                  SearchFilterRow(
+                                    label: "진행여부",
+                                    category: SearchFilterCategory.inProgress,
+                                    elements: constants.inProgress,
+                                  ),
+                                ],
+                              ),
+                          ],
+                        ),
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
               ),
-            ),
-            BlocBuilder<PartyArticleBloc, PartyArticleState>(
-              builder: (context, state) {
-                return SliverList(
-                  delegate: SliverChildBuilderDelegate(
-                    (context, index) {
-                      return PartyArticleContainer(
-                        partyArticle: state.partyArticleModel[index],
-                      );
-                    },
-                    childCount: state.partyArticleModel.length,
-                  ),
-                );
-              },
-            )
-          ],
+            ];
+          },
+          body: BlocBuilder<PartyArticleBloc, PartyArticleState>(
+            builder: (context, state) {
+              return ListView.builder(
+                itemCount: state.partyArticleModel.length,
+                itemBuilder: (context, index) {
+                  return PartyArticleContainer(
+                    partyArticle: state.partyArticleModel[index],
+                  );
+                },
+              );
+            },
+          ),
         ),
       ),
       floatingActionButton: FloatingActionButton(
