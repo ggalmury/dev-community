@@ -1,3 +1,4 @@
+import 'package:dev_community/utils/customs/custom_style.dart';
 import 'package:dev_community/utils/enums/global.dart';
 import 'package:dev_community/utils/enums/widget_property.dart';
 import 'package:dev_community/widgets/atoms/buttons/primary_btn.dart';
@@ -47,8 +48,8 @@ class _SearchFilterBodyState extends State<SearchFilterBody> {
             height: 20,
             child: Text(
               widget.label,
-              style: const TextStyle(
-                fontSize: 18,
+              style: TextStyle(
+                fontSize: CustomStyle.fs18,
                 fontWeight: FontWeight.bold,
               ),
             )),
@@ -91,7 +92,7 @@ class _SearchFilterBodyState extends State<SearchFilterBody> {
                 child: PrimaryBtn(
                   label: "초기화",
                   onPressed: _dispatchResetEvent,
-                  fontSize: 16,
+                  fontSize: CustomStyle.fs16,
                   widgetSize: WidgetSize.big,
                   widgetColor: WidgetColor.white,
                 ),
@@ -103,7 +104,7 @@ class _SearchFilterBodyState extends State<SearchFilterBody> {
                 child: PrimaryBtn(
                   label: "적용",
                   onPressed: _closeBottomSheet,
-                  fontSize: 16,
+                  fontSize: CustomStyle.fs16,
                   widgetSize: WidgetSize.big,
                   widgetColor: WidgetColor.black,
                 ),

@@ -1,5 +1,7 @@
 import 'package:dev_community/models/party_article.dart';
 import 'package:dev_community/utils/customs/custom_color.dart';
+import 'package:dev_community/utils/customs/custom_style.dart';
+import 'package:dev_community/utils/helpers/helper.dart';
 import 'package:dev_community/widgets/atoms/article_type.dart';
 import 'package:dev_community/widgets/molecules/sliver_tabbar.dart';
 import 'package:dev_community/widgets/molecules/techskill_row.dart';
@@ -17,6 +19,30 @@ class PartyArticleDetail extends StatefulWidget {
 }
 
 class _PartyArticleDetailState extends State<PartyArticleDetail> {
+  Widget _articleInfoRow(String title, String data) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 10),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Text(
+            title,
+            style: TextStyle(
+              fontSize: CustomStyle.fs16,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+          Text(
+            data,
+            style: TextStyle(
+              fontSize: CustomStyle.fs14,
+            ),
+          )
+        ],
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -49,28 +75,30 @@ class _PartyArticleDetailState extends State<PartyArticleDetail> {
                       left: 20,
                       right: 20,
                       child: Container(
-                        height: 170,
+                        height: 180,
                         decoration: BoxDecoration(
-                            borderRadius: const BorderRadius.all(
-                              Radius.circular(20),
+                          borderRadius: const BorderRadius.all(
+                            Radius.circular(20),
+                          ),
+                          color: Colors.white,
+                          boxShadow: [
+                            BoxShadow(
+                              color: CustomColor.whiteGrey2.withOpacity(0.5),
+                              blurRadius: 10,
+                              offset: const Offset(0, 10),
                             ),
-                            color: Colors.white,
-                            boxShadow: [
-                              BoxShadow(
-                                color: CustomColor.whiteGrey2.withOpacity(0.5),
-                                blurRadius: 10,
-                                offset: const Offset(0, 10),
-                              ),
-                            ]),
-                        padding: const EdgeInsets.all(20),
+                          ],
+                        ),
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 10, vertical: 25),
                         child: Column(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             Text(
                               widget.partyArticle.title,
                               textAlign: TextAlign.center,
-                              style: const TextStyle(
-                                fontSize: 24,
+                              style: TextStyle(
+                                fontSize: CustomStyle.fs20,
                                 fontWeight: FontWeight.bold,
                               ),
                             ),
@@ -93,8 +121,8 @@ class _PartyArticleDetailState extends State<PartyArticleDetail> {
                                 ),
                                 Text(
                                   widget.partyArticle.poster,
-                                  style: const TextStyle(
-                                    fontSize: 16,
+                                  style: TextStyle(
+                                    fontSize: CustomStyle.fs16,
                                     fontWeight: FontWeight.bold,
                                   ),
                                 ),
@@ -117,12 +145,27 @@ class _PartyArticleDetailState extends State<PartyArticleDetail> {
                   children: [
                     SingleChildScrollView(
                       child: Padding(
-                        padding: const EdgeInsets.symmetric(
-                          horizontal: 30,
-                          vertical: 10,
-                        ),
+                        padding: const EdgeInsets.symmetric(horizontal: 25),
                         child: Column(
                           children: [
+                            TitleColumn(
+                              title: "${widget.partyArticle.category} 정보",
+                              child: Column(
+                                children: [
+                                  _articleInfoRow(
+                                      "마감 기한",
+                                      Helper.isOverdue(
+                                          widget.partyArticle.deadline)),
+                                  _articleInfoRow(
+                                      "진행 방식",
+                                      widget.partyArticle.process == "온라인"
+                                          ? widget.partyArticle.process
+                                          : "${widget.partyArticle.process} / ${widget.partyArticle.location}"),
+                                  _articleInfoRow(
+                                      "기간", widget.partyArticle.span),
+                                ],
+                              ),
+                            ),
                             TitleColumn(
                               title: "지원 현황",
                               child: Column(
@@ -136,8 +179,8 @@ class _PartyArticleDetailState extends State<PartyArticleDetail> {
                                       children: [
                                         Text(
                                           e.key,
-                                          style: const TextStyle(
-                                            fontSize: 16,
+                                          style: TextStyle(
+                                            fontSize: CustomStyle.fs16,
                                             fontWeight: FontWeight.bold,
                                           ),
                                         ),

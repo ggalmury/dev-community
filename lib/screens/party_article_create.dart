@@ -333,16 +333,19 @@ class _PartyArticleCreateState extends State<PartyArticleCreate> {
                     ],
                   ),
                 ),
-                TitleColumn(
-                  title: "마감 기한",
-                  child: SecondaryBtn(
-                    label: currentDeadline == null
-                        ? "마감 날짜"
-                        : DateFormat("yy.MM.dd").format(currentDeadline!),
-                    onPressed: _setDeadline,
-                    widgetSize: WidgetSize.big,
-                    width: 160,
-                    alignment: Alignment.centerLeft,
+                Align(
+                  alignment: Alignment.centerLeft,
+                  child: TitleColumn(
+                    title: "마감 기한",
+                    child: SecondaryBtn(
+                      label: currentDeadline == null
+                          ? "마감 날짜"
+                          : DateFormat("yy.MM.dd").format(currentDeadline!),
+                      onPressed: _setDeadline,
+                      widgetSize: WidgetSize.big,
+                      width: 160,
+                      alignment: Alignment.centerLeft,
+                    ),
                   ),
                 ),
                 TitleColumn(

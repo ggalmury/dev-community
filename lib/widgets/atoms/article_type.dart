@@ -1,5 +1,4 @@
-import 'package:dev_community/utils/customs/custom_color.dart';
-import 'package:flutter/widgets.dart';
+import 'package:flutter/material.dart';
 
 class ArticleType extends StatelessWidget {
   final String label;
@@ -11,7 +10,9 @@ class ArticleType extends StatelessWidget {
     return Container(
       width: 120,
       height: 30,
-      color: CustomColor.whiteGrey2,
+      color: label == "프로젝트"
+          ? const Color.fromARGB(255, 213, 236, 255)
+          : const Color.fromARGB(255, 255, 218, 255),
       child: Center(
         child: Text(
           label,

@@ -2,6 +2,7 @@ import 'package:dev_community/bloc/global/user_account_bloc.dart';
 import 'package:dev_community/bloc/screen/party/party_article_bloc.dart';
 import 'package:dev_community/screens/party_article_create.dart';
 import 'package:dev_community/utils/customs/custom_color.dart';
+import 'package:dev_community/utils/customs/custom_style.dart';
 import 'package:dev_community/utils/enums/global.dart';
 import 'package:dev_community/widgets/atoms/inputs/search_input.dart';
 import 'package:flutter/material.dart';
@@ -128,7 +129,12 @@ class _PartyState extends State<Party> {
                               onPressed: _setSearchFilterToggle,
                               child: Row(
                                 children: [
-                                  const Text("상세검색"),
+                                  Text(
+                                    "상세검색",
+                                    style: TextStyle(
+                                      fontSize: CustomStyle.fs16,
+                                    ),
+                                  ),
                                   Icon(
                                     searchFilterToggle
                                         ? Icons.keyboard_arrow_up

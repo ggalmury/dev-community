@@ -1,3 +1,4 @@
+import 'package:dev_community/utils/customs/custom_style.dart';
 import 'package:flutter/material.dart';
 
 class TitleColumn extends StatelessWidget {
@@ -17,8 +18,8 @@ class TitleColumn extends StatelessWidget {
         children: [
           Text(
             title,
-            style: const TextStyle(
-              fontSize: 20,
+            style: TextStyle(
+              fontSize: CustomStyle.fs20,
               fontWeight: FontWeight.bold,
             ),
           ),

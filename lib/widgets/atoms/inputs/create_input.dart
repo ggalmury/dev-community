@@ -1,4 +1,5 @@
 import 'package:dev_community/utils/customs/custom_color.dart';
+import 'package:dev_community/utils/customs/custom_style.dart';
 import 'package:flutter/material.dart';
 
 class CreateInput extends StatelessWidget {
@@ -34,8 +35,8 @@ class CreateInput extends StatelessWidget {
         controller: textEditingController,
         keyboardType: keyboardType,
         maxLength: maxLength,
-        style: const TextStyle(
-          fontSize: 14,
+        style: TextStyle(
+          fontSize: CustomStyle.fs14,
         ),
         decoration: InputDecoration(
           hintText: hintText,

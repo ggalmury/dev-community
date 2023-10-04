@@ -40,7 +40,7 @@ class Helper {
     DateTime n = DateTime.now();
 
     return t.isBefore(n)
-        ? "마감"
+        ? "마감 😥"
         : "마감 D-${Helper.dayDifference(DateTime.now(), t)}";
   }
 

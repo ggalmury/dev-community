@@ -1,8 +1,8 @@
 import 'package:dev_community/bloc/screen/party/search_filter_bloc.dart';
+import 'package:dev_community/utils/customs/custom_style.dart';
 import 'package:dev_community/utils/enums/global.dart';
 import 'package:dev_community/utils/enums/widget_property.dart';
 import 'package:dev_community/widgets/atoms/buttons/secondary_btn.dart';
-import 'package:dev_community/widgets/atoms/chosen_tag.dart';
 import 'package:dev_community/widgets/organisms/search_filter_body.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -39,7 +39,7 @@ class _SearchFilterRowState extends State<SearchFilterRow> {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 5),
+      padding: const EdgeInsets.symmetric(vertical: 7),
       child: Row(
         children: [
           SecondaryBtn(
@@ -64,8 +64,15 @@ class _SearchFilterRowState extends State<SearchFilterRow> {
                     children: List.generate(
                       state.filterMap[widget.category]!.length,
                       (index) {
-                        return ChosenTag(
-                          label: state.filterMap[widget.category]![index],
+                        return Padding(
+                          padding: const EdgeInsets.only(right: 8),
+                          child: Text(
+                            "#${state.filterMap[widget.category]![index]}",
+                            style: TextStyle(
+                              fontSize: CustomStyle.fs14,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
                         );
                       },
                     ),

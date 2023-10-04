@@ -1,4 +1,5 @@
 import 'package:dev_community/utils/customs/custom_color.dart';
+import 'package:dev_community/utils/customs/custom_style.dart';
 import 'package:flutter/material.dart';
 
 class SearchInput extends StatelessWidget {
@@ -12,7 +13,7 @@ class SearchInput extends StatelessWidget {
   Widget build(BuildContext context) {
     return TextField(
       controller: textEditingController,
-      style: const TextStyle(fontSize: 14),
+      style: TextStyle(fontSize: CustomStyle.fs14),
       decoration: InputDecoration(
         hintText: hintText,
         filled: true,

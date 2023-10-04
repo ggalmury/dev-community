@@ -6,7 +6,6 @@ import 'package:dev_community/bloc/screen/party/party_article_bloc.dart';
 import 'package:dev_community/bloc/screen/party/search_filter_bloc.dart';
 import 'package:dev_community/repositories/key_value_store.dart';
 import 'package:dev_community/screens/index.dart';
-import 'package:dev_community/utils/customs/custom_color.dart';
 import 'package:dev_community/utils/customs/custom_style.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';

@@ -1,4 +1,5 @@
 import 'package:dev_community/utils/customs/custom_color.dart';
+import 'package:dev_community/utils/customs/custom_style.dart';
 import 'package:dev_community/utils/enums/global.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
@@ -99,8 +100,8 @@ class LoginBtn extends StatelessWidget {
             ),
             Text(
               _lableText(),
-              style: const TextStyle(
-                fontSize: 14,
+              style: TextStyle(
+                fontSize: CustomStyle.fs14,
                 fontWeight: FontWeight.bold,
               ),
             ),
