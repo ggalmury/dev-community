@@ -14,12 +14,16 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:kakao_flutter_sdk/kakao_flutter_sdk_template.dart';
 
-void main() async {
+Future<void> init() async {
   await dotenv.load();
-  KakaoSdk.init(nativeAppKey: dotenv.env["KAKAO_NATIVE_KEY"]);
-
   await KeyValueStore().initialize();
+
+  KakaoSdk.init(nativeAppKey: dotenv.env["KAKAO_NATIVE_KEY"]);
   DioProvider().initialize();
+}
+
+void main() async {
+  await init();
 
   runApp(const MyApp());
 }

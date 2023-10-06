@@ -33,7 +33,7 @@ class _IndexState extends State<Index> {
     String title;
 
     if (e is RequestCanceledException) {
-      title = "카카오 로그인 요청이 취소되었습니다.";
+      title = "로그인 요청이 취소되었습니다.";
     } else if (e is NotFoundException) {
       title = "인증 정보가 존재하지 않습니다.";
     } else if (e is AuthenticationException) {

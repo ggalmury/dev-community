@@ -3,41 +3,41 @@ import 'package:flutter/material.dart';
 
 class SliverTabBar extends SliverPersistentHeaderDelegate {
   final List<String> tabs;
+  final double height = 60;
 
   SliverTabBar({required this.tabs});
 
   @override
   Widget build(
       BuildContext context, double shrinkOffset, bool overlapsContent) {
-    return Align(
-      child: Container(
-        color: Colors.white,
-        child: TabBar(
-          indicator: const BoxDecoration(
-            border: Border(
-              bottom: BorderSide(
-                color: CustomColor.purple,
-                width: 2.0,
-              ),
+    return Container(
+      color: Colors.white,
+      height: height,
+      child: TabBar(
+        indicator: const BoxDecoration(
+          border: Border(
+            bottom: BorderSide(
+              color: CustomColor.purple,
+              width: 2.0,
             ),
           ),
-          labelColor: Colors.black,
-          labelStyle: const TextStyle(
-            fontWeight: FontWeight.bold,
-          ),
-          tabs: tabs.map((e) {
-            return Tab(text: e);
-          }).toList(),
         ),
+        labelColor: Colors.black,
+        labelStyle: const TextStyle(
+          fontWeight: FontWeight.bold,
+        ),
+        tabs: tabs.map((e) {
+          return Tab(text: e);
+        }).toList(),
       ),
     );
   }
 
   @override
-  double get maxExtent => 60.0;
+  double get maxExtent => height;
 
   @override
-  double get minExtent => 60.0;
+  double get minExtent => height;
 
   @override
   bool shouldRebuild(SliverPersistentHeaderDelegate oldDelegate) {

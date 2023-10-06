@@ -312,7 +312,7 @@ class _PartyArticleCreateState extends State<PartyArticleCreate> {
                   ),
                 ),
                 TitleColumn(
-                  title: "프로젝트 기간",
+                  title: "$currentCategory 기간",
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
