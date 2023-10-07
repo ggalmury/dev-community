@@ -1,5 +1,4 @@
 import 'package:dev_community/apis/party_api.dart';
-import 'package:dev_community/bloc/global/user_account_bloc.dart';
 import 'package:dev_community/models/party_article_creator.dart';
 import 'package:dev_community/screens/party.dart';
 import 'package:dev_community/utils/constant.dart';
@@ -20,14 +19,14 @@ import 'package:flutter_svg/svg.dart';
 import 'package:html_editor_enhanced/html_editor.dart';
 import 'package:intl/intl.dart';
 
-class PartyArticleCreate extends StatefulWidget {
-  const PartyArticleCreate({super.key});
+class PartyCreate extends StatefulWidget {
+  const PartyCreate({super.key});
 
   @override
-  State<PartyArticleCreate> createState() => _PartyArticleCreateState();
+  State<PartyCreate> createState() => _PartyCreateState();
 }
 
-class _PartyArticleCreateState extends State<PartyArticleCreate> {
+class _PartyCreateState extends State<PartyCreate> {
   final HtmlEditorController _htmlEditorController = HtmlEditorController();
   final TextEditingController _titleController = TextEditingController();
   final TextEditingController _techSkillController = TextEditingController();
@@ -201,11 +200,7 @@ class _PartyArticleCreateState extends State<PartyArticleCreate> {
 
     if (!_validate()) return;
 
-    final String poster =
-        context.read<UserAccountBloc>().state.userAccount.nickname!;
-
     PartyArticleCreator partyArticleCreateModel = PartyArticleCreator(
-        poster: poster,
         category: currentCategory,
         title: _titleController.text,
         description: await _htmlEditorController.getText(),

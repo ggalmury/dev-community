@@ -11,17 +11,17 @@ import 'package:dev_community/widgets/molecules/title_column.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_html/flutter_html.dart';
 
-class PartyArticleDetail extends StatefulWidget {
+class PartyDetail extends StatefulWidget {
   final PartyArticle partyArticle;
 
-  const PartyArticleDetail({super.key, required this.partyArticle});
+  const PartyDetail({super.key, required this.partyArticle});
 
   @override
-  State<PartyArticleDetail> createState() => _PartyArticleDetailState();
+  State<PartyDetail> createState() => _PartyDetailState();
 }
 
-class _PartyArticleDetailState extends State<PartyArticleDetail> {
-  Widget _articleInfoRow(String title, Widget child) {
+class _PartyDetailState extends State<PartyDetail> {
+  Widget _articleInfoRow({required String title, required Widget child}) {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 15),
       child: Row(
@@ -43,9 +43,7 @@ class _PartyArticleDetailState extends State<PartyArticleDetail> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        foregroundColor: Colors.black,
-      ),
+      appBar: AppBar(),
       body: SafeArea(
         child: DefaultTabController(
           length: 2,
@@ -93,23 +91,20 @@ class _PartyArticleDetailState extends State<PartyArticleDetail> {
                                 Row(
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   children: [
-                                    Container(
-                                      width: 25,
-                                      height: 25,
-                                      decoration: const BoxDecoration(
-                                        shape: BoxShape.circle,
-                                        image: DecorationImage(
-                                          // TODO: change image to poster's image
-                                          image: AssetImage(
-                                              "assets/images/darius.png"),
-                                        ),
+                                    ClipOval(
+                                      child: Image.network(
+                                        widget
+                                            .partyArticle.poster.profileImgUrl,
+                                        width: 25,
+                                        height: 25,
+                                        fit: BoxFit.cover,
                                       ),
                                     ),
                                     const SizedBox(
                                       width: 7,
                                     ),
                                     Text(
-                                      widget.partyArticle.poster,
+                                      widget.partyArticle.poster.nickname,
                                       style: TextStyle(
                                         fontSize: CustomStyle.fs16,
                                         fontWeight: FontWeight.bold,
@@ -151,8 +146,8 @@ class _PartyArticleDetailState extends State<PartyArticleDetail> {
                             child: Column(
                               children: [
                                 _articleInfoRow(
-                                  "마감 기한",
-                                  Text(
+                                  title: "마감 기한",
+                                  child: Text(
                                     Helper.isOverdue(
                                         widget.partyArticle.deadline),
                                     style: TextStyle(
@@ -161,8 +156,18 @@ class _PartyArticleDetailState extends State<PartyArticleDetail> {
                                   ),
                                 ),
                                 _articleInfoRow(
-                                  "진행 방식",
-                                  Text(
+                                  title: "시작 예정",
+                                  child: Text(
+                                    Helper.formattedDate(
+                                        widget.partyArticle.startDate),
+                                    style: TextStyle(
+                                      fontSize: CustomStyle.fs14,
+                                    ),
+                                  ),
+                                ),
+                                _articleInfoRow(
+                                  title: "진행 방식",
+                                  child: Text(
                                     widget.partyArticle.process == "온라인"
                                         ? widget.partyArticle.process
                                         : "${widget.partyArticle.process} / ${widget.partyArticle.location}",
@@ -172,8 +177,8 @@ class _PartyArticleDetailState extends State<PartyArticleDetail> {
                                   ),
                                 ),
                                 _articleInfoRow(
-                                  "기간",
-                                  Text(
+                                  title: "기간",
+                                  child: Text(
                                     widget.partyArticle.span,
                                     style: TextStyle(
                                       fontSize: CustomStyle.fs14,
@@ -189,8 +194,8 @@ class _PartyArticleDetailState extends State<PartyArticleDetail> {
                               children:
                                   widget.partyArticle.position.entries.map((e) {
                                 return _articleInfoRow(
-                                  e.key,
-                                  Row(
+                                  title: e.key,
+                                  child: Row(
                                     children: [
                                       Text(
                                         e.value.toString(),
@@ -225,11 +230,27 @@ class _PartyArticleDetailState extends State<PartyArticleDetail> {
                     ),
                   ),
                   // comment tab
-                  const SizedBox(
-                    child: Center(
-                      child: Text("댓글"),
-                    ),
-                  ),
+                  Column(
+                    children: [
+                      Expanded(
+                        child: ListView.builder(
+                          itemCount: 30,
+                          itemBuilder: (context, index) {
+                            return Container(
+                              height: 30,
+                              color: Colors.grey,
+                              margin: const EdgeInsets.symmetric(vertical: 10),
+                              child: const Text("asdf"),
+                            );
+                          },
+                        ),
+                      ),
+                      Container(
+                        height: 50,
+                        color: Colors.red,
+                      ),
+                    ],
+                  )
                 ],
               ),
             ),

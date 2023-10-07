@@ -1,5 +1,6 @@
 import 'package:dev_community/utils/helpers/pair.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
 class Helper {
   static List<T> toggleListElement<T>(List<T> l, dynamic d) {
@@ -27,8 +28,12 @@ class Helper {
     return map;
   }
 
-  static String dateToIsoString(DateTime s) {
-    return s.toUtc().toIso8601String();
+  static String formattedDate(DateTime d) {
+    return DateFormat("yyyy-MM-dd").format(d);
+  }
+
+  static String dateToIsoString(DateTime d) {
+    return d.toUtc().toIso8601String();
   }
 
   static int dayDifference(DateTime s, DateTime e) {

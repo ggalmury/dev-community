@@ -1,5 +1,5 @@
 import 'package:dev_community/models/party_article.dart';
-import 'package:dev_community/screens/party_article_detail.dart';
+import 'package:dev_community/screens/party_detail.dart';
 import 'package:dev_community/utils/customs/custom_color.dart';
 import 'package:dev_community/utils/customs/custom_style.dart';
 import 'package:dev_community/widgets/atoms/article_type.dart';
@@ -21,7 +21,7 @@ class _PartyArticleContainerState extends State<PartyArticleContainer> {
     Navigator.push<void>(
       context,
       MaterialPageRoute<void>(
-        builder: (BuildContext context) => PartyArticleDetail(
+        builder: (BuildContext context) => PartyDetail(
           partyArticle: widget.partyArticle,
         ),
       ),
@@ -62,7 +62,7 @@ class _PartyArticleContainerState extends State<PartyArticleContainer> {
                             fontSize: CustomStyle.fs14,
                             fontWeight: FontWeight.w600,
                           ),
-                        )
+                        ),
                       ],
                     ),
                     const Icon(Icons.favorite_border)

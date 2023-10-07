@@ -9,7 +9,7 @@ class PartyApi {
   final String path = "http://localhost:8080/party";
 
   Future<List<PartyArticle>> getArticle() async {
-    Response response = await DioProvider().dio.get("$path/articles");
+    Response response = await DioProvider().authDio.get("$path/articles");
 
     if (response.statusCode == 200) {
       List<dynamic> result = response.data;
@@ -26,7 +26,7 @@ class PartyApi {
 
   Future<bool> createArticle(
       PartyArticleCreator partyArticleCreateModel) async {
-    Response response = await DioProvider().dio.post("$path/create",
+    Response response = await DioProvider().authDio.post("$path/create",
         data: jsonEncode(partyArticleCreateModel.toJson()));
 
     if (response.statusCode == 201) {

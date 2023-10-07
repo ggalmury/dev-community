@@ -8,7 +8,6 @@ part of 'party_article_creator.dart';
 
 PartyArticleCreator _$PartyArticleCreatorFromJson(Map<String, dynamic> json) =>
     PartyArticleCreator(
-      poster: json['poster'] as String,
       category: json['category'] as String,
       title: json['title'] as String,
       description: json['description'] as String?,
@@ -25,7 +24,6 @@ PartyArticleCreator _$PartyArticleCreatorFromJson(Map<String, dynamic> json) =>
 Map<String, dynamic> _$PartyArticleCreatorToJson(
         PartyArticleCreator instance) =>
     <String, dynamic>{
-      'poster': instance.poster,
       'category': instance.category,
       'title': instance.title,
       'description': instance.description,

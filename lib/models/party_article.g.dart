@@ -7,7 +7,7 @@ part of 'party_article.dart';
 // **************************************************************************
 
 PartyArticle _$PartyArticleFromJson(Map<String, dynamic> json) => PartyArticle(
-      poster: json['poster'] as String,
+      id: json['id'] as int,
       title: json['title'] as String,
       description: json['description'] as String?,
       techSkill:
@@ -20,11 +20,12 @@ PartyArticle _$PartyArticleFromJson(Map<String, dynamic> json) => PartyArticle(
       span: json['span'] as String,
       location: json['location'] as String?,
       createdAt: DateTime.parse(json['createdAt'] as String),
+      poster: Poster.fromJson(json['poster'] as Map<String, dynamic>),
     );
 
 Map<String, dynamic> _$PartyArticleToJson(PartyArticle instance) =>
     <String, dynamic>{
-      'poster': instance.poster,
+      'id': instance.id,
       'title': instance.title,
       'description': instance.description,
       'techSkill': instance.techSkill,
@@ -36,4 +37,5 @@ Map<String, dynamic> _$PartyArticleToJson(PartyArticle instance) =>
       'span': instance.span,
       'location': instance.location,
       'createdAt': instance.createdAt.toIso8601String(),
+      'poster': instance.poster,
     };

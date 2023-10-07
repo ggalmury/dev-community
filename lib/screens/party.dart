@@ -1,6 +1,6 @@
 import 'package:dev_community/bloc/global/user_account_bloc.dart';
 import 'package:dev_community/bloc/screen/party/party_article_bloc.dart';
-import 'package:dev_community/screens/party_article_create.dart';
+import 'package:dev_community/screens/party_create.dart';
 import 'package:dev_community/utils/customs/custom_color.dart';
 import 'package:dev_community/utils/customs/custom_style.dart';
 import 'package:dev_community/utils/enums/global.dart';
@@ -41,7 +41,7 @@ class _PartyState extends State<Party> {
     Navigator.push<void>(
       context,
       MaterialPageRoute(
-        builder: (context) => const PartyArticleCreate(),
+        builder: (context) => const PartyCreate(),
       ),
     );
   }

@@ -4,7 +4,6 @@ part 'party_article_creator.g.dart';
 
 @JsonSerializable()
 class PartyArticleCreator {
-  final String poster;
   final String category;
   final String title;
   final String? description;
@@ -17,8 +16,7 @@ class PartyArticleCreator {
   final String span;
 
   const PartyArticleCreator(
-      {required this.poster,
-      required this.category,
+      {required this.category,
       required this.title,
       this.description,
       required this.techSkill,
