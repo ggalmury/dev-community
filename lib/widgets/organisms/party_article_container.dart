@@ -114,7 +114,7 @@ class _PartyArticleContainerState extends State<PartyArticleContainer> {
                                 borderRadius: BorderRadius.all(
                                   Radius.circular(10),
                                 ),
-                                color: CustomColor.whiteGrey1,
+                                color: CustomColor.greyLight,
                               ),
                               child: Center(
                                 child: Text(

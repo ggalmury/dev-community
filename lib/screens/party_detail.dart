@@ -69,7 +69,7 @@ class _PartyDetailState extends State<PartyDetail> {
                             color: Colors.white,
                             boxShadow: [
                               BoxShadow(
-                                color: CustomColor.whiteGrey2,
+                                color: CustomColor.grey,
                                 blurRadius: 10,
                               ),
                             ],

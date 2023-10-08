@@ -96,7 +96,7 @@ class _PartyState extends State<Party> {
           ),
         ],
       ),
-      backgroundColor: CustomColor.whiteGrey1,
+      backgroundColor: CustomColor.greyLight,
       body: RefreshIndicator(
         onRefresh: () async {
           context.read<PartyArticleBloc>().add(FetchPartyArticleEvent());
@@ -112,7 +112,7 @@ class _PartyState extends State<Party> {
                     children: [
                       Container(
                         height: 200,
-                        color: CustomColor.whiteGrey1,
+                        color: CustomColor.greyLight,
                         child: const Center(
                           child: Text("banner"),
                         ),

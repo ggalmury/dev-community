@@ -12,14 +12,15 @@ import 'package:dev_community/utils/helpers/screen_helper.dart';
 import 'package:dev_community/widgets/atoms/buttons/dropdown_btn.dart';
 import 'package:dev_community/widgets/atoms/buttons/primary_btn.dart';
 import 'package:dev_community/widgets/atoms/buttons/secondary_btn.dart';
+import 'package:dev_community/widgets/atoms/buttons/text_btn.dart';
 import 'package:dev_community/widgets/atoms/inputs/create_input.dart';
 import 'package:dev_community/widgets/atoms/buttons/toggle_btn.dart';
 import 'package:dev_community/widgets/molecules/title_column.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:html_editor_enhanced/html_editor.dart';
 import 'package:intl/intl.dart';
+import 'package:quill_html_editor/quill_html_editor.dart';
 
 class PartyCreate extends StatefulWidget {
   const PartyCreate({super.key});
@@ -29,7 +30,7 @@ class PartyCreate extends StatefulWidget {
 }
 
 class _PartyCreateState extends State<PartyCreate> {
-  final HtmlEditorController _htmlEditorController = HtmlEditorController();
+  final QuillEditorController _quillController = QuillEditorController();
   final TextEditingController _titleController = TextEditingController();
   final TextEditingController _techSkillController = TextEditingController();
 
@@ -199,7 +200,7 @@ class _PartyCreateState extends State<PartyCreate> {
     PartyArticleCreator partyArticleCreateModel = PartyArticleCreator(
         category: currentCategory,
         title: _titleController.text,
-        description: await _htmlEditorController.getText(),
+        description: await _quillController.getText(),
         techSkill: currentCategory == "프로젝트" ? currentTechSkill : null,
         position: currentCategory == "프로젝트"
             ? Helper.pairListToMap<String, int>(currentPosition)
@@ -280,7 +281,7 @@ class _PartyCreateState extends State<PartyCreate> {
             children: [
               Container(
                 height: 80,
-                color: CustomColor.whiteGrey1,
+                color: CustomColor.greyLight,
                 child: Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 20),
                   child: Row(
@@ -434,13 +435,10 @@ class _PartyCreateState extends State<PartyCreate> {
                                               ],
                                             ),
                                             if (index != 0)
-                                              PrimaryBtn(
+                                              TextBtn(
                                                 label: "삭제",
                                                 onPressed: () =>
                                                     _removePositionRow(index),
-                                                widgetSize: WidgetSize.small,
-                                                widgetColor: WidgetColor.white,
-                                                widgetShape: WidgetShape.square,
                                               ),
                                           ],
                                         ),
@@ -538,29 +536,51 @@ class _PartyCreateState extends State<PartyCreate> {
                       ),
                     TitleColumn(
                       title: "$currentCategory 설명",
-                      child: HtmlEditor(
-                        controller: _htmlEditorController,
-                        otherOptions: const OtherOptions(
-                          height: 400,
+                      child: Container(
+                        decoration: BoxDecoration(
+                          borderRadius: const BorderRadius.all(
+                            Radius.circular(10),
+                          ),
+                          border: Border.all(
+                            color: CustomColor.greyHeavy,
+                          ),
                         ),
-                        htmlToolbarOptions: const HtmlToolbarOptions(
-                          toolbarType: ToolbarType.nativeScrollable,
-                          toolbarPosition: ToolbarPosition.belowEditor,
-                          renderSeparatorWidget: false,
-                          defaultToolbarButtons: [
-                            FontButtons(clearAll: false),
-                            FontSettingButtons(
-                                fontSizeUnit: false, fontName: false),
-                            ColorButtons(),
-                            ListButtons(listStyles: false),
-                            ParagraphButtons(
-                              textDirection: false,
-                              lineHeight: false,
-                              caseConverter: false,
-                              increaseIndent: false,
-                              decreaseIndent: false,
-                            ),
-                          ],
+                        child: Padding(
+                          padding: const EdgeInsets.all(3),
+                          child: Column(
+                            children: [
+                              ToolBar(
+                                controller: _quillController,
+                                activeIconColor: CustomColor.purple,
+                                toolBarConfig: const [
+                                  ToolBarStyle.bold,
+                                  ToolBarStyle.italic,
+                                  ToolBarStyle.underline,
+                                  ToolBarStyle.strike,
+                                  ToolBarStyle.blockQuote,
+                                  ToolBarStyle.headerOne,
+                                  ToolBarStyle.headerTwo,
+                                  ToolBarStyle.size,
+                                  ToolBarStyle.color,
+                                  ToolBarStyle.background,
+                                  ToolBarStyle.align,
+                                  ToolBarStyle.indentAdd,
+                                  ToolBarStyle.indentMinus,
+                                ],
+                                iconSize: 20,
+                              ),
+                              SingleChildScrollView(
+                                child: QuillHtmlEditor(
+                                  controller: _quillController,
+                                  minHeight: 400,
+                                  padding: const EdgeInsets.symmetric(
+                                    vertical: 10,
+                                    horizontal: 5,
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
                         ),
                       ),
                     ),

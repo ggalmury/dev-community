@@ -29,7 +29,7 @@ class SecondaryBtn extends StatelessWidget {
         style: OutlinedButton.styleFrom(
           alignment: alignment,
           side: const BorderSide(
-            color: CustomColor.grey,
+            color: CustomColor.greyHeavy,
           ),
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(10),

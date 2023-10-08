@@ -25,11 +25,8 @@ class ToggleBtn extends StatelessWidget {
       case WidgetColor.black:
         color = CustomColor.black;
         break;
-      case WidgetColor.white:
-        color = Colors.white;
-        break;
       case WidgetColor.grey:
-        color = CustomColor.whiteGrey2;
+        color = CustomColor.greyLight;
         break;
       case WidgetColor.purple:
         color = CustomColor.purple;
@@ -46,9 +43,6 @@ class ToggleBtn extends StatelessWidget {
     switch (widgetColor) {
       case WidgetColor.black:
         color = Colors.white;
-        break;
-      case WidgetColor.white:
-        color = Colors.black;
         break;
       case WidgetColor.grey:
         color = Colors.black;
@@ -73,7 +67,7 @@ class ToggleBtn extends StatelessWidget {
               widgetShape == WidgetShape.square ? 10 : 20),
         ),
         side: BorderSide(
-          color: toggle == true ? Colors.transparent : CustomColor.whiteGrey2,
+          color: toggle == true ? Colors.transparent : CustomColor.greyLight,
           width: 1,
         ),
         backgroundColor: toggle == true ? _backgroundColor() : Colors.white,

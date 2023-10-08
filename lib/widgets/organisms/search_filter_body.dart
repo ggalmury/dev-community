@@ -2,6 +2,7 @@ import 'package:dev_community/utils/customs/custom_style.dart';
 import 'package:dev_community/utils/enums/global.dart';
 import 'package:dev_community/utils/enums/widget_property.dart';
 import 'package:dev_community/widgets/atoms/buttons/primary_btn.dart';
+import 'package:dev_community/widgets/atoms/buttons/text_btn.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../bloc/screen/party/search_filter_bloc.dart';
@@ -73,7 +74,7 @@ class _SearchFilterBodyState extends State<SearchFilterBody> {
                           onPressed: () {
                             _dispatchEvent(widget.elements[index]);
                           },
-                          widgetColor: WidgetColor.black,
+                          widgetColor: WidgetColor.grey,
                           widgetShape: WidgetShape.square,
                           toggle: state.filterMap[widget.category]!
                                   .contains(widget.elements[index])
@@ -91,13 +92,10 @@ class _SearchFilterBodyState extends State<SearchFilterBody> {
           child: Row(
             children: [
               Expanded(
-                child: PrimaryBtn(
+                child: TextBtn(
                   label: "초기화",
                   onPressed: _dispatchResetEvent,
                   fontSize: CustomStyle.fs16,
-                  widgetSize: WidgetSize.big,
-                  widgetColor: WidgetColor.white,
-                  widgetShape: WidgetShape.square,
                 ),
               ),
               const SizedBox(
@@ -109,7 +107,7 @@ class _SearchFilterBodyState extends State<SearchFilterBody> {
                   onPressed: _closeBottomSheet,
                   fontSize: CustomStyle.fs16,
                   widgetSize: WidgetSize.big,
-                  widgetColor: WidgetColor.black,
+                  widgetColor: WidgetColor.purple,
                   widgetShape: WidgetShape.square,
                 ),
               )
