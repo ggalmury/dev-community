@@ -11,9 +11,12 @@ PartyArticleCreator _$PartyArticleCreatorFromJson(Map<String, dynamic> json) =>
       category: json['category'] as String,
       title: json['title'] as String,
       description: json['description'] as String?,
-      techSkill:
-          (json['techSkill'] as List<dynamic>).map((e) => e as String).toList(),
-      position: Map<String, int>.from(json['position'] as Map),
+      techSkill: (json['techSkill'] as List<dynamic>?)
+          ?.map((e) => e as String)
+          .toList(),
+      position: (json['position'] as Map<String, dynamic>?)?.map(
+        (k, e) => MapEntry(k, e as int),
+      ),
       process: json['process'] as String,
       location: json['location'] as String?,
       deadline: json['deadline'] as String,

@@ -1,3 +1,4 @@
+import 'package:dev_community/utils/customs/custom_color.dart';
 import 'package:flutter/material.dart';
 
 class DropdownBtn extends StatelessWidget {
@@ -27,8 +28,10 @@ class DropdownBtn extends StatelessWidget {
       menuHeight: 280,
       inputDecorationTheme: InputDecorationTheme(
         border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(10),
-        ),
+            borderRadius: BorderRadius.circular(10),
+            borderSide: const BorderSide(
+              color: CustomColor.grey,
+            )),
         contentPadding: const EdgeInsets.only(
           left: 20,
         ),

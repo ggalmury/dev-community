@@ -7,6 +7,7 @@ class PrimaryBtn extends StatelessWidget {
   final void Function() onPressed;
   final WidgetSize widgetSize;
   final WidgetColor widgetColor;
+  final WidgetShape widgetShape;
   final double? width;
   final double? fontSize;
 
@@ -16,6 +17,7 @@ class PrimaryBtn extends StatelessWidget {
       required this.onPressed,
       required this.widgetSize,
       required this.widgetColor,
+      required this.widgetShape,
       this.width,
       this.fontSize});
 
@@ -23,6 +25,9 @@ class PrimaryBtn extends StatelessWidget {
     Color? color;
 
     switch (widgetColor) {
+      case WidgetColor.purple:
+        color = CustomColor.purple;
+        break;
       case WidgetColor.black:
         color = CustomColor.black;
         break;
@@ -43,6 +48,9 @@ class PrimaryBtn extends StatelessWidget {
     Color? color;
 
     switch (widgetColor) {
+      case WidgetColor.purple:
+        color = Colors.white;
+        break;
       case WidgetColor.black:
         color = Colors.white;
         break;
@@ -73,7 +81,8 @@ class PrimaryBtn extends StatelessWidget {
             color: Colors.transparent,
           ),
           shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(10),
+            borderRadius: BorderRadius.circular(
+                widgetShape == WidgetShape.square ? 10 : 20),
           ),
         ),
         child: Text(

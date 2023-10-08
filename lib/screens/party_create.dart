@@ -2,6 +2,8 @@ import 'package:dev_community/apis/party_api.dart';
 import 'package:dev_community/models/party_article_creator.dart';
 import 'package:dev_community/screens/party.dart';
 import 'package:dev_community/utils/constant.dart';
+import 'package:dev_community/utils/customs/custom_color.dart';
+import 'package:dev_community/utils/customs/custom_style.dart';
 import 'package:dev_community/utils/enums/widget_property.dart';
 import 'package:dev_community/utils/exceptions/bad_request_exception.dart';
 import 'package:dev_community/utils/helpers/helper.dart';
@@ -11,7 +13,7 @@ import 'package:dev_community/widgets/atoms/buttons/dropdown_btn.dart';
 import 'package:dev_community/widgets/atoms/buttons/primary_btn.dart';
 import 'package:dev_community/widgets/atoms/buttons/secondary_btn.dart';
 import 'package:dev_community/widgets/atoms/inputs/create_input.dart';
-import 'package:dev_community/widgets/atoms/toggle_chip.dart';
+import 'package:dev_community/widgets/atoms/buttons/toggle_btn.dart';
 import 'package:dev_community/widgets/molecules/title_column.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -48,14 +50,10 @@ class _PartyCreateState extends State<PartyCreate> {
     });
   }
 
-  void _setStartDate() async {
-    DateTime? startDate = await ScreenHelper.datePickerHandler(context);
-
-    if (startDate != null) {
-      setState(() {
-        currentStartDate = startDate;
-      });
-    }
+  void _setStartDate(DateTime startDate) {
+    setState(() {
+      currentStartDate = startDate;
+    });
   }
 
   void _setSpan(String? span) {
@@ -64,14 +62,10 @@ class _PartyCreateState extends State<PartyCreate> {
     });
   }
 
-  void _setDeadline() async {
-    DateTime? deadline = await ScreenHelper.datePickerHandler(context);
-
-    if (deadline != null) {
-      setState(() {
-        currentDeadline = deadline;
-      });
-    }
+  void _setDeadline(DateTime deadline) {
+    setState(() {
+      currentDeadline = deadline;
+    });
   }
 
   void _setProcess(String? process) {
@@ -155,41 +149,43 @@ class _PartyCreateState extends State<PartyCreate> {
 
   bool _validate() {
     if (_titleController.text == "") {
-      ScreenHelper.alertDialogHandler(context, "$currentCategory명을 입력해 주세요.",
-          content: "40자 이내로 적어주세요.");
+      ScreenHelper.alertDialogHandler(context,
+          title: "$currentCategory명을 입력해 주세요.", content: "40자 이내로 적어주세요.");
       return false;
     }
 
     if (currentStartDate == null || currentSpan == null) {
-      ScreenHelper.alertDialogHandler(context, "프로젝트 기간을 입력해 주세요.");
+      ScreenHelper.alertDialogHandler(context, title: "프로젝트 기간을 입력해 주세요.");
       return false;
     }
 
     if (currentDeadline == null) {
-      ScreenHelper.alertDialogHandler(context, "마감 기한을 입력해 주세요.");
+      ScreenHelper.alertDialogHandler(context, title: "마감 기한을 입력해 주세요.");
       return false;
     }
 
     if (currentProcess == null) {
-      ScreenHelper.alertDialogHandler(context, "진행 방식을 선택해 주세요.");
+      ScreenHelper.alertDialogHandler(context, title: "진행 방식을 선택해 주세요.");
       return false;
     }
 
     if (currentProcess != "온라인" && currentLocation == null) {
-      ScreenHelper.alertDialogHandler(context, "만날 지역을 선택해 주세요.");
+      ScreenHelper.alertDialogHandler(context, title: "만날 지역을 선택해 주세요.");
       return false;
     }
 
-    for (Pair p in currentPosition) {
-      if (p.k == null || p.v == null) {
-        ScreenHelper.alertDialogHandler(context, "포지션을 선택해 주세요.");
+    if (currentCategory == "프로젝트") {
+      for (Pair p in currentPosition) {
+        if (p.k == null || p.v == null) {
+          ScreenHelper.alertDialogHandler(context, title: "포지션을 선택해 주세요.");
+          return false;
+        }
+      }
+
+      if (currentTechSkill.isEmpty) {
+        ScreenHelper.alertDialogHandler(context, title: "기술 스택을 선택해 주세요.");
         return false;
       }
-    }
-
-    if (currentTechSkill.isEmpty) {
-      ScreenHelper.alertDialogHandler(context, "기술 스택을 선택해 주세요.");
-      return false;
     }
 
     return true;
@@ -204,8 +200,10 @@ class _PartyCreateState extends State<PartyCreate> {
         category: currentCategory,
         title: _titleController.text,
         description: await _htmlEditorController.getText(),
-        techSkill: currentTechSkill,
-        position: Helper.pairListToMap<String, int>(currentPosition),
+        techSkill: currentCategory == "프로젝트" ? currentTechSkill : null,
+        position: currentCategory == "프로젝트"
+            ? Helper.pairListToMap<String, int>(currentPosition)
+            : null,
         process: currentProcess!,
         location: currentLocation,
         deadline: Helper.dateToIsoString(currentDeadline!),
@@ -219,18 +217,19 @@ class _PartyCreateState extends State<PartyCreate> {
           await context.read<PartyApi>().createArticle(partyArticleCreateModel);
 
       if (isCreated && mounted) {
-        ScreenHelper.alertDialogHandler(context, "게시물이 등록되었습니다!", callback: () {
+        ScreenHelper.alertDialogHandler(context, title: "게시물이 등록되었습니다!",
+            callback: () {
           Helper.pushRemoveScreen(context, const Party());
         });
       }
     } on BadRequestException {
       if (!mounted) return;
 
-      ScreenHelper.alertDialogHandler(context, "잘못된 요청입니다.");
+      ScreenHelper.alertDialogHandler(context, title: "잘못된 요청입니다.");
     } catch (e) {
       if (!mounted) return;
 
-      ScreenHelper.alertDialogHandler(context, "네트워크 에러가 발생했습니다.");
+      ScreenHelper.alertDialogHandler(context, title: "네트워크 에러가 발생했습니다.");
     }
   }
 
@@ -269,6 +268,7 @@ class _PartyCreateState extends State<PartyCreate> {
               onPressed: _submit,
               widgetSize: WidgetSize.small,
               widgetColor: WidgetColor.black,
+              widgetShape: WidgetShape.square,
             ),
           ),
         ],
@@ -276,243 +276,298 @@ class _PartyCreateState extends State<PartyCreate> {
       backgroundColor: Colors.white,
       body: SafeArea(
         child: SingleChildScrollView(
-          child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 25),
-            child: Column(
-              children: [
-                TitleColumn(
-                  title: "유형",
+          child: Column(
+            children: [
+              Container(
+                height: 80,
+                color: CustomColor.whiteGrey1,
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 20),
                   child: Row(
-                    children: List.generate(
-                      category.length,
-                      (index) {
-                        return Padding(
-                          padding: const EdgeInsets.only(right: 10),
-                          child: ToggleChip(
-                            label: category[index],
-                            onPressed: () => _setCategory(category[index]),
-                            toggle: currentCategory == category[index],
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          "파티 유형",
+                          style: TextStyle(
+                            fontSize: CustomStyle.fs18,
+                            fontWeight: FontWeight.bold,
                           ),
-                        );
-                      },
+                        ),
+                        Row(
+                          children: List.generate(
+                            category.length,
+                            (index) {
+                              return Padding(
+                                padding: const EdgeInsets.only(left: 10),
+                                child: ToggleBtn(
+                                  label: category[index],
+                                  onPressed: () =>
+                                      _setCategory(category[index]),
+                                  widgetColor: WidgetColor.purple,
+                                  widgetShape: WidgetShape.round,
+                                  toggle: currentCategory == category[index],
+                                ),
+                              );
+                            },
+                          ),
+                        ),
+                      ]),
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 20),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    TitleColumn(
+                      title: "$currentCategory명",
+                      required: true,
+                      child: CreateInput(
+                        textEditingController: _titleController,
+                        hintText: "40자 이내로 적어주세요.",
+                        maxLength: 40,
+                      ),
                     ),
-                  ),
-                ),
-                TitleColumn(
-                  title: "$currentCategory명",
-                  child: CreateInput(
-                    textEditingController: _titleController,
-                    hintText: "40자 이내로 적어주세요.",
-                    maxLength: 40,
-                  ),
-                ),
-                TitleColumn(
-                  title: "$currentCategory 기간",
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      SecondaryBtn(
-                        label: currentStartDate == null
-                            ? "시작 날짜"
-                            : DateFormat("yy.MM.dd").format(currentStartDate!),
-                        onPressed: _setStartDate,
+                    TitleColumn(
+                      title: "$currentCategory 기간",
+                      required: true,
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          SecondaryBtn(
+                            label: currentStartDate == null
+                                ? "시작 날짜"
+                                : DateFormat("yy.MM.dd")
+                                    .format(currentStartDate!),
+                            onPressed: () => ScreenHelper.datePickerHandler(
+                                context, _setStartDate,
+                                selectedDate: currentStartDate),
+                            widgetSize: WidgetSize.big,
+                            width: 160,
+                            alignment: Alignment.centerLeft,
+                          ),
+                          DropdownBtn(
+                            items: span,
+                            hintText: "기간",
+                            onSelected: _setSpan,
+                          ),
+                        ],
+                      ),
+                    ),
+                    TitleColumn(
+                      title: "마감 기한",
+                      required: true,
+                      child: SecondaryBtn(
+                        label: currentDeadline == null
+                            ? "마감 날짜"
+                            : DateFormat("yy.MM.dd").format(currentDeadline!),
+                        onPressed: () => ScreenHelper.datePickerHandler(
+                            context, _setDeadline,
+                            selectedDate: currentDeadline),
                         widgetSize: WidgetSize.big,
                         width: 160,
                         alignment: Alignment.centerLeft,
                       ),
-                      DropdownBtn(
-                        items: span,
-                        hintText: "기간",
-                        onSelected: _setSpan,
-                      ),
-                    ],
-                  ),
-                ),
-                Align(
-                  alignment: Alignment.centerLeft,
-                  child: TitleColumn(
-                    title: "마감 기한",
-                    child: SecondaryBtn(
-                      label: currentDeadline == null
-                          ? "마감 날짜"
-                          : DateFormat("yy.MM.dd").format(currentDeadline!),
-                      onPressed: _setDeadline,
-                      widgetSize: WidgetSize.big,
-                      width: 160,
-                      alignment: Alignment.centerLeft,
                     ),
-                  ),
-                ),
-                TitleColumn(
-                  title: "진행 방식",
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      DropdownBtn(
-                        items: process,
-                        onSelected: _setProcess,
-                        hintText: "진행 방식",
-                      ),
-                      if (currentProcess != "온라인")
-                        DropdownBtn(
-                          items: location,
-                          onSelected: _setLocation,
-                          hintText: "지역",
-                        ),
-                    ],
-                  ),
-                ),
-                TitleColumn(
-                  title: "포지션",
-                  child: Column(
-                    children: [
-                      Column(
-                        children: List.generate(
-                          currentPosition.length,
-                          (index) {
-                            return Padding(
-                              padding: const EdgeInsets.symmetric(vertical: 5),
-                              child: Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: [
-                                  Row(
-                                    children: [
-                                      DropdownBtn(
-                                        items: Helper.deduplicatedList<String>(
-                                            position, _selectedPositions()),
-                                        hintText: "포지션",
-                                        onSelected: (position) =>
-                                            _setPosition(index, position),
-                                      ),
-                                      const SizedBox(
-                                        width: 17,
-                                      ),
-                                      CreateInput(
-                                        width: 80,
-                                        keyboardType: TextInputType.number,
-                                        onChanged: (count) =>
-                                            _setPositionCount(index, count),
-                                      ),
-                                    ],
-                                  ),
-                                  if (index != 0)
-                                    OutlinedButton(
-                                      onPressed: () =>
-                                          _removePositionRow(index),
-                                      child: const Text("삭제"),
-                                    ),
-                                ],
-                              ),
-                            );
-                          },
-                        ),
-                      ),
-                      if (_selectedPositions().length == currentPosition.length)
-                        Align(
-                          alignment: Alignment.centerRight,
-                          child: PrimaryBtn(
-                            label: "추가",
-                            onPressed: _addPositionRow,
-                            widgetSize: WidgetSize.small,
-                            widgetColor: WidgetColor.black,
-                          ),
-                        )
-                    ],
-                  ),
-                ),
-                TitleColumn(
-                  title: "기술 스택",
-                  child: Column(
-                    children: [
-                      Column(
+                    TitleColumn(
+                      title: "진행 방식",
+                      required: true,
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          CreateInput(
-                            textEditingController: _techSkillController,
-                            hintText: "기술 스택을 입력해 주세요.",
+                          DropdownBtn(
+                            items: process,
+                            onSelected: _setProcess,
+                            hintText: "진행 방식",
                           ),
+                          if (currentProcess != "온라인")
+                            DropdownBtn(
+                              items: location,
+                              onSelected: _setLocation,
+                              hintText: "지역",
+                            ),
                         ],
                       ),
-                      const SizedBox(
-                        height: 10,
-                      ),
-                      Align(
-                        alignment: Alignment.centerLeft,
-                        child: Wrap(
-                          spacing: 5,
-                          children:
-                              List.generate(searchedTechSkills.length, (index) {
-                            return ToggleChip(
-                              label: searchedTechSkills[index],
-                              onPressed: () =>
-                                  _addTechSkill(searchedTechSkills[index]),
-                            );
-                          }),
-                        ),
-                      ),
-                      const SizedBox(
-                        height: 10,
-                      ),
-                      Align(
-                        alignment: Alignment.centerLeft,
-                        child: Wrap(
-                          spacing: 15,
-                          runSpacing: 15,
-                          children:
-                              List.generate(currentTechSkill.length, (index) {
-                            return Row(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              mainAxisSize: MainAxisSize.min,
+                    ),
+                    if (currentCategory == "프로젝트")
+                      Column(
+                        children: [
+                          TitleColumn(
+                            title: "포지션",
+                            required: true,
+                            child: Column(
                               children: [
-                                SvgPicture.asset(
-                                  "assets/svgs/skills/${currentTechSkill[index]}.svg",
-                                  width: 30,
-                                  height: 30,
+                                Column(
+                                  children: List.generate(
+                                    currentPosition.length,
+                                    (index) {
+                                      return Padding(
+                                        padding: const EdgeInsets.symmetric(
+                                            vertical: 5),
+                                        child: Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceBetween,
+                                          children: [
+                                            Row(
+                                              children: [
+                                                DropdownBtn(
+                                                  items: Helper
+                                                      .deduplicatedList<String>(
+                                                          position,
+                                                          _selectedPositions()),
+                                                  hintText: "포지션",
+                                                  onSelected: (position) =>
+                                                      _setPosition(
+                                                          index, position),
+                                                ),
+                                                const SizedBox(
+                                                  width: 17,
+                                                ),
+                                                CreateInput(
+                                                  width: 80,
+                                                  keyboardType:
+                                                      TextInputType.number,
+                                                  onChanged: (count) =>
+                                                      _setPositionCount(
+                                                          index, count),
+                                                ),
+                                              ],
+                                            ),
+                                            if (index != 0)
+                                              PrimaryBtn(
+                                                label: "삭제",
+                                                onPressed: () =>
+                                                    _removePositionRow(index),
+                                                widgetSize: WidgetSize.small,
+                                                widgetColor: WidgetColor.white,
+                                                widgetShape: WidgetShape.square,
+                                              ),
+                                          ],
+                                        ),
+                                      );
+                                    },
+                                  ),
                                 ),
-                                GestureDetector(
-                                  onTap: () =>
-                                      _removeTechSkill(currentTechSkill[index]),
-                                  child: const Icon(
-                                    Icons.close,
-                                    size: 18,
+                                if (_selectedPositions().length ==
+                                    currentPosition.length)
+                                  Align(
+                                    alignment: Alignment.centerRight,
+                                    child: PrimaryBtn(
+                                      label: "추가",
+                                      onPressed: _addPositionRow,
+                                      widgetSize: WidgetSize.small,
+                                      widgetColor: WidgetColor.black,
+                                      widgetShape: WidgetShape.square,
+                                    ),
+                                  )
+                              ],
+                            ),
+                          ),
+                          TitleColumn(
+                            title: "기술 스택",
+                            required: true,
+                            child: Column(
+                              children: [
+                                Column(
+                                  children: [
+                                    CreateInput(
+                                      textEditingController:
+                                          _techSkillController,
+                                      hintText: "기술 스택을 입력해 주세요.",
+                                    ),
+                                  ],
+                                ),
+                                const SizedBox(
+                                  height: 10,
+                                ),
+                                Align(
+                                  alignment: Alignment.centerLeft,
+                                  child: Wrap(
+                                    spacing: 5,
+                                    children: List.generate(
+                                      searchedTechSkills.length,
+                                      (index) {
+                                        return ToggleBtn(
+                                          label: searchedTechSkills[index],
+                                          onPressed: () => _addTechSkill(
+                                              searchedTechSkills[index]),
+                                          widgetColor: WidgetColor.black,
+                                          widgetShape: WidgetShape.square,
+                                        );
+                                      },
+                                    ),
+                                  ),
+                                ),
+                                const SizedBox(
+                                  height: 10,
+                                ),
+                                Align(
+                                  alignment: Alignment.centerLeft,
+                                  child: Wrap(
+                                    spacing: 15,
+                                    runSpacing: 15,
+                                    children: List.generate(
+                                        currentTechSkill.length, (index) {
+                                      return Row(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        mainAxisSize: MainAxisSize.min,
+                                        children: [
+                                          SvgPicture.asset(
+                                            "assets/svgs/skills/${currentTechSkill[index]}.svg",
+                                            width: 30,
+                                            height: 30,
+                                          ),
+                                          GestureDetector(
+                                            onTap: () => _removeTechSkill(
+                                                currentTechSkill[index]),
+                                            child: const Icon(
+                                              Icons.close,
+                                              size: 18,
+                                            ),
+                                          )
+                                        ],
+                                      );
+                                    }),
                                   ),
                                 )
                               ],
-                            );
-                          }),
+                            ),
+                          ),
+                        ],
+                      ),
+                    TitleColumn(
+                      title: "$currentCategory 설명",
+                      child: HtmlEditor(
+                        controller: _htmlEditorController,
+                        otherOptions: const OtherOptions(
+                          height: 400,
                         ),
-                      )
-                    ],
-                  ),
-                ),
-                TitleColumn(
-                  title: "$currentCategory 설명",
-                  child: HtmlEditor(
-                    controller: _htmlEditorController,
-                    otherOptions: const OtherOptions(
-                      height: 400,
-                    ),
-                    htmlToolbarOptions: const HtmlToolbarOptions(
-                      toolbarType: ToolbarType.nativeScrollable,
-                      defaultToolbarButtons: [
-                        FontButtons(clearAll: false),
-                        FontSettingButtons(
-                            fontSizeUnit: false, fontName: false),
-                        ColorButtons(),
-                        ListButtons(listStyles: false),
-                        ParagraphButtons(
-                          textDirection: false,
-                          lineHeight: false,
-                          caseConverter: false,
-                          increaseIndent: false,
-                          decreaseIndent: false,
+                        htmlToolbarOptions: const HtmlToolbarOptions(
+                          toolbarType: ToolbarType.nativeScrollable,
+                          toolbarPosition: ToolbarPosition.belowEditor,
+                          renderSeparatorWidget: false,
+                          defaultToolbarButtons: [
+                            FontButtons(clearAll: false),
+                            FontSettingButtons(
+                                fontSizeUnit: false, fontName: false),
+                            ColorButtons(),
+                            ListButtons(listStyles: false),
+                            ParagraphButtons(
+                              textDirection: false,
+                              lineHeight: false,
+                              caseConverter: false,
+                              increaseIndent: false,
+                              decreaseIndent: false,
+                            ),
+                          ],
                         ),
-                      ],
+                      ),
                     ),
-                  ),
+                  ],
                 ),
-              ],
-            ),
+              ),
+            ],
           ),
         ),
       ),

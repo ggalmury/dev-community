@@ -1,9 +1,10 @@
 import 'package:dev_community/utils/enums/widget_property.dart';
 import 'package:dev_community/widgets/atoms/buttons/primary_btn.dart';
+import 'package:dev_community/widgets/organisms/calendar.dart';
 import 'package:flutter/material.dart';
 
 class ScreenHelper {
-  static void modalBottomSheetHandler(
+  static modalBottomSheetHandler(
       BuildContext context, Widget content, double height) {
     showModalBottomSheet(
       context: context,
@@ -23,8 +24,11 @@ class ScreenHelper {
     );
   }
 
-  static void alertDialogHandler(BuildContext context, String title,
-      {String? content, String? label, Function? callback}) {
+  static alertDialogHandler(BuildContext context,
+      {required String title,
+      String? content,
+      String? label,
+      Function? callback}) {
     showDialog(
       context: context,
       builder: (context) {
@@ -35,43 +39,29 @@ class ScreenHelper {
           shadowColor: Colors.transparent,
           child: SizedBox(
             height: 230,
-            child: Stack(
-              children: [
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 20),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: [
-                      const SizedBox(
-                        height: 5,
-                      ),
-                      Text(
-                        title,
-                        style: const TextStyle(
-                          fontSize: 20,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                      content != null ? Text(content) : const SizedBox(),
-                      PrimaryBtn(
-                        label: label ?? "확인",
-                        onPressed: () => Navigator.pop(context),
-                        widgetSize: WidgetSize.big,
-                        widgetColor: WidgetColor.black,
-                        width: double.infinity,
-                      )
-                    ],
+            child: Padding(
+              padding: const EdgeInsets.all(20),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  Text(
+                    title,
+                    style: const TextStyle(
+                      fontSize: 20,
+                      fontWeight: FontWeight.bold,
+                    ),
                   ),
-                ),
-                Positioned(
-                  top: 10,
-                  right: 10,
-                  child: IconButton(
+                  content != null ? Text(content) : const SizedBox(),
+                  PrimaryBtn(
+                    label: label ?? "확인",
                     onPressed: () => Navigator.pop(context),
-                    icon: const Icon(Icons.close),
-                  ),
-                )
-              ],
+                    widgetSize: WidgetSize.big,
+                    widgetColor: WidgetColor.black,
+                    widgetShape: WidgetShape.square,
+                    width: double.infinity,
+                  )
+                ],
+              ),
             ),
           ),
         );
@@ -81,15 +71,19 @@ class ScreenHelper {
     });
   }
 
-  static Future<DateTime?> datePickerHandler(BuildContext context) async {
-    DateTime? date = await showDatePicker(
+  static datePickerHandler(
+      BuildContext context, void Function(DateTime) onSelected,
+      {DateTime? selectedDate}) {
+    showDialog(
       context: context,
-      initialDate: DateTime.now(),
-      firstDate: DateTime(2020),
-      lastDate: DateTime(2100),
-      locale: const Locale('ko', 'KR'),
+      builder: (context) {
+        return Dialog(
+          child: Calendar(
+            onSelected: onSelected,
+            selectedDate: selectedDate,
+          ),
+        );
+      },
     );
-
-    return date;
   }
 }

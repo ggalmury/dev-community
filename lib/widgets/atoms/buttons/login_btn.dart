@@ -84,20 +84,21 @@ class LoginBtn extends StatelessWidget {
           ),
         ),
         child: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             SvgPicture.asset(
               _icon(),
               width: 20,
             ),
-            const SizedBox(
-              width: 10,
-            ),
-            Text(
-              _lableText(),
-              style: TextStyle(
-                fontSize: CustomStyle.fs14,
-                fontWeight: FontWeight.bold,
+            Expanded(
+              child: Center(
+                child: Text(
+                  _lableText(),
+                  style: TextStyle(
+                    fontSize: CustomStyle.fs14,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
               ),
             ),
           ],

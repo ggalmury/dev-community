@@ -44,7 +44,7 @@ class _IndexState extends State<Index> {
 
     ScreenHelper.alertDialogHandler(
       context,
-      title,
+      title: title,
       callback: () =>
           context.read<UserAccountBloc>().add(SubmitAccountErrorEvent()),
     );

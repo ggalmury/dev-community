@@ -35,7 +35,6 @@ class _PartyArticleContainerState extends State<PartyArticleContainer> {
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
         child: Container(
-          height: 280,
           decoration: const BoxDecoration(
             color: Colors.white,
             borderRadius: BorderRadius.all(
@@ -86,43 +85,52 @@ class _PartyArticleContainerState extends State<PartyArticleContainer> {
                 Text(widget.partyArticle.location == null
                     ? widget.partyArticle.process
                     : "${widget.partyArticle.process} | ${widget.partyArticle.location}"),
-                const Spacer(),
-                SingleChildScrollView(
-                  scrollDirection: Axis.horizontal,
-                  child: TechSkillRow(techSkill: widget.partyArticle.techSkill),
-                ),
-                const SizedBox(
-                  height: 12,
-                ),
-                SingleChildScrollView(
-                  scrollDirection: Axis.horizontal,
-                  child: Row(
-                    children: widget.partyArticle.position.entries.map((e) {
-                      return Container(
-                        padding: const EdgeInsets.symmetric(
-                          horizontal: 12,
-                          vertical: 5,
+                if (widget.partyArticle.category == "프로젝트")
+                  Column(
+                    children: [
+                      const SizedBox(
+                        height: 30,
+                      ),
+                      SingleChildScrollView(
+                        scrollDirection: Axis.horizontal,
+                        child: TechSkillRow(
+                            techSkill: widget.partyArticle.techSkill!),
+                      ),
+                      const SizedBox(
+                        height: 12,
+                      ),
+                      SingleChildScrollView(
+                        scrollDirection: Axis.horizontal,
+                        child: Row(
+                          children:
+                              widget.partyArticle.position!.entries.map((e) {
+                            return Container(
+                              padding: const EdgeInsets.symmetric(
+                                horizontal: 12,
+                                vertical: 5,
+                              ),
+                              margin: const EdgeInsets.only(right: 10, top: 10),
+                              decoration: const BoxDecoration(
+                                borderRadius: BorderRadius.all(
+                                  Radius.circular(10),
+                                ),
+                                color: CustomColor.whiteGrey1,
+                              ),
+                              child: Center(
+                                child: Text(
+                                  e.key,
+                                  style: TextStyle(
+                                    fontSize: CustomStyle.fs14,
+                                    fontWeight: FontWeight.w500,
+                                  ),
+                                ),
+                              ),
+                            );
+                          }).toList(),
                         ),
-                        margin: const EdgeInsets.only(right: 10, top: 10),
-                        decoration: const BoxDecoration(
-                          borderRadius: BorderRadius.all(
-                            Radius.circular(10),
-                          ),
-                          color: CustomColor.whiteGrey1,
-                        ),
-                        child: Center(
-                          child: Text(
-                            e.key,
-                            style: TextStyle(
-                              fontSize: CustomStyle.fs14,
-                              fontWeight: FontWeight.w500,
-                            ),
-                          ),
-                        ),
-                      );
-                    }).toList(),
-                  ),
-                ),
+                      ),
+                    ],
+                  )
               ],
             ),
           ),

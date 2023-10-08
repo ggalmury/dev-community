@@ -5,7 +5,7 @@ import 'package:dev_community/widgets/atoms/buttons/primary_btn.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../bloc/screen/party/search_filter_bloc.dart';
-import '../atoms/toggle_chip.dart';
+import '../atoms/buttons/toggle_btn.dart';
 
 class SearchFilterBody extends StatefulWidget {
   final String label;
@@ -68,11 +68,13 @@ class _SearchFilterBodyState extends State<SearchFilterBody> {
                   children: List.generate(widget.elements.length, (index) {
                     return BlocBuilder<SearchFilterBloc, SearchFilterState>(
                       builder: (context, state) {
-                        return ToggleChip(
+                        return ToggleBtn(
                           label: widget.elements[index],
                           onPressed: () {
                             _dispatchEvent(widget.elements[index]);
                           },
+                          widgetColor: WidgetColor.black,
+                          widgetShape: WidgetShape.square,
                           toggle: state.filterMap[widget.category]!
                                   .contains(widget.elements[index])
                               ? true
@@ -95,6 +97,7 @@ class _SearchFilterBodyState extends State<SearchFilterBody> {
                   fontSize: CustomStyle.fs16,
                   widgetSize: WidgetSize.big,
                   widgetColor: WidgetColor.white,
+                  widgetShape: WidgetShape.square,
                 ),
               ),
               const SizedBox(
@@ -107,6 +110,7 @@ class _SearchFilterBodyState extends State<SearchFilterBody> {
                   fontSize: CustomStyle.fs16,
                   widgetSize: WidgetSize.big,
                   widgetColor: WidgetColor.black,
+                  widgetShape: WidgetShape.square,
                 ),
               )
             ],

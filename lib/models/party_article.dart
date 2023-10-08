@@ -8,8 +8,8 @@ class PartyArticle {
   final int id;
   final String title;
   final String? description;
-  final List<String> techSkill;
-  final Map<String, int> position;
+  final List<String>? techSkill;
+  final Map<String, int>? position;
   final String process;
   final String category;
   final DateTime deadline;
@@ -23,8 +23,8 @@ class PartyArticle {
       {required this.id,
       required this.title,
       this.description,
-      required this.techSkill,
-      required this.position,
+      this.techSkill,
+      this.position,
       required this.process,
       required this.category,
       required this.deadline,

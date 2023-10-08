@@ -4,7 +4,7 @@ import 'package:dev_community/utils/customs/custom_style.dart';
 import 'package:dev_community/utils/enums/widget_property.dart';
 import 'package:dev_community/utils/helpers/helper.dart';
 import 'package:dev_community/widgets/atoms/article_type.dart';
-import 'package:dev_community/widgets/atoms/buttons/secondary_btn.dart';
+import 'package:dev_community/widgets/atoms/buttons/primary_btn.dart';
 import 'package:dev_community/widgets/molecules/sliver_tabbar.dart';
 import 'package:dev_community/widgets/molecules/techskill_row.dart';
 import 'package:dev_community/widgets/molecules/title_column.dart';
@@ -76,7 +76,7 @@ class _PartyDetailState extends State<PartyDetail> {
                           ),
                           child: Padding(
                             padding: const EdgeInsets.symmetric(
-                                horizontal: 10, vertical: 25),
+                                horizontal: 0, vertical: 25),
                             child: Column(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
@@ -188,39 +188,48 @@ class _PartyDetailState extends State<PartyDetail> {
                               ],
                             ),
                           ),
-                          TitleColumn(
-                            title: "지원 현황",
-                            child: Column(
-                              children:
-                                  widget.partyArticle.position.entries.map((e) {
-                                return _articleInfoRow(
-                                  title: e.key,
-                                  child: Row(
-                                    children: [
-                                      Text(
-                                        e.value.toString(),
-                                      ),
-                                      const SizedBox(
-                                        width: 15,
-                                      ),
-                                      SecondaryBtn(
-                                        label: "지원하기",
-                                        onPressed: () {},
-                                        widgetSize: WidgetSize.small,
-                                      ),
-                                    ],
+                          if (widget.partyArticle.category == "프로젝트")
+                            Column(
+                              children: [
+                                TitleColumn(
+                                  title: "지원 현황",
+                                  child: Column(
+                                    children: widget
+                                        .partyArticle.position!.entries
+                                        .map((e) {
+                                      return _articleInfoRow(
+                                        title: e.key,
+                                        child: Row(
+                                          children: [
+                                            Text(
+                                              e.value.toString(),
+                                            ),
+                                            const SizedBox(
+                                              width: 15,
+                                            ),
+                                            PrimaryBtn(
+                                              label: "지원하기",
+                                              onPressed: () {},
+                                              widgetSize: WidgetSize.small,
+                                              widgetColor: WidgetColor.purple,
+                                              widgetShape: WidgetShape.square,
+                                            ),
+                                          ],
+                                        ),
+                                      );
+                                    }).toList(),
                                   ),
-                                );
-                              }).toList(),
+                                ),
+                                TitleColumn(
+                                  title: "기술 스택",
+                                  child: TechSkillRow(
+                                      techSkill:
+                                          widget.partyArticle.techSkill!),
+                                ),
+                              ],
                             ),
-                          ),
                           TitleColumn(
-                            title: "기술 스택",
-                            child: TechSkillRow(
-                                techSkill: widget.partyArticle.techSkill),
-                          ),
-                          TitleColumn(
-                            title: "프로젝트 소개",
+                            title: "${widget.partyArticle.category} 소개",
                             child: Html(
                               data: widget.partyArticle.description,
                             ),
