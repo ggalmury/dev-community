@@ -35,7 +35,7 @@ class _CalendarState extends State<Calendar> {
             formatButtonVisible: false,
             titleCentered: true,
           ),
-          calendarStyle: CalendarStyle(),
+          calendarStyle: const CalendarStyle(),
           onDaySelected: _onDatSelected,
         ),
       ),

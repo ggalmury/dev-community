@@ -1,5 +1,4 @@
 import 'package:dev_community/models/party_article.dart';
-import 'package:dev_community/utils/customs/custom_color.dart';
 import 'package:dev_community/utils/customs/custom_style.dart';
 import 'package:dev_community/utils/enums/widget_property.dart';
 import 'package:dev_community/utils/helpers/helper.dart';
@@ -51,75 +50,85 @@ class _PartyDetailState extends State<PartyDetail> {
             headerSliverBuilder: (context, innerBoxIsScrolled) {
               return [
                 SliverToBoxAdapter(
-                  child: Stack(
-                    children: [
-                      const SizedBox(
-                        height: 220,
+                  child: SizedBox(
+                    height: 220,
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 20,
+                        vertical: 10,
                       ),
-                      Positioned(
-                        top: 20,
-                        left: 20,
-                        right: 20,
-                        child: Container(
-                          height: 180,
-                          decoration: const BoxDecoration(
-                            borderRadius: BorderRadius.all(
-                              Radius.circular(20),
-                            ),
-                            color: Colors.white,
-                            boxShadow: [
-                              BoxShadow(
-                                color: CustomColor.grey,
-                                blurRadius: 10,
+                      child: Column(
+                        children: [
+                          Row(
+                            children: [
+                              ClipOval(
+                                child: Image.network(
+                                  widget.partyArticle.poster.profileImgUrl,
+                                  width: 35,
+                                  height: 35,
+                                  fit: BoxFit.cover,
+                                ),
                               ),
+                              const SizedBox(
+                                width: 13,
+                              ),
+                              Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    widget.partyArticle.poster.nickname,
+                                    style: TextStyle(
+                                      fontSize: CustomStyle.fs16,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                  Row(
+                                    children: [
+                                      Text(
+                                        Helper.timePassage(
+                                            widget.partyArticle.createdAt),
+                                        style: TextStyle(
+                                          fontSize: CustomStyle.fs14,
+                                        ),
+                                      ),
+                                      const SizedBox(
+                                        width: 10,
+                                      ),
+                                      Text(
+                                        "조회수 20",
+                                        style: TextStyle(
+                                          fontSize: CustomStyle.fs14,
+                                        ),
+                                      ),
+                                    ],
+                                  )
+                                ],
+                              )
                             ],
                           ),
-                          child: Padding(
-                            padding: const EdgeInsets.symmetric(
-                                horizontal: 0, vertical: 25),
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Text(
-                                  widget.partyArticle.title,
-                                  textAlign: TextAlign.center,
-                                  style: TextStyle(
-                                    fontSize: CustomStyle.fs20,
-                                    fontWeight: FontWeight.bold,
-                                  ),
+                          Column(
+                            children: [
+                              const SizedBox(
+                                height: 30,
+                              ),
+                              Text(
+                                widget.partyArticle.title,
+                                textAlign: TextAlign.center,
+                                style: TextStyle(
+                                  fontSize: CustomStyle.fs20,
+                                  fontWeight: FontWeight.bold,
                                 ),
-                                Row(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    ClipOval(
-                                      child: Image.network(
-                                        widget
-                                            .partyArticle.poster.profileImgUrl,
-                                        width: 25,
-                                        height: 25,
-                                        fit: BoxFit.cover,
-                                      ),
-                                    ),
-                                    const SizedBox(
-                                      width: 7,
-                                    ),
-                                    Text(
-                                      widget.partyArticle.poster.nickname,
-                                      style: TextStyle(
-                                        fontSize: CustomStyle.fs16,
-                                        fontWeight: FontWeight.bold,
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                                ArticleType(
-                                    label: widget.partyArticle.category),
-                              ],
-                            ),
+                              ),
+                              const SizedBox(
+                                height: 30,
+                              ),
+                              ArticleType(label: widget.partyArticle.category),
+                            ],
                           ),
-                        ),
-                      )
-                    ],
+                        ],
+                      ),
+                    ),
                   ),
                 ),
                 SliverOverlapAbsorber(
@@ -130,138 +139,136 @@ class _PartyDetailState extends State<PartyDetail> {
                 ),
               ];
             },
-            body: Padding(
-              padding: const EdgeInsets.only(top: 60),
-              child: TabBarView(
-                children: [
-                  // info tab
-                  SingleChildScrollView(
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 25),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          TitleColumn(
-                            title: "${widget.partyArticle.category} 정보",
-                            child: Column(
-                              children: [
-                                _articleInfoRow(
-                                  title: "마감 기한",
-                                  child: Text(
-                                    Helper.isOverdue(
-                                        widget.partyArticle.deadline),
-                                    style: TextStyle(
-                                      fontSize: CustomStyle.fs14,
-                                    ),
+            body: TabBarView(
+              children: [
+                // info tab
+                SingleChildScrollView(
+                  child: Padding(
+                    padding:
+                        const EdgeInsets.only(left: 25, right: 25, top: 60),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        TitleColumn(
+                          title: "${widget.partyArticle.category} 정보",
+                          child: Column(
+                            children: [
+                              _articleInfoRow(
+                                title: "마감 기한",
+                                child: Text(
+                                  Helper.isOverdue(widget.partyArticle.deadline)
+                                      ? "마감"
+                                      : "마감 D-${Helper.dayDifference(DateTime.now(), widget.partyArticle.deadline)}",
+                                  style: TextStyle(
+                                    fontSize: CustomStyle.fs14,
                                   ),
                                 ),
-                                _articleInfoRow(
-                                  title: "시작 예정",
-                                  child: Text(
-                                    Helper.formattedDate(
-                                        widget.partyArticle.startDate),
-                                    style: TextStyle(
-                                      fontSize: CustomStyle.fs14,
-                                    ),
+                              ),
+                              _articleInfoRow(
+                                title: "시작 예정",
+                                child: Text(
+                                  Helper.formattedDate(
+                                      widget.partyArticle.startDate),
+                                  style: TextStyle(
+                                    fontSize: CustomStyle.fs14,
                                   ),
                                 ),
-                                _articleInfoRow(
-                                  title: "진행 방식",
-                                  child: Text(
-                                    widget.partyArticle.process == "온라인"
-                                        ? widget.partyArticle.process
-                                        : "${widget.partyArticle.process} / ${widget.partyArticle.location}",
-                                    style: TextStyle(
-                                      fontSize: CustomStyle.fs14,
-                                    ),
+                              ),
+                              _articleInfoRow(
+                                title: "진행 방식",
+                                child: Text(
+                                  widget.partyArticle.process == "온라인"
+                                      ? widget.partyArticle.process
+                                      : "${widget.partyArticle.process} / ${widget.partyArticle.location}",
+                                  style: TextStyle(
+                                    fontSize: CustomStyle.fs14,
                                   ),
                                 ),
-                                _articleInfoRow(
-                                  title: "기간",
-                                  child: Text(
-                                    widget.partyArticle.span,
-                                    style: TextStyle(
-                                      fontSize: CustomStyle.fs14,
-                                    ),
+                              ),
+                              _articleInfoRow(
+                                title: "기간",
+                                child: Text(
+                                  widget.partyArticle.span,
+                                  style: TextStyle(
+                                    fontSize: CustomStyle.fs14,
                                   ),
                                 ),
-                              ],
-                            ),
+                              ),
+                            ],
                           ),
-                          if (widget.partyArticle.category == "프로젝트")
-                            Column(
-                              children: [
-                                TitleColumn(
-                                  title: "지원 현황",
-                                  child: Column(
-                                    children: widget
-                                        .partyArticle.position!.entries
-                                        .map((e) {
-                                      return _articleInfoRow(
-                                        title: e.key,
-                                        child: Row(
-                                          children: [
-                                            Text(
-                                              e.value.toString(),
-                                            ),
-                                            const SizedBox(
-                                              width: 15,
-                                            ),
-                                            PrimaryBtn(
-                                              label: "지원하기",
-                                              onPressed: () {},
-                                              widgetSize: WidgetSize.small,
-                                              widgetColor: WidgetColor.purple,
-                                              widgetShape: WidgetShape.square,
-                                            ),
-                                          ],
-                                        ),
-                                      );
-                                    }).toList(),
-                                  ),
+                        ),
+                        if (widget.partyArticle.category == "프로젝트")
+                          Column(
+                            children: [
+                              TitleColumn(
+                                title: "지원 현황",
+                                child: Column(
+                                  children: widget
+                                      .partyArticle.position!.entries
+                                      .map((e) {
+                                    return _articleInfoRow(
+                                      title: e.key,
+                                      child: Row(
+                                        children: [
+                                          Text(
+                                            e.value.toString(),
+                                          ),
+                                          const SizedBox(
+                                            width: 15,
+                                          ),
+                                          PrimaryBtn(
+                                            label: "지원하기",
+                                            onPressed: () {},
+                                            widgetSize: WidgetSize.small,
+                                            widgetColor: WidgetColor.purple,
+                                            widgetShape: WidgetShape.square,
+                                          ),
+                                        ],
+                                      ),
+                                    );
+                                  }).toList(),
                                 ),
-                                TitleColumn(
-                                  title: "기술 스택",
-                                  child: TechSkillRow(
-                                      techSkill:
-                                          widget.partyArticle.techSkill!),
-                                ),
-                              ],
-                            ),
-                          TitleColumn(
-                            title: "${widget.partyArticle.category} 소개",
-                            child: Html(
-                              data: widget.partyArticle.description,
-                            ),
+                              ),
+                              TitleColumn(
+                                title: "기술 스택",
+                                child: TechSkillRow(
+                                    techSkill: widget.partyArticle.techSkill!),
+                              ),
+                            ],
                           ),
-                        ],
-                      ),
+                        TitleColumn(
+                          title: "${widget.partyArticle.category} 소개",
+                          child: Html(
+                            data: widget.partyArticle.description,
+                          ),
+                        ),
+                      ],
                     ),
                   ),
-                  // comment tab
-                  Column(
-                    children: [
-                      Expanded(
-                        child: ListView.builder(
-                          itemCount: 30,
-                          itemBuilder: (context, index) {
-                            return Container(
-                              height: 30,
-                              color: Colors.grey,
-                              margin: const EdgeInsets.symmetric(vertical: 10),
-                              child: const Text("asdf"),
-                            );
-                          },
-                        ),
+                ),
+                // comment tab
+                Column(
+                  children: [
+                    Expanded(
+                      child: ListView.builder(
+                        itemCount: 30,
+                        itemBuilder: (context, index) {
+                          return Container(
+                            height: 30,
+                            color: Colors.grey,
+                            margin: const EdgeInsets.symmetric(vertical: 10),
+                            child: const Text("asdf"),
+                          );
+                        },
                       ),
-                      Container(
-                        height: 50,
-                        color: Colors.red,
-                      ),
-                    ],
-                  )
-                ],
-              ),
+                    ),
+                    Container(
+                      height: 50,
+                      color: Colors.red,
+                    ),
+                  ],
+                )
+              ],
             ),
           ),
         ),

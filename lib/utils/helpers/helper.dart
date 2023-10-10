@@ -41,12 +41,31 @@ class Helper {
     return diff.inDays;
   }
 
-  static String isOverdue(DateTime t) {
+  static String timePassage(DateTime targetDate) {
+    final now = DateTime.now();
+    final difference = now.difference(targetDate);
+
+    if (difference.inDays == 0) {
+      return '오늘';
+    } else if (difference.inDays < 7) {
+      return '${difference.inDays}일 전';
+    } else if (difference.inDays < 30) {
+      final weeks = difference.inDays ~/ 7;
+      return '$weeks주 전';
+    } else if (difference.inDays < 365) {
+      final months =
+          now.month - targetDate.month + 12 * (now.year - targetDate.year);
+      return '$months개월 전';
+    } else {
+      final years = now.year - targetDate.year;
+      return '$years년 전';
+    }
+  }
+
+  static bool isOverdue(DateTime t) {
     DateTime n = DateTime.now();
 
-    return t.isBefore(n)
-        ? "마감 😥"
-        : "마감 D-${Helper.dayDifference(DateTime.now(), t)}";
+    return t.isBefore(n) ? true : false;
   }
 
   static void pushScreen(BuildContext context, Widget s) {

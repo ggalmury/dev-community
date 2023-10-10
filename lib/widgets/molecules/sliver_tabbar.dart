@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 
 class SliverTabBar extends SliverPersistentHeaderDelegate {
   final List<String> tabs;
-  final double height = 60;
+  final double height = 40;
 
   SliverTabBar({required this.tabs});
 

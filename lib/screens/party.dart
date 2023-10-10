@@ -84,19 +84,12 @@ class _PartyState extends State<Party> {
             icon: const Icon(Icons.logout),
           ),
           //////////////////////////////////////
-          PopupMenuButton(
-            icon: const Icon(Icons.menu),
-            shadowColor: Colors.transparent,
-            itemBuilder: (context) => [
-              PopupMenuItem(
-                onTap: _navigateToArticleCreate,
-                child: const Text('새 글 쓰기'),
-              ),
-            ],
+          IconButton(
+            onPressed: _navigateToArticleCreate,
+            icon: const Icon(Icons.add),
           ),
         ],
       ),
-      backgroundColor: CustomColor.greyLight,
       body: RefreshIndicator(
         onRefresh: () async {
           context.read<PartyArticleBloc>().add(FetchPartyArticleEvent());
@@ -126,8 +119,9 @@ class _PartyState extends State<Party> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             SearchInput(
-                                textEditingController: _searchOptionController,
-                                hintText: "검색할 제목을 입력해 주세요."),
+                              textEditingController: _searchOptionController,
+                              hintText: "검색할 제목을 입력해 주세요.",
+                            ),
                             IntrinsicWidth(
                               child: TextButton(
                                 onPressed: _setSearchFilterToggle,

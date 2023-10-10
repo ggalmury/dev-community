@@ -27,7 +27,7 @@ class TitleColumn extends StatelessWidget {
           RichText(
             text: TextSpan(
               style: TextStyle(
-                fontSize: CustomStyle.fs18,
+                fontSize: CustomStyle.fs20,
                 fontWeight: FontWeight.bold,
                 color: Colors.black,
               ),

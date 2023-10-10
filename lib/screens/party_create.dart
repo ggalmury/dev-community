@@ -560,7 +560,6 @@ class _PartyCreateState extends State<PartyCreate> {
                                   ToolBarStyle.blockQuote,
                                   ToolBarStyle.headerOne,
                                   ToolBarStyle.headerTwo,
-                                  ToolBarStyle.size,
                                   ToolBarStyle.color,
                                   ToolBarStyle.background,
                                   ToolBarStyle.align,

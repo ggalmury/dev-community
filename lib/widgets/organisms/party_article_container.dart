@@ -35,14 +35,16 @@ class _PartyArticleContainerState extends State<PartyArticleContainer> {
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
         child: Container(
-          decoration: const BoxDecoration(
-            color: Colors.white,
-            borderRadius: BorderRadius.all(
+          decoration: BoxDecoration(
+            border: Border.all(
+              color: CustomColor.grey,
+            ),
+            borderRadius: const BorderRadius.all(
               Radius.circular(20),
             ),
           ),
           child: Padding(
-            padding: const EdgeInsets.all(20),
+            padding: const EdgeInsets.all(15),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -53,13 +55,31 @@ class _PartyArticleContainerState extends State<PartyArticleContainer> {
                       children: [
                         ArticleType(label: widget.partyArticle.category),
                         const SizedBox(
-                          width: 15,
+                          width: 10,
                         ),
-                        Text(
-                          Helper.isOverdue(widget.partyArticle.deadline),
-                          style: TextStyle(
-                            fontSize: CustomStyle.fs14,
-                            fontWeight: FontWeight.w600,
+                        Container(
+                          width: 60,
+                          height: 25,
+                          decoration: BoxDecoration(
+                            color:
+                                Helper.isOverdue(widget.partyArticle.deadline)
+                                    ? CustomColor.grey
+                                    : CustomColor.black,
+                            borderRadius: const BorderRadius.all(
+                              Radius.circular(10),
+                            ),
+                          ),
+                          child: Center(
+                            child: Text(
+                              Helper.isOverdue(widget.partyArticle.deadline)
+                                  ? "마감"
+                                  : "모집중",
+                              style: TextStyle(
+                                fontSize: CustomStyle.fs12,
+                                fontWeight: FontWeight.bold,
+                                color: Colors.white,
+                              ),
+                            ),
                           ),
                         ),
                       ],
@@ -82,11 +102,19 @@ class _PartyArticleContainerState extends State<PartyArticleContainer> {
                 const SizedBox(
                   height: 20,
                 ),
-                Text(widget.partyArticle.location == null
-                    ? widget.partyArticle.process
-                    : "${widget.partyArticle.process} | ${widget.partyArticle.location}"),
+                Text(
+                  widget.partyArticle.location == null
+                      ? widget.partyArticle.process
+                      : "${widget.partyArticle.process} | ${widget.partyArticle.location}",
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    color: CustomColor.greyHeavy,
+                    fontSize: CustomStyle.fs14,
+                  ),
+                ),
                 if (widget.partyArticle.category == "프로젝트")
                   Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       const SizedBox(
                         height: 30,
@@ -101,36 +129,38 @@ class _PartyArticleContainerState extends State<PartyArticleContainer> {
                       ),
                       SingleChildScrollView(
                         scrollDirection: Axis.horizontal,
-                        child: Row(
-                          children:
-                              widget.partyArticle.position!.entries.map((e) {
-                            return Container(
-                              padding: const EdgeInsets.symmetric(
-                                horizontal: 12,
-                                vertical: 5,
-                              ),
-                              margin: const EdgeInsets.only(right: 10, top: 10),
-                              decoration: const BoxDecoration(
-                                borderRadius: BorderRadius.all(
-                                  Radius.circular(10),
+                        child: Padding(
+                          padding: const EdgeInsets.only(top: 10),
+                          child: Row(
+                            children:
+                                widget.partyArticle.position!.entries.map((e) {
+                              return Container(
+                                padding: const EdgeInsets.symmetric(
+                                  horizontal: 12,
+                                  vertical: 5,
                                 ),
-                                color: CustomColor.greyLight,
-                              ),
-                              child: Center(
-                                child: Text(
-                                  e.key,
-                                  style: TextStyle(
-                                    fontSize: CustomStyle.fs14,
-                                    fontWeight: FontWeight.w500,
+                                margin: const EdgeInsets.only(right: 10),
+                                decoration: const BoxDecoration(
+                                  borderRadius: BorderRadius.all(
+                                    Radius.circular(10),
+                                  ),
+                                  color: CustomColor.greyLight,
+                                ),
+                                child: Center(
+                                  child: Text(
+                                    e.key,
+                                    style: TextStyle(
+                                      fontSize: CustomStyle.fs14,
+                                    ),
                                   ),
                                 ),
-                              ),
-                            );
-                          }).toList(),
+                              );
+                            }).toList(),
+                          ),
                         ),
                       ),
                     ],
-                  )
+                  ),
               ],
             ),
           ),

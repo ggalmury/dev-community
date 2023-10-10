@@ -45,34 +45,41 @@ class _HomeState extends State<Home> {
             splashColor: Colors.transparent,
             highlightColor: Colors.transparent,
           ),
-          child: BottomNavigationBar(
-            currentIndex: _currentIndex,
-            onTap: (index) {
-              setState(() {
-                _currentIndex = index;
-              });
-            },
-            items: const [
-              BottomNavigationBarItem(
-                icon: Icon(Icons.code),
-                label: '파티찾기',
-              ),
-              BottomNavigationBarItem(
-                icon: Icon(Icons.question_answer_rounded),
-                label: 'Q&A',
-              ),
-              BottomNavigationBarItem(
-                icon: Icon(Icons.notifications_active),
-                label: '알림',
-              ),
-              BottomNavigationBarItem(
-                icon: Icon(Icons.person),
-                label: '내 프로필',
-              ),
-            ],
-            type: BottomNavigationBarType.fixed,
-            selectedItemColor: CustomColor.purple,
-            elevation: 8.0,
+          child: Container(
+            decoration: const BoxDecoration(
+                border: Border(
+              top: BorderSide(color: CustomColor.greyLight, width: 2),
+            )),
+            child: BottomNavigationBar(
+              currentIndex: _currentIndex,
+              backgroundColor: Colors.white,
+              onTap: (index) {
+                setState(() {
+                  _currentIndex = index;
+                });
+              },
+              items: const [
+                BottomNavigationBarItem(
+                  icon: Icon(Icons.code),
+                  label: '파티찾기',
+                ),
+                BottomNavigationBarItem(
+                  icon: Icon(Icons.question_answer_rounded),
+                  label: 'Q&A',
+                ),
+                BottomNavigationBarItem(
+                  icon: Icon(Icons.notifications_active),
+                  label: '알림',
+                ),
+                BottomNavigationBarItem(
+                  icon: Icon(Icons.person),
+                  label: '내 프로필',
+                ),
+              ],
+              type: BottomNavigationBarType.fixed,
+              selectedItemColor: CustomColor.purple,
+              elevation: 8.0,
+            ),
           ),
         ),
       ),

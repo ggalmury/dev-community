@@ -1,3 +1,4 @@
+import 'package:dev_community/utils/customs/custom_color.dart';
 import 'package:flutter/material.dart';
 
 class ArticleType extends StatelessWidget {
@@ -8,16 +9,20 @@ class ArticleType extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: 120,
+      width: 100,
       height: 30,
-      color: label == "프로젝트"
-          ? const Color.fromARGB(255, 213, 236, 255)
-          : const Color.fromARGB(255, 255, 218, 218),
+      decoration: BoxDecoration(
+        color: label == "프로젝트" ? CustomColor.blueLight : CustomColor.redLight,
+        borderRadius: const BorderRadius.all(
+          Radius.circular(10),
+        ),
+      ),
       child: Center(
         child: Text(
           label,
-          style: const TextStyle(
+          style: TextStyle(
             fontWeight: FontWeight.bold,
+            color: label == "프로젝트" ? CustomColor.blue : CustomColor.red,
           ),
         ),
       ),
