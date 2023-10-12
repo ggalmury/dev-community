@@ -1,5 +1,6 @@
 import 'package:dev_community/utils/helpers/pair.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:intl/intl.dart';
 
 class Helper {
@@ -78,5 +79,15 @@ class Helper {
         context,
         MaterialPageRoute(builder: (BuildContext context) => s),
         ((route) => false));
+  }
+
+  static Widget svgFactory(String path, double size,
+      {ColorFilter? colorFilter}) {
+    return SvgPicture.asset(
+      path,
+      width: size,
+      height: size,
+      colorFilter: colorFilter,
+    );
   }
 }

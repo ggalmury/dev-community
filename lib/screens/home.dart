@@ -26,6 +26,16 @@ class _HomeState extends State<Home> {
     const Profile(),
   ];
 
+  Widget _navigationIcon(String path, int idx) {
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 5),
+      child: Helper.svgFactory(path, 20,
+          colorFilter: _currentIndex == idx
+              ? const ColorFilter.mode(CustomColor.purple, BlendMode.srcIn)
+              : null),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return BlocListener<UserAccountBloc, UserAccountState>(
@@ -58,26 +68,29 @@ class _HomeState extends State<Home> {
                   _currentIndex = index;
                 });
               },
-              items: const [
+              items: [
                 BottomNavigationBarItem(
-                  icon: Icon(Icons.code),
+                  icon: _navigationIcon("assets/svgs/commons/console.svg", 0),
                   label: '파티찾기',
                 ),
                 BottomNavigationBarItem(
-                  icon: Icon(Icons.question_answer_rounded),
+                  icon: _navigationIcon("assets/svgs/commons/bubbles.svg", 1),
                   label: 'Q&A',
                 ),
                 BottomNavigationBarItem(
-                  icon: Icon(Icons.notifications_active),
+                  icon: _navigationIcon("assets/svgs/commons/clock.svg", 2),
                   label: '알림',
                 ),
                 BottomNavigationBarItem(
-                  icon: Icon(Icons.person),
+                  icon: _navigationIcon("assets/svgs/commons/user.svg", 3),
                   label: '내 프로필',
                 ),
               ],
               type: BottomNavigationBarType.fixed,
               selectedItemColor: CustomColor.purple,
+              selectedLabelStyle: const TextStyle(fontWeight: FontWeight.bold),
+              unselectedLabelStyle:
+                  const TextStyle(fontWeight: FontWeight.bold),
               elevation: 8.0,
             ),
           ),

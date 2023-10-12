@@ -1,5 +1,5 @@
 import 'package:dev_community/apis/party_api.dart';
-import 'package:dev_community/models/party_article_creator.dart';
+import 'package:dev_community/models/party_article_create.dart';
 import 'package:dev_community/screens/party.dart';
 import 'package:dev_community/utils/constant.dart';
 import 'package:dev_community/utils/customs/custom_color.dart';
@@ -13,7 +13,7 @@ import 'package:dev_community/widgets/atoms/buttons/dropdown_btn.dart';
 import 'package:dev_community/widgets/atoms/buttons/primary_btn.dart';
 import 'package:dev_community/widgets/atoms/buttons/secondary_btn.dart';
 import 'package:dev_community/widgets/atoms/buttons/text_btn.dart';
-import 'package:dev_community/widgets/atoms/inputs/create_input.dart';
+import 'package:dev_community/widgets/atoms/inputs/border_input.dart';
 import 'package:dev_community/widgets/atoms/buttons/toggle_btn.dart';
 import 'package:dev_community/widgets/molecules/title_column.dart';
 import 'package:flutter/material.dart';
@@ -197,7 +197,7 @@ class _PartyCreateState extends State<PartyCreate> {
 
     if (!_validate()) return;
 
-    PartyArticleCreator partyArticleCreateModel = PartyArticleCreator(
+    PartyArticleCreate partyArticleCreate = PartyArticleCreate(
         category: currentCategory,
         title: _titleController.text,
         description: await _quillController.getText(),
@@ -215,7 +215,7 @@ class _PartyCreateState extends State<PartyCreate> {
 
     try {
       isCreated =
-          await context.read<PartyApi>().createArticle(partyArticleCreateModel);
+          await context.read<PartyApi>().createArticle(partyArticleCreate);
 
       if (isCreated && mounted) {
         ScreenHelper.alertDialogHandler(context, title: "게시물이 등록되었습니다!",
@@ -323,7 +323,7 @@ class _PartyCreateState extends State<PartyCreate> {
                     TitleColumn(
                       title: "$currentCategory명",
                       required: true,
-                      child: CreateInput(
+                      child: BorderInput(
                         textEditingController: _titleController,
                         hintText: "40자 이내로 적어주세요.",
                         maxLength: 40,
@@ -424,7 +424,7 @@ class _PartyCreateState extends State<PartyCreate> {
                                                 const SizedBox(
                                                   width: 17,
                                                 ),
-                                                CreateInput(
+                                                BorderInput(
                                                   width: 80,
                                                   keyboardType:
                                                       TextInputType.number,
@@ -468,7 +468,7 @@ class _PartyCreateState extends State<PartyCreate> {
                               children: [
                                 Column(
                                   children: [
-                                    CreateInput(
+                                    BorderInput(
                                       textEditingController:
                                           _techSkillController,
                                       hintText: "기술 스택을 입력해 주세요.",

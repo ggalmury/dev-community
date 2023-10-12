@@ -1,16 +1,16 @@
-import 'package:dev_community/utils/customs/custom_color.dart';
 import 'package:dev_community/utils/customs/custom_style.dart';
 import 'package:flutter/material.dart';
 
-class CreateInput extends StatelessWidget {
+class NonBorderInput extends StatelessWidget {
   final TextEditingController? textEditingController;
   final String? hintText;
   final void Function(String)? onChanged;
   final double? width;
   final int? maxLength;
   final TextInputType? keyboardType;
+  final Icon? prefixIcon;
 
-  const CreateInput({
+  const NonBorderInput({
     super.key,
     this.textEditingController,
     this.hintText,
@@ -18,17 +18,11 @@ class CreateInput extends StatelessWidget {
     this.width,
     this.maxLength,
     this.keyboardType,
+    this.prefixIcon,
   });
 
   @override
   Widget build(BuildContext context) {
-    OutlineInputBorder commonBorder = OutlineInputBorder(
-      borderRadius: BorderRadius.circular(10),
-      borderSide: const BorderSide(
-        color: CustomColor.grey,
-      ),
-    );
-
     return SizedBox(
       width: width,
       child: TextField(
@@ -41,8 +35,7 @@ class CreateInput extends StatelessWidget {
         decoration: InputDecoration(
           hintText: hintText,
           contentPadding: const EdgeInsets.symmetric(horizontal: 10),
-          border: commonBorder,
-          focusedBorder: commonBorder,
+          prefixIcon: prefixIcon,
         ),
         onChanged: onChanged,
       ),

@@ -1,9 +1,9 @@
 import 'package:json_annotation/json_annotation.dart';
 
-part 'party_article_creator.g.dart';
+part 'party_article_create.g.dart';
 
 @JsonSerializable()
-class PartyArticleCreator {
+class PartyArticleCreate {
   final String category;
   final String title;
   final String? description;
@@ -15,7 +15,7 @@ class PartyArticleCreator {
   final String startDate;
   final String span;
 
-  const PartyArticleCreator(
+  const PartyArticleCreate(
       {required this.category,
       required this.title,
       this.description,
@@ -27,8 +27,8 @@ class PartyArticleCreator {
       required this.startDate,
       required this.span});
 
-  factory PartyArticleCreator.fromJson(Map<String, dynamic> json) =>
-      _$PartyArticleCreatorFromJson(json);
+  factory PartyArticleCreate.fromJson(Map<String, dynamic> json) =>
+      _$PartyArticleCreateFromJson(json);
 
-  Map<String, dynamic> toJson() => _$PartyArticleCreatorToJson(this);
+  Map<String, dynamic> toJson() => _$PartyArticleCreateToJson(this);
 }

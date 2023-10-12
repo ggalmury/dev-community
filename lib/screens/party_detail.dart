@@ -1,13 +1,19 @@
+import 'package:dev_community/apis/party_api.dart';
 import 'package:dev_community/models/party_article.dart';
+import 'package:dev_community/models/party_comment_create.dart';
 import 'package:dev_community/utils/customs/custom_style.dart';
 import 'package:dev_community/utils/enums/widget_property.dart';
 import 'package:dev_community/utils/helpers/helper.dart';
 import 'package:dev_community/widgets/atoms/article_type.dart';
 import 'package:dev_community/widgets/atoms/buttons/primary_btn.dart';
+import 'package:dev_community/widgets/atoms/inputs/nonborder_input.dart';
+import 'package:dev_community/widgets/molecules/article_profile.dart';
+import 'package:dev_community/widgets/molecules/comment.dart';
 import 'package:dev_community/widgets/molecules/sliver_tabbar.dart';
 import 'package:dev_community/widgets/molecules/techskill_row.dart';
 import 'package:dev_community/widgets/molecules/title_column.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_html/flutter_html.dart';
 
 class PartyDetail extends StatefulWidget {
@@ -20,6 +26,10 @@ class PartyDetail extends StatefulWidget {
 }
 
 class _PartyDetailState extends State<PartyDetail> {
+  final TextEditingController _commentController = TextEditingController();
+  final EdgeInsets contentPadding =
+      const EdgeInsets.only(right: 25, left: 25, top: 60);
+
   Widget _articleInfoRow({required String title, required Widget child}) {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 15),
@@ -37,6 +47,23 @@ class _PartyDetailState extends State<PartyDetail> {
         ],
       ),
     );
+  }
+
+  Future<void> _submitComment() async {
+    PartyCommentCreate partyCommentCreate = PartyCommentCreate(
+        postId: widget.partyArticle.id,
+        comment: _commentController.text,
+        depth: 0);
+
+    await context.read<PartyApi>().createComment(partyCommentCreate);
+
+    _commentController.clear();
+  }
+
+  @override
+  void dispose() {
+    _commentController.dispose();
+    super.dispose();
   }
 
   @override
@@ -60,51 +87,15 @@ class _PartyDetailState extends State<PartyDetail> {
                       child: Column(
                         children: [
                           Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
-                              ClipOval(
-                                child: Image.network(
-                                  widget.partyArticle.poster.profileImgUrl,
-                                  width: 35,
-                                  height: 35,
-                                  fit: BoxFit.cover,
-                                ),
+                              ArticleProfile(
+                                nickname: widget.partyArticle.poster.nickname,
+                                imageSrc:
+                                    widget.partyArticle.poster.profileImgUrl,
+                                craetedAt: widget.partyArticle.createdAt,
                               ),
-                              const SizedBox(
-                                width: 13,
-                              ),
-                              Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(
-                                    widget.partyArticle.poster.nickname,
-                                    style: TextStyle(
-                                      fontSize: CustomStyle.fs16,
-                                      fontWeight: FontWeight.bold,
-                                    ),
-                                  ),
-                                  Row(
-                                    children: [
-                                      Text(
-                                        Helper.timePassage(
-                                            widget.partyArticle.createdAt),
-                                        style: TextStyle(
-                                          fontSize: CustomStyle.fs14,
-                                        ),
-                                      ),
-                                      const SizedBox(
-                                        width: 10,
-                                      ),
-                                      Text(
-                                        "조회수 20",
-                                        style: TextStyle(
-                                          fontSize: CustomStyle.fs14,
-                                        ),
-                                      ),
-                                    ],
-                                  )
-                                ],
-                              )
+                              const Text("조회수 20"),
                             ],
                           ),
                           Column(
@@ -144,8 +135,7 @@ class _PartyDetailState extends State<PartyDetail> {
                 // info tab
                 SingleChildScrollView(
                   child: Padding(
-                    padding:
-                        const EdgeInsets.only(left: 25, right: 25, top: 60),
+                    padding: contentPadding,
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
@@ -250,21 +240,39 @@ class _PartyDetailState extends State<PartyDetail> {
                 Column(
                   children: [
                     Expanded(
-                      child: ListView.builder(
-                        itemCount: 30,
-                        itemBuilder: (context, index) {
-                          return Container(
-                            height: 30,
-                            color: Colors.grey,
-                            margin: const EdgeInsets.symmetric(vertical: 10),
-                            child: const Text("asdf"),
-                          );
-                        },
+                      child: Padding(
+                        padding: contentPadding,
+                        child: ListView.builder(
+                          itemCount: 5,
+                          itemBuilder: (context, index) {
+                            return Comment();
+                          },
+                        ),
                       ),
                     ),
-                    Container(
-                      height: 50,
-                      color: Colors.red,
+                    SizedBox(
+                      height: 70,
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 20, vertical: 10),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            NonBorderInput(
+                              textEditingController: _commentController,
+                              width: 270,
+                              hintText: "댓글을 입력해주세요.",
+                            ),
+                            PrimaryBtn(
+                              label: "등록",
+                              onPressed: _submitComment,
+                              widgetSize: WidgetSize.small,
+                              widgetColor: WidgetColor.purple,
+                              widgetShape: WidgetShape.square,
+                            )
+                          ],
+                        ),
+                      ),
                     ),
                   ],
                 )

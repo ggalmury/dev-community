@@ -1,13 +1,13 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'party_article_creator.dart';
+part of 'party_article_create.dart';
 
 // **************************************************************************
 // JsonSerializableGenerator
 // **************************************************************************
 
-PartyArticleCreator _$PartyArticleCreatorFromJson(Map<String, dynamic> json) =>
-    PartyArticleCreator(
+PartyArticleCreate _$PartyArticleCreateFromJson(Map<String, dynamic> json) =>
+    PartyArticleCreate(
       category: json['category'] as String,
       title: json['title'] as String,
       description: json['description'] as String?,
@@ -24,8 +24,7 @@ PartyArticleCreator _$PartyArticleCreatorFromJson(Map<String, dynamic> json) =>
       span: json['span'] as String,
     );
 
-Map<String, dynamic> _$PartyArticleCreatorToJson(
-        PartyArticleCreator instance) =>
+Map<String, dynamic> _$PartyArticleCreateToJson(PartyArticleCreate instance) =>
     <String, dynamic>{
       'category': instance.category,
       'title': instance.title,
