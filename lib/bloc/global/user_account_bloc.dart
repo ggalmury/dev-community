@@ -1,6 +1,6 @@
 import 'package:dev_community/apis/auth_api.dart';
-import 'package:dev_community/models/token.dart';
-import 'package:dev_community/models/user_account.dart';
+import 'package:dev_community/models/auth/token.dart';
+import 'package:dev_community/models/auth/user_account.dart';
 import 'package:dev_community/repositories/key_value_store.dart';
 import 'package:dev_community/utils/exceptions/authentication_exception.dart';
 import 'package:dev_community/utils/exceptions/not_found_exception.dart';

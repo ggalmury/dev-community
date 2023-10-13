@@ -1,5 +1,5 @@
 import 'package:dev_community/apis/party_api.dart';
-import 'package:dev_community/models/party_article_create.dart';
+import 'package:dev_community/models/party/party_article_create.dart';
 import 'package:dev_community/screens/party.dart';
 import 'package:dev_community/utils/constant.dart';
 import 'package:dev_community/utils/customs/custom_color.dart';

@@ -1,11 +1,12 @@
 import 'dart:convert';
 import 'package:dev_community/apis/dio/dio_provider.dart';
-import 'package:dev_community/models/party_article_create.dart';
-import 'package:dev_community/models/party_article.dart';
-import 'package:dev_community/models/party_comment_create.dart';
+import 'package:dev_community/models/common/comment.dart';
+import 'package:dev_community/models/common/comment_group.dart';
+import 'package:dev_community/models/party/party_article_create.dart';
+import 'package:dev_community/models/party/party_article.dart';
+import 'package:dev_community/models/party/party_comment_create.dart';
 import 'package:dev_community/utils/exceptions/bad_request_exception.dart';
 import 'package:dev_community/utils/exceptions/network_exception.dart';
-import 'package:dev_community/utils/logger.dart';
 import 'package:dio/dio.dart';
 
 class PartyApi {
@@ -39,17 +40,35 @@ class PartyApi {
     }
   }
 
-  Future<void> getComment() async {
-    // implement
+  Future<List<CommentGroup>> getComment(int postId) async {
+    Response response = await DioProvider()
+        .authDio
+        .get("$path/comment", queryParameters: {"postId": postId});
+
+    if (response.statusCode == 200) {
+      List<dynamic> result = response.data["comments"];
+
+      List<CommentGroup> comments = result.map((c) {
+        return CommentGroup.fromJson(c);
+      }).toList();
+
+      return comments;
+    } else if (response.statusCode == 400) {
+      throw BadRequestException();
+    } else {
+      throw NetworkException();
+    }
   }
 
-  Future<void> createComment(PartyCommentCreate partyCommentCreate) async {
+  Future<Comment> createComment(PartyCommentCreate partyCommentCreate) async {
     Response response = await DioProvider()
         .authDio
         .post("$path/comment-create", data: jsonEncode(partyCommentCreate));
 
     if (response.statusCode == 201) {
-      loggerNoStack.i(response.data["comment"]);
+      Comment comment = Comment.fromJson(response.data["comment"]);
+
+      return comment;
     } else if (response.statusCode == 400) {
       throw BadRequestException();
     } else {

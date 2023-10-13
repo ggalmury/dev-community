@@ -1,6 +1,6 @@
 import 'package:bloc/bloc.dart';
 import 'package:dev_community/apis/party_api.dart';
-import 'package:dev_community/models/party_article.dart';
+import 'package:dev_community/models/party/party_article.dart';
 import 'package:dev_community/utils/logger.dart';
 import 'package:equatable/equatable.dart';
 

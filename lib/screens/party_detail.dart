@@ -1,17 +1,20 @@
 import 'package:dev_community/apis/party_api.dart';
-import 'package:dev_community/models/party_article.dart';
-import 'package:dev_community/models/party_comment_create.dart';
+import 'package:dev_community/models/common/comment.dart';
+import 'package:dev_community/models/common/comment_group.dart';
+import 'package:dev_community/models/party/party_article.dart';
+import 'package:dev_community/models/party/party_comment_create.dart';
 import 'package:dev_community/utils/customs/custom_style.dart';
 import 'package:dev_community/utils/enums/widget_property.dart';
 import 'package:dev_community/utils/helpers/helper.dart';
+import 'package:dev_community/utils/helpers/screen_helper.dart';
 import 'package:dev_community/widgets/atoms/article_type.dart';
 import 'package:dev_community/widgets/atoms/buttons/primary_btn.dart';
 import 'package:dev_community/widgets/atoms/inputs/nonborder_input.dart';
 import 'package:dev_community/widgets/molecules/article_profile.dart';
-import 'package:dev_community/widgets/molecules/comment.dart';
 import 'package:dev_community/widgets/molecules/sliver_tabbar.dart';
 import 'package:dev_community/widgets/molecules/techskill_row.dart';
 import 'package:dev_community/widgets/molecules/title_column.dart';
+import 'package:dev_community/widgets/organisms/comment_container.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_html/flutter_html.dart';
@@ -29,6 +32,8 @@ class _PartyDetailState extends State<PartyDetail> {
   final TextEditingController _commentController = TextEditingController();
   final EdgeInsets contentPadding =
       const EdgeInsets.only(right: 25, left: 25, top: 60);
+
+  List<CommentGroup> comments = [];
 
   Widget _articleInfoRow({required String title, required Widget child}) {
     return Padding(
@@ -55,9 +60,38 @@ class _PartyDetailState extends State<PartyDetail> {
         comment: _commentController.text,
         depth: 0);
 
-    await context.read<PartyApi>().createComment(partyCommentCreate);
+    Comment comment =
+        await context.read<PartyApi>().createComment(partyCommentCreate);
+
+    CommentGroup newComment = CommentGroup(comment: comment, subComment: []);
+
+    setState(() {
+      comments.add(newComment);
+    });
 
     _commentController.clear();
+
+    if (!mounted) return;
+
+    ScreenHelper.alertDialogHandler(context, title: "댓글이 등록되었습니다!");
+  }
+
+  Future<void> _fetchCommentList() async {
+    List<CommentGroup> commentGroup =
+        await context.read<PartyApi>().getComment(widget.partyArticle.id);
+
+    setState(() {
+      comments = commentGroup;
+    });
+  }
+
+  @override
+  void initState() {
+    super.initState();
+
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      _fetchCommentList();
+    });
   }
 
   @override
@@ -243,9 +277,10 @@ class _PartyDetailState extends State<PartyDetail> {
                       child: Padding(
                         padding: contentPadding,
                         child: ListView.builder(
-                          itemCount: 5,
+                          itemCount: comments.length,
                           itemBuilder: (context, index) {
-                            return Comment();
+                            return CommentContainer(
+                                commentGroup: comments[index]);
                           },
                         ),
                       ),

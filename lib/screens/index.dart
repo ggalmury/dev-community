@@ -1,5 +1,5 @@
 import 'package:dev_community/bloc/global/user_account_bloc.dart';
-import 'package:dev_community/models/token.dart';
+import 'package:dev_community/models/auth/token.dart';
 import 'package:dev_community/repositories/key_value_store.dart';
 import 'package:dev_community/screens/home.dart';
 import 'package:dev_community/utils/enums/global.dart';

@@ -1,4 +1,4 @@
-import 'package:dev_community/models/token.dart';
+import 'package:dev_community/models/auth/token.dart';
 import 'package:dev_community/utils/logger.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 

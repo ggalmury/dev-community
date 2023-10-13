@@ -1,5 +1,4 @@
 import 'package:dev_community/utils/customs/custom_color.dart';
-import 'package:dev_community/utils/helpers/helper.dart';
 import 'package:dev_community/widgets/molecules/article_profile.dart';
 import 'package:flutter/material.dart';
 
@@ -20,7 +19,7 @@ class Comment extends StatelessWidget {
         minHeight: 120,
       ),
       child: Padding(
-        padding: const EdgeInsets.symmetric(vertical: 20),
+        padding: const EdgeInsets.symmetric(vertical: 10),
         child: Column(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -31,24 +30,14 @@ class Comment extends StatelessWidget {
                     "http://k.kakaocdn.net/dn/hNCUd/btskg9bLRFi/gK4aKViyxA20R6IQJ8W5nk/img_640x640.jpg",
                 craetedAt: DateTime.now(),
               ),
-              const SizedBox(
-                height: 20,
-              ),
               const Text("comment"),
-              const SizedBox(
-                height: 20,
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              const Row(
                 children: [
-                  const Text("댓글 열기"),
+                  Text("댓글 열기"),
                   Row(
                     children: [
-                      Helper.svgFactory("assets/svgs/commons/text.svg", 20),
-                      const SizedBox(
-                        width: 7,
-                      ),
-                      const Text("2"),
+                      Icon(Icons.comment),
+                      Text("2"),
                     ],
                   )
                 ],

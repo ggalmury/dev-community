@@ -1,4 +1,4 @@
-import 'package:dev_community/models/token.dart';
+import 'package:dev_community/models/auth/token.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 part 'user_account.g.dart';

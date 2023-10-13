@@ -1,4 +1,4 @@
-import 'package:dev_community/models/party_article.dart';
+import 'package:dev_community/models/party/party_article.dart';
 import 'package:dev_community/screens/party_detail.dart';
 import 'package:dev_community/utils/customs/custom_color.dart';
 import 'package:dev_community/utils/customs/custom_style.dart';

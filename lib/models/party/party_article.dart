@@ -1,4 +1,4 @@
-import 'package:dev_community/models/poster.dart';
+import 'package:dev_community/models/common/poster.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 part 'party_article.g.dart';

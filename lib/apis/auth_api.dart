@@ -1,7 +1,7 @@
 import 'dart:convert';
 import 'package:dev_community/apis/dio/dio_provider.dart';
-import 'package:dev_community/models/token.dart';
-import 'package:dev_community/models/user_account.dart';
+import 'package:dev_community/models/auth/token.dart';
+import 'package:dev_community/models/auth/user_account.dart';
 import 'package:dev_community/utils/exceptions/authentication_exception.dart';
 import 'package:dev_community/utils/exceptions/network_exception.dart';
 import 'package:dev_community/utils/exceptions/request_canceled_exception.dart';
