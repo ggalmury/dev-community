@@ -8,7 +8,7 @@ part of 'comment_group.dart';
 
 CommentGroup _$CommentGroupFromJson(Map<String, dynamic> json) => CommentGroup(
       comment: Comment.fromJson(json['comment'] as Map<String, dynamic>),
-      subComment: (json['subComment'] as List<dynamic>)
+      reply: (json['reply'] as List<dynamic>)
           .map((e) => Comment.fromJson(e as Map<String, dynamic>))
           .toList(),
     );
@@ -16,5 +16,5 @@ CommentGroup _$CommentGroupFromJson(Map<String, dynamic> json) => CommentGroup(
 Map<String, dynamic> _$CommentGroupToJson(CommentGroup instance) =>
     <String, dynamic>{
       'comment': instance.comment,
-      'subComment': instance.subComment,
+      'reply': instance.reply,
     };

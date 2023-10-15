@@ -6,9 +6,9 @@ part 'comment_group.g.dart';
 @JsonSerializable()
 class CommentGroup {
   final Comment comment;
-  final List<Comment> subComment;
+  final List<Comment> reply;
 
-  CommentGroup({required this.comment, required this.subComment});
+  CommentGroup({required this.comment, required this.reply});
 
   factory CommentGroup.fromJson(Map<String, dynamic> json) =>
       _$CommentGroupFromJson(json);

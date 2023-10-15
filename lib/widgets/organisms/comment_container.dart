@@ -50,7 +50,7 @@ class CommentContainer extends StatelessWidget {
                       const SizedBox(
                         width: 7,
                       ),
-                      Text(commentGroup.subComment.length.toString()),
+                      Text(commentGroup.reply.length.toString()),
                     ],
                   )
                 ],

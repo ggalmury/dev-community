@@ -63,7 +63,7 @@ class _PartyDetailState extends State<PartyDetail> {
     Comment comment =
         await context.read<PartyApi>().createComment(partyCommentCreate);
 
-    CommentGroup newComment = CommentGroup(comment: comment, subComment: []);
+    CommentGroup newComment = CommentGroup(comment: comment, reply: []);
 
     setState(() {
       comments.add(newComment);

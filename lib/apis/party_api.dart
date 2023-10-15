@@ -48,11 +48,11 @@ class PartyApi {
     if (response.statusCode == 200) {
       List<dynamic> result = response.data["comments"];
 
-      List<CommentGroup> comments = result.map((c) {
+      List<CommentGroup> commentGroup = result.map((c) {
         return CommentGroup.fromJson(c);
       }).toList();
 
-      return comments;
+      return commentGroup;
     } else if (response.statusCode == 400) {
       throw BadRequestException();
     } else {
