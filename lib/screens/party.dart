@@ -103,13 +103,6 @@ class _PartyState extends State<Party> {
                   color: Colors.white,
                   child: Column(
                     children: [
-                      Container(
-                        height: 200,
-                        color: CustomColor.greyLight,
-                        child: const Center(
-                          child: Text("banner"),
-                        ),
-                      ),
                       Padding(
                         padding: const EdgeInsets.symmetric(
                           horizontal: 20,

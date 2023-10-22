@@ -1,7 +1,7 @@
 import 'package:dev_community/bloc/global/user_account_bloc.dart';
 import 'package:dev_community/models/auth/token.dart';
 import 'package:dev_community/repositories/key_value_store.dart';
-import 'package:dev_community/screens/home.dart';
+import 'package:dev_community/screens/party.dart';
 import 'package:dev_community/utils/enums/global.dart';
 import 'package:dev_community/utils/exceptions/authentication_exception.dart';
 import 'package:dev_community/utils/exceptions/not_found_exception.dart';
@@ -73,7 +73,7 @@ class _IndexState extends State<Index> {
           listener: (context, state) {
             if (state.exception != null) _exceptionAlert(state.exception!);
             if (state.isLoggedIn) {
-              Helper.pushRemoveScreen(context, const Home());
+              Helper.pushRemoveScreen(context, const Party());
             }
           },
           child: Padding(
